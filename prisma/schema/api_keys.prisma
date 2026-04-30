@@ -1,0 +1,27 @@
+// prisma/schema/api_keys.prisma
+enum ApiKeyStatus {
+  active
+  revoked
+  expired
+}
+
+model ApiKey {
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String       @db.Uuid
+  key_hash     String       @unique @db.VarChar(255)
+  key_prefix   String       @db.VarChar(50)
+  name         String?      @db.VarChar(255)
+  permissions  Json         @default("{}")
+  allowed_domains String[]  @default([])
+  last_used_at DateTime?
+  expires_at   DateTime?
+  status       ApiKeyStatus @default(active)
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+
+  user     User               @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  webhooks WebhookEndpoint[]
+
+  @@index([user_id], name: "idx_api_keys_user_id")
+  @@index([key_hash], name: "idx_api_keys_key_hash")
+}

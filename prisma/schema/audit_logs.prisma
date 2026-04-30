@@ -1,0 +1,17 @@
+// prisma/schema/audit_logs.prisma
+model AuditLog {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String?  @db.Uuid
+  action       String   @db.VarChar(100)
+  resource_type String? @db.VarChar(100)
+  resource_id  String?  @db.Uuid
+  ip_address   String?
+  user_agent   String?  @db.Text
+  metadata     Json?
+  created_at   DateTime @default(now())
+
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@index([user_id], name: "idx_audit_logs_user_id")
+  @@index([created_at(sort: Desc)], name: "idx_audit_logs_created_at")
+}

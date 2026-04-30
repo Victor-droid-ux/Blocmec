@@ -1,0 +1,34 @@
+// prisma/schema/qr_codes.prisma
+enum QrStatus {
+  active
+  inactive
+  expired
+}
+
+model QrCode {
+  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id              String   @db.Uuid
+  token_id             String   @unique @db.VarChar(255)
+  batch_id             String?  @db.Uuid
+  product_type         String   @db.VarChar(100)
+  product_name         String?  @db.VarChar(255)
+  qr_data              String   @db.Text
+  qr_image_url         String?  @db.Text
+  blockchain_tx_hash   String?  @db.VarChar(255)
+  blockchain_token_id  String?  @db.VarChar(255)
+  metadata             Json?
+  status               QrStatus @default(active)
+  scan_limit           Int      @default(0)
+  scan_count           Int      @default(0)
+  expires_at           DateTime?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+
+  user     User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  batch    Batch? @relation(fields: [batch_id], references: [id], onDelete: SetNull)
+  verifications Verification[]
+
+  @@index([user_id], name: "idx_qr_codes_user_id")
+  @@index([token_id], name: "idx_qr_codes_token_id")
+  @@index([batch_id], name: "idx_qr_codes_batch_id")
+}

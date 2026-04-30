@@ -1,0 +1,35 @@
+// prisma/schema/verifications.prisma
+enum VerificationStatus {
+  verified
+  failed
+  expired
+  counterfeit
+}
+
+enum VerificationMethod {
+  qr_scan
+  api
+  manual
+}
+
+model Verification {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  qr_code_id            String   @db.Uuid
+  token_id              String   @db.VarChar(255)
+  ip_address            String?  // stored as text; use Unsupported("inet") if you need native
+  user_agent            String?  @db.Text
+  location_country      String?  @db.VarChar(100)
+  location_city         String?  @db.VarChar(255)
+  location_coordinates  String?  // store as "POINT(lon lat)" or "lat,lng"; use Unsupported("point") for native
+  device_type           String?  @db.VarChar(50)
+  status                VerificationStatus
+  verification_method   VerificationMethod?
+  metadata              Json?
+  created_at            DateTime @default(now())
+
+  qr_code QrCode @relation(fields: [qr_code_id], references: [id], onDelete: Cascade)
+
+  @@index([qr_code_id], name: "idx_verifications_qr_code_id")
+  @@index([token_id], name: "idx_verifications_token_id")
+  @@index([created_at(sort: Desc)], name: "idx_verifications_created_at")
+}

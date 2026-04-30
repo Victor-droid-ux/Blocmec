@@ -1,0 +1,27 @@
+// prisma/schema/batches.prisma
+enum BatchStatus {
+  pending
+  processing
+  completed
+  failed
+}
+
+model Batch {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String   @db.Uuid
+  name            String   @db.VarChar(255)
+  product_type    String   @db.VarChar(100)
+  batch_number    String?  @db.VarChar(255)
+  total_count     Int
+  generated_count Int      @default(0)
+  status          BatchStatus @default(pending)
+  metadata        Json?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  qr_codes QrCode[]
+  webhook_payloads WebhookEventPayload[]
+
+  @@index([user_id], name: "idx_batches_user_id")
+}

@@ -1,0 +1,39 @@
+// prisma/schema/users.prisma
+
+enum UserRole {
+  user
+  admin
+  developer
+}
+
+enum UserStatus {
+  active
+  inactive
+  suspended
+}
+
+model User {
+  id                  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email               String      @unique @db.VarChar(255)
+  supabase_id         String?     @unique @db.Uuid
+  name                String?     @db.VarChar(255)
+  username            String?     @db.VarChar(255)
+  role                UserRole    @default(user)
+  status              UserStatus  @default(active)
+  api_credits         Int         @default(0)
+  subscription_plan   String      @default("free") @db.VarChar(100)
+  email_verified      Boolean     @default(false)
+  verification_token  String?     @db.VarChar(255)
+  reset_token         String?     @db.VarChar(255)
+  reset_token_expires DateTime?
+  created_at          DateTime    @default(now())
+  updated_at          DateTime    @updatedAt
+
+  qr_codes      QrCode[]
+  batches       Batch[]
+  transactions  Transaction[]
+  api_keys      ApiKey[]
+  audit_logs    AuditLog[]
+  webhooks      WebhookEndpoint[]
+  webhook_payloads WebhookEventPayload[]
+}

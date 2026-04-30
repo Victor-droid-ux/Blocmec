@@ -1,0 +1,85 @@
+
+
+enum WebhookStatus {
+  active
+  paused
+  disabled
+}
+
+enum WebhookDeliveryStatus {
+  queued
+  processing
+  delivered
+  failed
+}
+
+model WebhookEndpoint {
+  id                     String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                String        @db.Uuid
+  api_key_id             String?       @db.Uuid
+  name                   String?       @db.VarChar(255)
+  endpoint_url           String        @db.Text
+  allowed_domains        String[]      @default([])
+  events                 String[]
+  signing_secret_hash    String        @db.VarChar(255)
+  signing_secret_encrypted String      @db.Text
+  status                 WebhookStatus @default(active)
+  timeout_ms             Int           @default(10000)
+  max_retries            Int           @default(6)
+  last_delivery_at       DateTime?
+  last_delivery_status   String?       @db.VarChar(50)
+  last_error             String?       @db.Text
+  created_at             DateTime      @default(now())
+  updated_at             DateTime      @updatedAt
+
+  user            User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  api_key         ApiKey?             @relation(fields: [api_key_id], references: [id], onDelete: SetNull)
+  delivery_events WebhookDeliveryJob[]
+
+  @@index([user_id], name: "idx_webhooks_user_id")
+  @@index([api_key_id], name: "idx_webhooks_api_key_id")
+  @@index([status], name: "idx_webhooks_status")
+}
+
+model WebhookDeliveryJob {
+  id               String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  webhook_id       String                @db.Uuid
+  payload_id       String?               @db.Uuid
+  event_type       String                @db.VarChar(100)
+  payload          Json
+  delivery_id      String                @unique @db.VarChar(255)
+  status           WebhookDeliveryStatus @default(queued)
+  attempts         Int                   @default(0)
+  next_attempt_at  DateTime              @default(now())
+  delivered_at     DateTime?
+  dead_lettered_at DateTime?
+  response_status  Int?
+  last_error       String?               @db.Text
+  created_at       DateTime              @default(now())
+  updated_at       DateTime              @updatedAt
+
+  webhook WebhookEndpoint @relation(fields: [webhook_id], references: [id], onDelete: Cascade)
+  payload_record WebhookEventPayload? @relation("PayloadJobs", fields: [payload_id], references: [id], onDelete: SetNull)
+
+  @@index([webhook_id], name: "idx_webhook_jobs_webhook_id")
+  @@index([payload_id], name: "idx_webhook_jobs_payload_id")
+  @@index([status, next_attempt_at], name: "idx_webhook_jobs_status_next_attempt")
+}
+
+model WebhookEventPayload {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String   @db.Uuid
+  batch_id        String?  @db.Uuid
+  event_type      String   @db.VarChar(100)
+  summary         Json
+  payload         Json
+  created_at      DateTime @default(now())
+  expires_at      DateTime?
+
+  user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  batch Batch? @relation(fields: [batch_id], references: [id], onDelete: SetNull)
+  webhook_jobs WebhookDeliveryJob[] @relation("PayloadJobs")
+
+  @@index([user_id, created_at(sort: Desc)], name: "idx_webhook_payloads_user_created")
+  @@index([event_type], name: "idx_webhook_payloads_event")
+}

@@ -1,0 +1,34 @@
+// prisma/schema/transactions.prisma
+enum TransactionType {
+  credit_purchase
+  subscription
+  refund
+}
+
+enum TransactionStatus {
+  pending
+  completed
+  failed
+  refunded
+}
+
+model Transaction {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String?  @db.Uuid
+  type                  TransactionType
+  amount                Decimal  @db.Decimal(10,2)
+  currency              String   @default("USD") @db.VarChar(10)
+  status                TransactionStatus
+  payment_method        String?  @db.VarChar(50)
+  payment_provider_id   String?  @db.VarChar(255)
+  transaction_reference String?  @unique @db.VarChar(255)
+  credits_added         Int      @default(0)
+  metadata              Json?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@index([user_id], name: "idx_transactions_user_id")
+  @@index([transaction_reference], name: "idx_transactions_reference")
+}
