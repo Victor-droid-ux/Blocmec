@@ -57,7 +57,9 @@ export function UserManagement() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [newUser, setNewUser] = useState<Omit<User, "id" | "lastLogin" | "createdAt">>({
+  const [newUser, setNewUser] = useState<
+    Omit<User, "id" | "lastLogin" | "createdAt">
+  >({
     username: "",
     email: "",
     role: "user",
@@ -164,7 +166,8 @@ export function UserManagement() {
         body: JSON.stringify(newUser),
       });
 
-      if (!res.ok) throw new Error(`Failed to ${editingUser ? "update" : "create"} user`);
+      if (!res.ok)
+        throw new Error(`Failed to ${editingUser ? "update" : "create"} user`);
 
       toast({
         title: "Success",
@@ -211,16 +214,16 @@ export function UserManagement() {
     switch (status) {
       case "active":
         return (
-          <Badge variant='default' className='bg-green-100 text-green-800'>
+          <Badge variant="default" className="bg-green-100 text-green-800">
             Active
           </Badge>
         );
       case "inactive":
-        return <Badge variant='secondary'>Inactive</Badge>;
+        return <Badge variant="secondary">Inactive</Badge>;
       case "suspended":
-        return <Badge variant='destructive'>Suspended</Badge>;
+        return <Badge variant="destructive">Suspended</Badge>;
       default:
-        return <Badge variant='outline'>Unknown</Badge>;
+        return <Badge variant="outline">Unknown</Badge>;
     }
   };
 
@@ -228,20 +231,20 @@ export function UserManagement() {
     switch (role) {
       case "admin":
         return (
-          <Badge variant='default' className='bg-red-100 text-red-800'>
+          <Badge variant="default" className="bg-red-100 text-red-800">
             Admin
           </Badge>
         );
       case "developer":
         return (
-          <Badge variant='default' className='bg-blue-100 text-blue-800'>
+          <Badge variant="default" className="bg-blue-100 text-blue-800">
             Developer
           </Badge>
         );
       case "user":
-        return <Badge variant='outline'>User</Badge>;
+        return <Badge variant="outline">User</Badge>;
       default:
-        return <Badge variant='outline'>Unknown</Badge>;
+        return <Badge variant="outline">Unknown</Badge>;
     }
   };
 
@@ -249,68 +252,68 @@ export function UserManagement() {
     switch (plan) {
       case "business":
         return (
-          <Badge variant='default' className='bg-purple-100 text-purple-800'>
+          <Badge variant="default" className="bg-purple-100 text-purple-800">
             Business
           </Badge>
         );
       case "conglomerate":
         return (
-          <Badge variant='default' className='bg-blue-100 text-blue-800'>
+          <Badge variant="default" className="bg-blue-100 text-blue-800">
             Conglomerate
           </Badge>
         );
       case "conglomerate-pro":
         return (
-          <Badge variant='default' className='bg-orange-100 text-orange-800'>
+          <Badge variant="default" className="bg-orange-100 text-orange-800">
             Conglomerate Pro
           </Badge>
         );
       case "enterprise":
         return (
-          <Badge variant='default' className='bg-gray-100 text-gray-800'>
+          <Badge variant="default" className="bg-gray-100 text-gray-800">
             Enterprise
           </Badge>
         );
       case "none":
-        return <Badge variant='outline'>No Plan</Badge>;
+        return <Badge variant="outline">No Plan</Badge>;
       default:
-        return <Badge variant='outline'>Unknown</Badge>;
+        return <Badge variant="outline">Unknown</Badge>;
     }
   };
 
   if (isLoading) {
     return (
-      <div className='space-y-4'>
-        <div className='flex items-center justify-center h-32'>
-          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary'></div>
+      <div className="space-y-4">
+        <div className="flex items-center justify-center h-32">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className='space-y-4'>
-      <div className='flex flex-col md:flex-row items-center justify-between gap-4'>
-        <div className='relative w-full md:w-1/2'>
-          <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400' />
+    <div className="space-y-4">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="relative w-full md:w-1/2">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
-            placeholder='Search users by username, email, role, or subscription plan...'
+            placeholder="Search users by username, email, role, or subscription plan..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className='pl-9'
+            className="pl-9"
           />
         </div>
-        <Button onClick={openCreateDialog} className='w-full md:w-auto'>
-          <PlusCircle className='mr-2 h-4 w-4' /> Create New User
+        <Button onClick={openCreateDialog} className="w-full md:w-auto">
+          <PlusCircle className="mr-2 h-4 w-4" /> Create New User
         </Button>
       </div>
 
-      <div className='rounded-md border'>
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead
-                className='cursor-pointer'
+                className="cursor-pointer"
                 onClick={() => handleSort("username")}
               >
                 Username
@@ -321,7 +324,10 @@ export function UserManagement() {
                   )}
                 />
               </TableHead>
-              <TableHead className='cursor-pointer' onClick={() => handleSort("email")}>
+              <TableHead
+                className="cursor-pointer"
+                onClick={() => handleSort("email")}
+              >
                 Email
                 <ArrowUpDown
                   className={cn(
@@ -330,7 +336,10 @@ export function UserManagement() {
                   )}
                 />
               </TableHead>
-              <TableHead className='cursor-pointer' onClick={() => handleSort("role")}>
+              <TableHead
+                className="cursor-pointer"
+                onClick={() => handleSort("role")}
+              >
                 Role
                 <ArrowUpDown
                   className={cn(
@@ -339,7 +348,10 @@ export function UserManagement() {
                   )}
                 />
               </TableHead>
-              <TableHead className='cursor-pointer' onClick={() => handleSort("status")}>
+              <TableHead
+                className="cursor-pointer"
+                onClick={() => handleSort("status")}
+              >
                 Status
                 <ArrowUpDown
                   className={cn(
@@ -349,7 +361,7 @@ export function UserManagement() {
                 />
               </TableHead>
               <TableHead
-                className='cursor-pointer'
+                className="cursor-pointer"
                 onClick={() => handleSort("apiCredits")}
               >
                 API Credits
@@ -361,7 +373,7 @@ export function UserManagement() {
                 />
               </TableHead>
               <TableHead
-                className='cursor-pointer'
+                className="cursor-pointer"
                 onClick={() => handleSort("subscriptionPlan")}
               >
                 Subscription Plan
@@ -373,39 +385,41 @@ export function UserManagement() {
                 />
               </TableHead>
               <TableHead>Last Login</TableHead>
-              <TableHead className='text-right'>Actions</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {sortedAndFilteredUsers.length > 0 ? (
               sortedAndFilteredUsers.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell className='font-medium'>{user.username}</TableCell>
+                  <TableCell className="font-medium">{user.username}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{getRoleBadge(user.role)}</TableCell>
                   <TableCell>{getStatusBadge(user.status)}</TableCell>
                   <TableCell>{user.apiCredits.toLocaleString()}</TableCell>
-                  <TableCell>{getSubscriptionBadge(user.subscriptionPlan)}</TableCell>
+                  <TableCell>
+                    {getSubscriptionBadge(user.subscriptionPlan)}
+                  </TableCell>
                   <TableCell>{user.lastLogin}</TableCell>
-                  <TableCell className='text-right'>
-                    <div className='flex justify-end space-x-2'>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end space-x-2">
                       <Button
-                        variant='ghost'
-                        size='icon'
+                        variant="ghost"
+                        size="icon"
                         onClick={() => openEditDialog(user)}
-                        className='h-8 w-8'
+                        className="h-8 w-8"
                       >
-                        <Edit className='h-4 w-4' />
-                        <span className='sr-only'>Edit user</span>
+                        <Edit className="h-4 w-4" />
+                        <span className="sr-only">Edit user</span>
                       </Button>
                       <Button
-                        variant='ghost'
-                        size='icon'
+                        variant="ghost"
+                        size="icon"
                         onClick={() => handleDeleteUser(user.id)}
-                        className='h-8 w-8 text-red-600 hover:text-red-700'
+                        className="h-8 w-8 text-red-600 hover:text-red-700"
                       >
-                        <Trash2 className='h-4 w-4' />
-                        <span className='sr-only'>Delete user</span>
+                        <Trash2 className="h-4 w-4" />
+                        <span className="sr-only">Delete user</span>
                       </Button>
                     </div>
                   </TableCell>
@@ -413,7 +427,10 @@ export function UserManagement() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={8} className='h-24 text-center text-muted-foreground'>
+                <TableCell
+                  colSpan={8}
+                  className="h-24 text-center text-muted-foreground"
+                >
                   No users found.
                 </TableCell>
               </TableRow>
@@ -423,36 +440,42 @@ export function UserManagement() {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className='sm:max-w-[425px]'>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{editingUser ? "Edit User" : "Create New User"}</DialogTitle>
+            <DialogTitle>
+              {editingUser ? "Edit User" : "Create New User"}
+            </DialogTitle>
           </DialogHeader>
-          <div className='grid gap-4 py-4'>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='username' className='text-right'>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
                 Username
               </Label>
               <Input
-                id='username'
+                id="username"
                 value={newUser.username}
-                onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
-                className='col-span-3'
+                onChange={(e) =>
+                  setNewUser({ ...newUser, username: e.target.value })
+                }
+                className="col-span-3"
               />
             </div>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='email' className='text-right'>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="email" className="text-right">
                 Email
               </Label>
               <Input
-                id='email'
-                type='email'
+                id="email"
+                type="email"
                 value={newUser.email}
-                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                className='col-span-3'
+                onChange={(e) =>
+                  setNewUser({ ...newUser, email: e.target.value })
+                }
+                className="col-span-3"
               />
             </div>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='role' className='text-right'>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="role" className="text-right">
                 Role
               </Label>
               <Select
@@ -464,18 +487,18 @@ export function UserManagement() {
                   })
                 }
               >
-                <SelectTrigger id='role' className='col-span-3'>
-                  <SelectValue placeholder='Select a role' />
+                <SelectTrigger id="role" className="col-span-3">
+                  <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='user'>User</SelectItem>
-                  <SelectItem value='developer'>Developer</SelectItem>
-                  <SelectItem value='admin'>Admin</SelectItem>
+                  <SelectItem value="user">User</SelectItem>
+                  <SelectItem value="developer">Developer</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='status' className='text-right'>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="status" className="text-right">
                 Status
               </Label>
               <Select
@@ -487,23 +510,23 @@ export function UserManagement() {
                   })
                 }
               >
-                <SelectTrigger id='status' className='col-span-3'>
-                  <SelectValue placeholder='Select status' />
+                <SelectTrigger id="status" className="col-span-3">
+                  <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='active'>Active</SelectItem>
-                  <SelectItem value='inactive'>Inactive</SelectItem>
-                  <SelectItem value='suspended'>Suspended</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="inactive">Inactive</SelectItem>
+                  <SelectItem value="suspended">Suspended</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='apiCredits' className='text-right'>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="apiCredits" className="text-right">
                 API Credits
               </Label>
               <Input
-                id='apiCredits'
-                type='number'
+                id="apiCredits"
+                type="number"
                 value={newUser.apiCredits}
                 onChange={(e) =>
                   setNewUser({
@@ -511,11 +534,11 @@ export function UserManagement() {
                     apiCredits: Number.parseInt(e.target.value) || 0,
                   })
                 }
-                className='col-span-3'
+                className="col-span-3"
               />
             </div>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='subscriptionPlan' className='text-right'>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="subscriptionPlan" className="text-right">
                 Subscription Plan
               </Label>
               <Select
@@ -527,23 +550,29 @@ export function UserManagement() {
                   })
                 }
               >
-                <SelectTrigger id='subscriptionPlan' className='col-span-3'>
-                  <SelectValue placeholder='Select subscription plan' />
+                <SelectTrigger id="subscriptionPlan" className="col-span-3">
+                  <SelectValue placeholder="Select subscription plan" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='none'>No Plan</SelectItem>
-                  <SelectItem value='business'>Business ($99/month)</SelectItem>
-                  <SelectItem value='conglomerate'>Conglomerate ($299/month)</SelectItem>
-                  <SelectItem value='conglomerate-pro'>
-                    Conglomerate Pro ($599/month)
+                  <SelectItem value="none">No Plan</SelectItem>
+                  <SelectItem value="business">
+                    Business (₦5,000/month)
                   </SelectItem>
-                  <SelectItem value='enterprise'>Enterprise (Custom)</SelectItem>
+                  <SelectItem value="conglomerate">
+                    Conglomerate (₦40,000/month)
+                  </SelectItem>
+                  <SelectItem value="conglomerate-pro">
+                    Conglomerate Pro (₦100,000/month)
+                  </SelectItem>
+                  <SelectItem value="enterprise">
+                    Enterprise (Custom)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setIsDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleSaveUser}>

@@ -16,6 +16,7 @@ export const API_ENDPOINTS = {
     CREDITS: "/api/user/credits",
     BATCHES: "/api/user/batches",
     WEBHOOKS: "/api/user/webhooks",
+    SUBSCRIPTION: "/api/user/subscription",
   },
 
   QR: {

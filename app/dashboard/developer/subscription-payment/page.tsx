@@ -22,22 +22,26 @@ import type { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
 import { useAppSelector } from "@/store/hook";
 import { getUser } from "@/store/user/user.reducer";
 
-export default function FlutterwavePaymentPage() {
+const PLAN_LABELS: Record<string, string> = {
+  business: "Business",
+  conglomerate: "Conglomerate",
+  "conglomerate-pro": "Conglomerate Pro",
+};
+
+export default function SubscriptionPaymentPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  // Real auth from Redux store
   const { current: user, loading: authLoading } = useAppSelector(getUser);
 
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Get amount, credits, and currency from URL parameters
-  const amount = searchParams.get("amount") || "10.00";
-  const credits = searchParams.get("credits") || "1000";
-  const currency = searchParams.get("currency") || "USD";
+  const plan = searchParams.get("plan") || "business";
+  const amount = searchParams.get("amount") || "5000";
+  const currency = searchParams.get("currency") || "NGN";
+  const credits = searchParams.get("credits") || "5000";
 
-  // User details — populated from Redux store
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -51,12 +55,12 @@ export default function FlutterwavePaymentPage() {
     setEmail(user.email ?? "");
     setName(user.name ?? "");
     const phoneValue = (user as { phone?: string }).phone;
-    setPhone(phoneValue ?? ""); // phone is not in the User type yet
+    setPhone(phoneValue ?? "");
   }, [user, authLoading, router]);
 
   const flutterwaveConfig = {
     public_key: process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY!,
-    tx_ref: `blockmec_tx_${Date.now()}`,
+    tx_ref: `blockmec_sub_${plan}_${Date.now()}`,
     amount: Number.parseFloat(amount),
     currency: currency.toUpperCase(),
     payment_options: "card,ussd,banktransfer",
@@ -66,9 +70,8 @@ export default function FlutterwavePaymentPage() {
       name: name ?? "",
     },
     customizations: {
-      title: "BLOCKMEC API Credits",
-      description: `Purchase ${credits} API credits`,
-      // Uses the logo already present in /public/images/
+      title: `BLOCKMEC ${PLAN_LABELS[plan] ?? plan} Plan`,
+      description: `Subscribe to the ${PLAN_LABELS[plan] ?? plan} plan — ${Number(credits).toLocaleString()} credits/month`,
       logo: `${process.env.NEXT_PUBLIC_APP_URL}/images/blockmec-logo.png`,
     },
   };
@@ -95,29 +98,36 @@ export default function FlutterwavePaymentPage() {
 
         if (response.status === "successful") {
           try {
-            const res = await fetch("/api/user/credits", {
+            const res = await fetch("/api/user/subscription", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                credits: parseInt(credits),
+                plan,
+                currency: currency.toUpperCase(),
                 transaction_id: response.transaction_id,
                 tx_ref: response.tx_ref,
               }),
             });
 
-            if (!res.ok) throw new Error("Failed to add credits");
+            const data = await res.json().catch(() => null);
+
+            if (!res.ok) {
+              throw new Error(data?.error ?? "Failed to activate subscription");
+            }
 
             toast({
-              title: "Payment successful",
-              description: `${credits} API credits have been added to your account.`,
+              title: "Subscription activated!",
+              description: `You are now on the ${PLAN_LABELS[plan] ?? plan} plan. ${Number(data.credits_added).toLocaleString()} credits added.`,
             });
             router.push(ROUTES.DASHBOARD.DEVELOPER);
           } catch (error) {
-            console.error("Credit update error:", error);
+            console.error("Subscription activation error:", error);
             toast({
-              title: "Credit update failed",
+              title: "Activation failed",
               description:
-                "Payment was received but credits could not be added. Please contact support.",
+                error instanceof Error
+                  ? error.message
+                  : "Payment received but subscription was not activated. Contact support.",
               variant: "destructive",
             });
           }
@@ -135,20 +145,18 @@ export default function FlutterwavePaymentPage() {
       onClose: () => {
         toast({
           title: "Payment cancelled",
-          description: "Your Flutterwave payment has been cancelled.",
+          description: "Your subscription payment has been cancelled.",
         });
         setIsProcessing(false);
       },
     });
   };
 
-  const handleCancel = () => {
-    toast({
-      title: "Payment cancelled",
-      description: "Your Flutterwave payment has been cancelled.",
-    });
-    router.push(ROUTES.DASHBOARD.DEVELOPER);
-  };
+  const currencySymbol = currency.toUpperCase() === "NGN" ? "₦" : "$";
+  const formattedAmount =
+    currency.toUpperCase() === "NGN"
+      ? Number(amount).toLocaleString()
+      : Number(amount).toFixed(2);
 
   if (authLoading) {
     return (
@@ -170,10 +178,11 @@ export default function FlutterwavePaymentPage() {
           Back to Developer Dashboard
         </Button>
         <h2 className="text-2xl font-bold">
-          Flutterwave Payment Gateway ({currency.toUpperCase()})
+          Subscribe — {PLAN_LABELS[plan] ?? plan} Plan
         </h2>
         <p className="text-gray-400 mt-1">
-          Complete your purchase of API credits using Flutterwave
+          Unlock webhooks, API keys, and {Number(credits).toLocaleString()}{" "}
+          credits/month
         </p>
       </div>
 
@@ -183,7 +192,7 @@ export default function FlutterwavePaymentPage() {
             <CardHeader>
               <CardTitle>Payment Details</CardTitle>
               <CardDescription className="text-gray-400">
-                Enter your details to proceed with Flutterwave payment
+                Enter your details to subscribe via Flutterwave
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -226,27 +235,26 @@ export default function FlutterwavePaymentPage() {
                   </div>
                 </div>
 
-                <div className="bg-[#1a1625] p-4 rounded-md">
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-400">Subtotal:</span>
-                    <span>
-                      {currency === "NGN" ? "₦" : "$"}
-                      {Number.parseFloat(amount).toFixed(
-                        currency === "NGN" ? 0 : 2,
-                      )}
+                <div className="bg-[#1a1625] p-4 rounded-md space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Plan:</span>
+                    <span className="font-medium">
+                      {PLAN_LABELS[plan] ?? plan}
                     </span>
                   </div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-400">Processing Fee:</span>
-                    <span>{currency === "NGN" ? "₦" : "$"}0.00</span>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Credits included:</span>
+                    <span>{Number(credits).toLocaleString()} / month</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Billing cycle:</span>
+                    <span>Monthly</span>
                   </div>
                   <div className="flex justify-between pt-2 border-t border-[#2a2139]">
                     <span className="font-medium">Total:</span>
-                    <span className="font-bold">
-                      {currency === "NGN" ? "₦" : "$"}
-                      {Number.parseFloat(amount).toFixed(
-                        currency === "NGN" ? 0 : 2,
-                      )}
+                    <span className="font-bold text-lg">
+                      {currencySymbol}
+                      {formattedAmount} / month
                     </span>
                   </div>
                 </div>
@@ -265,11 +273,8 @@ export default function FlutterwavePaymentPage() {
                     ) : (
                       <>
                         <Wallet className="mr-2 h-4 w-4" />
-                        Pay {currency === "NGN" ? "₦" : "$"}
-                        {Number.parseFloat(amount).toFixed(
-                          currency === "NGN" ? 0 : 2,
-                        )}{" "}
-                        with Flutterwave
+                        Pay {currencySymbol}
+                        {formattedAmount} with Flutterwave
                       </>
                     )}
                   </Button>
@@ -277,7 +282,7 @@ export default function FlutterwavePaymentPage() {
                     type="button"
                     variant="outline"
                     className="flex-1 border-gray-600 text-gray-300 hover:bg-[#2a2139] bg-transparent"
-                    onClick={handleCancel}
+                    onClick={() => router.push(ROUTES.DASHBOARD.DEVELOPER)}
                     disabled={isProcessing}
                   >
                     Cancel
@@ -291,55 +296,31 @@ export default function FlutterwavePaymentPage() {
         <div>
           <Card className="bg-[#231c35] border-[#2a2139] text-white sticky top-20">
             <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
+              <CardTitle>What you get</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-[#1a1625] p-4 rounded-md">
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-400">API Credits:</span>
-                  <span>{Number.parseInt(credits).toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-400">Price per Credit:</span>
-                  <span>
-                    $
-                    {(
-                      Number.parseFloat(amount) / Number.parseInt(credits)
-                    ).toFixed(4)}
-                  </span>
-                </div>
-                <div className="flex justify-between pt-2 border-t border-[#2a2139]">
-                  <span className="font-medium">Total Amount:</span>
-                  <span className="font-bold">
-                    ${Number.parseFloat(amount).toFixed(2)}
-                  </span>
-                </div>
+            <CardContent className="space-y-3 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-purple-400" />
+                <span>
+                  {Number(credits).toLocaleString()} API credits / month
+                </span>
               </div>
-
-              <div className="space-y-2">
-                <h3 className="font-medium">What You'll Get</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li className="flex items-start gap-2">
-                    <div className="mt-1 min-w-4">•</div>
-                    <p>
-                      {Number.parseInt(credits).toLocaleString()} API credits
-                      added to your account
-                    </p>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="mt-1 min-w-4">•</div>
-                    <p>Immediate access to all API features</p>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="mt-1 min-w-4">•</div>
-                    <p>Credits never expire</p>
-                  </li>
-                </ul>
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-purple-400" />
+                <span>Create & manage webhooks</span>
               </div>
-
-              <p className="text-xs text-gray-400 text-center">
-                Payments are processed securely by Flutterwave.
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-purple-400" />
+                <span>Multiple API keys</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-purple-400" />
+                <span>Priority support</span>
+              </div>
+              <div className="mt-4 p-3 bg-[#1a1625] rounded-md text-gray-400 text-xs">
+                Subscription activates immediately after payment. Credits are
+                added to your account automatically.
+              </div>
             </CardContent>
           </Card>
         </div>

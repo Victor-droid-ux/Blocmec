@@ -19,11 +19,17 @@ export async function GET() {
           pricePerCredit: 0.01,
           description: "Pay with credit or debit card",
         },
-        flutterwave: {
-          name: "Flutterwave",
+        flutterwave_usd: {
+          name: "Flutterwave (USD)",
           currency: "USD",
           pricePerCredit: 0.01,
-          description: "Pay with Flutterwave",
+          description: "Pay with Flutterwave in USD",
+        },
+        flutterwave_ngn: {
+          name: "Flutterwave (Naira)",
+          currency: "NGN",
+          pricePerCredit: 50,
+          description: "Pay with Flutterwave in Nigerian Naira",
         },
       },
       minimumCredits: 100,
@@ -44,6 +50,9 @@ export async function GET() {
           note: "Save 15% on 10,000+ credits",
         },
       ],
+      exchangeRate: {
+        USD_to_NGN: 1650,
+      },
       updatedAt: new Date().toISOString(),
     };
 

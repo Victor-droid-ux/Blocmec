@@ -894,7 +894,11 @@ export default function DeveloperPage() {
       );
     } else if (paymentMethod === "flutterwave") {
       router.push(
-        `/dashboard/developer/flutterwave-payment?amount=${cost}&credits=${purchaseAmount}`,
+        `/dashboard/developer/flutterwave-payment?amount=${cost}&credits=${purchaseAmount}&currency=USD`,
+      );
+    } else if (paymentMethod === "flutterwave-ngn") {
+      router.push(
+        `/dashboard/developer/flutterwave-payment?amount=${cost}&credits=${purchaseAmount}&currency=NGN`,
       );
     }
   };
@@ -956,12 +960,21 @@ export default function DeveloperPage() {
     const amount = parseInt(purchaseAmount) || 0;
     if (!pricing) return "0";
 
-    const methodKey =
-      paymentMethod === "card" || paymentMethod === "flutterwave"
-        ? "card"
-        : paymentMethod;
+    let methodKey = "card";
+    if (paymentMethod === "blc") {
+      methodKey = "blc";
+    } else if (paymentMethod === "flutterwave") {
+      methodKey = "flutterwave_usd";
+    } else if (paymentMethod === "flutterwave-ngn") {
+      methodKey = "flutterwave_ngn";
+    } else if (paymentMethod === "card") {
+      methodKey = "card";
+    }
+
     const pricePerCredit = pricing.methods[methodKey]?.pricePerCredit ?? 0.01;
-    return (amount * pricePerCredit).toFixed(2);
+    return (amount * pricePerCredit).toFixed(
+      methodKey === "flutterwave_ngn" ? 0 : 2,
+    );
   };
 
   if (loading) {
@@ -1079,10 +1092,13 @@ export default function DeveloperPage() {
                           <SelectContent className="bg-[#231c35] border-[#2a2139] text-white">
                             <SelectItem value="blc">BLC Tokens</SelectItem>
                             <SelectItem value="card">
-                              Credit/Debit Card
+                              Credit/Debit Card (USD)
                             </SelectItem>
                             <SelectItem value="flutterwave">
-                              Flutterwave
+                              Flutterwave (USD)
+                            </SelectItem>
+                            <SelectItem value="flutterwave-ngn">
+                              Flutterwave (Naira)
                             </SelectItem>
                           </SelectContent>
                         </Select>
@@ -1092,12 +1108,16 @@ export default function DeveloperPage() {
                         <span className="font-bold text-white">
                           {pricing ? (
                             <>
+                              {paymentMethod === "flutterwave-ngn" ? "₦" : ""}
                               {calculateCost()}{" "}
                               {pricing.methods[
-                                paymentMethod === "card" ||
                                 paymentMethod === "flutterwave"
-                                  ? "card"
-                                  : paymentMethod
+                                  ? "flutterwave_usd"
+                                  : paymentMethod === "flutterwave-ngn"
+                                    ? "flutterwave_ngn"
+                                    : paymentMethod === "card"
+                                      ? "card"
+                                      : paymentMethod
                               ]?.currency ?? "BLC"}
                             </>
                           ) : (
@@ -1129,26 +1149,38 @@ export default function DeveloperPage() {
                     {[
                       {
                         name: "Business",
-                        price: "$99",
-                        credits: "50,000",
+                        slug: "business",
+                        price: "₦5,000",
+                        ngnAmount: 5000,
+                        creditsNum: 5000,
+                        credits: "5,000",
                         color: "purple",
                       },
                       {
                         name: "Conglomerate",
-                        price: "$299",
-                        credits: "200,000",
+                        slug: "conglomerate",
+                        price: "₦40,000",
+                        ngnAmount: 40000,
+                        creditsNum: 25000,
+                        credits: "25,000",
                         color: "blue",
                       },
                       {
                         name: "Conglomerate Pro",
-                        price: "$599",
-                        credits: "500,000",
+                        slug: "conglomerate-pro",
+                        price: "₦100,000",
+                        ngnAmount: 100000,
+                        creditsNum: 75000,
+                        credits: "75,000",
                         color: "orange",
                         popular: true,
                       },
                       {
                         name: "Enterprise",
+                        slug: "enterprise",
                         price: "Custom",
+                        ngnAmount: 0,
+                        creditsNum: 0,
                         credits: "Unlimited",
                         color: "gray",
                       },
@@ -1160,8 +1192,7 @@ export default function DeveloperPage() {
                             ? "border-orange-500"
                             : "border-[#2a2139]"
                         } ${
-                          profile?.subscription_plan ===
-                          plan.name.toLowerCase().replace(" ", "-")
+                          profile?.subscription_plan === plan.slug
                             ? "ring-2 ring-purple-500"
                             : ""
                         }`}
@@ -1191,16 +1222,26 @@ export default function DeveloperPage() {
                         <Button
                           className={`w-full bg-${plan.color}-600 hover:bg-${plan.color}-700`}
                           variant={
-                            profile?.subscription_plan ===
-                            plan.name.toLowerCase()
+                            profile?.subscription_plan === plan.slug
                               ? "default"
                               : "outline"
                           }
+                          disabled={
+                            profile?.subscription_plan === plan.slug ||
+                            plan.slug === "enterprise"
+                          }
+                          onClick={() => {
+                            if (plan.slug === "enterprise") return;
+                            router.push(
+                              `/dashboard/developer/subscription-payment?plan=${plan.slug}&amount=${plan.ngnAmount}&currency=NGN&credits=${plan.creditsNum}`,
+                            );
+                          }}
                         >
-                          {profile?.subscription_plan ===
-                          plan.name.toLowerCase()
+                          {profile?.subscription_plan === plan.slug
                             ? "Current Plan"
-                            : "Upgrade"}
+                            : plan.slug === "enterprise"
+                              ? "Contact Us"
+                              : "Upgrade"}
                         </Button>
                       </div>
                     ))}

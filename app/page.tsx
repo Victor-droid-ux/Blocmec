@@ -81,8 +81,8 @@ export default async function HomePage() {
       {/* Right side - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 dark:bg-gray-900">
         <div className="w-full max-w-md">
-          {/* Admin login link */}
-          <div className="mb-6 text-right">
+          {/* Admin login link - hidden from users, access via /admin-login directly */}
+          {/* <div className="mb-6 text-right">
             <Link href={ROUTES.ADMIN.LOGIN}>
               <Button
                 variant="ghost"
@@ -92,7 +92,7 @@ export default async function HomePage() {
                 Admin Login
               </Button>
             </Link>
-          </div>
+          </div> */}
 
           {/* Mobile logo */}
           <div className="flex justify-center mb-8 lg:hidden">
