@@ -1,6 +1,6 @@
-# InterServer Deployment Guide (69.10.41.93)
+# InterServer Deployment Guide (153.75.249.15)
 
-This guide deploys this Next.js + Prisma app on your InterServer VPS at 69.10.41.93 using Node.js, PM2, Nginx, and cron.
+This guide deploys this Next.js + Prisma app on your InterServer VPS at 153.75.249.15 using Node.js, PM2, Nginx, and cron.
 
 ## 1) Server prerequisites
 
@@ -42,7 +42,7 @@ nano .env.local
 At minimum for production, set these correctly:
 
 - NODE_ENV=production
-- NEXT_PUBLIC_APP_URL=http://69.10.41.93
+- NEXT_PUBLIC_APP_URL=http://153.75.249.15
 - DATABASE_URL=...
 - DIRECT_URL=...
 - JWT_SECRET=...
@@ -103,7 +103,7 @@ systemctl reload nginx
 Verify:
 
 ```bash
-curl -I http://69.10.41.93
+curl -I http://153.75.249.15
 ```
 
 ## 7) Replace Vercel cron with Linux cron
