@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: "blockmec-qr",
-      script: "npm",
-      args: "run start",
+      script: "node",
+      args: ".next/standalone/server.js",
       cwd: "/var/www/Blocmec",
       env: {
         NODE_ENV: "production",
