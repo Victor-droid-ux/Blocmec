@@ -71,11 +71,10 @@ export const productionConfig = {
 
   // Payment Configuration
   payment: {
-    flutterwave: {
-      publicKey: process.env.FLUTTERWAVE_PUBLIC_KEY,
-      secretKey: process.env.FLUTTERWAVE_SECRET_KEY,
-      encryptionKey: process.env.FLUTTERWAVE_ENCRYPTION_KEY,
-      webhookSecret: process.env.FLUTTERWAVE_WEBHOOK_SECRET,
+    paystack: {
+      publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+      secretKey: process.env.PAYSTACK_SECRET_KEY,
+      webhookSecret: process.env.PAYSTACK_WEBHOOK_SECRET,
     },
     currency: "USD",
     plans: {
@@ -193,7 +192,7 @@ export function validateProductionConfig() {
     "SENDGRID_API_KEY",
     "AWS_ACCESS_KEY_ID",
     "AWS_SECRET_ACCESS_KEY",
-    "FLUTTERWAVE_SECRET_KEY",
+    "PAYSTACK_SECRET_KEY",
     "BLOCKCHAIN_RPC_URL",
     "CONTRACT_ADDRESS",
   ];
@@ -202,7 +201,7 @@ export function validateProductionConfig() {
 
   if (missing.length > 0) {
     throw new Error(
-      `Missing required environment variables: ${missing.join(", ")}`
+      `Missing required environment variables: ${missing.join(", ")}`,
     );
   }
 

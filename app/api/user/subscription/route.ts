@@ -45,7 +45,7 @@ export async function GET() {
   });
 }
 
-// POST — activate subscription after successful Flutterwave payment
+// POST — activate subscription after successful Paystack payment
 export async function POST(req: NextRequest) {
   try {
     const user = await getAuthenticatedUser();
@@ -61,10 +61,9 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json().catch(() => ({}));
-    const { plan, transaction_id, tx_ref, currency } = body as {
+    const { plan, reference, currency } = body as {
       plan: string;
-      transaction_id: number;
-      tx_ref: string;
+      reference: string;
       currency: string;
     };
 
@@ -75,9 +74,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!transaction_id || !tx_ref) {
+    if (!reference) {
       return NextResponse.json(
-        { error: "Missing transaction_id or tx_ref" },
+        { error: "Missing payment reference" },
         { status: 400 },
       );
     }
@@ -87,20 +86,22 @@ export async function POST(req: NextRequest) {
     const amount =
       (currency ?? "NGN").toUpperCase() === "NGN" ? pricing.ngn : pricing.usd;
 
-    // Verify with Flutterwave
-    const flwSecretKey = process.env.FLUTTERWAVE_SECRET_KEY;
-    if (!flwSecretKey) {
+    // Verify with Paystack
+    const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY;
+    if (!paystackSecretKey) {
       return NextResponse.json(
         { error: "Payment gateway not configured" },
         { status: 500 },
       );
     }
 
+    const expectedAmountMinor = Math.round(amount * 100);
+
     const verifyRes = await fetch(
-      `https://api.flutterwave.com/v3/transactions/${transaction_id}/verify`,
+      `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
       {
         headers: {
-          Authorization: `Bearer ${flwSecretKey}`,
+          Authorization: `Bearer ${paystackSecretKey}`,
           "Content-Type": "application/json",
         },
       },
@@ -114,22 +115,24 @@ export async function POST(req: NextRequest) {
     }
 
     const verifyData = (await verifyRes.json()) as {
-      status: string;
+      status: boolean;
       data?: {
         status: string;
-        tx_ref: string;
+        reference: string;
         amount: number;
         currency: string;
-        flw_ref: string;
+        id: number;
       };
     };
 
     const txData = verifyData.data;
     if (
-      verifyData.status !== "success" ||
-      txData?.status !== "successful" ||
-      txData?.tx_ref !== tx_ref ||
-      txData?.amount < amount
+      verifyData.status !== true ||
+      txData?.status !== "success" ||
+      txData?.reference !== reference ||
+      (txData?.currency ?? "").toUpperCase() !==
+        (currency ?? "NGN").toUpperCase() ||
+      (txData?.amount ?? 0) < expectedAmountMinor
     ) {
       return NextResponse.json(
         { error: "Payment could not be verified" },
@@ -155,11 +158,11 @@ export async function POST(req: NextRequest) {
         amount: amount,
         currency: (currency ?? "NGN").toUpperCase(),
         status: "completed",
-        payment_method: "flutterwave",
-        payment_provider_id: String(transaction_id),
-        transaction_reference: txData.flw_ref,
+        payment_method: "paystack",
+        payment_provider_id: String(txData.id),
+        transaction_reference: txData.reference,
         credits_added: pricing.credits,
-        metadata: { plan: planSlug, tx_ref },
+        metadata: { plan: planSlug, reference },
       },
     });
 

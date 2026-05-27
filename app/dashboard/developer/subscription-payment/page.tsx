@@ -17,16 +17,41 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Loader2, Wallet } from "lucide-react";
 import { ROUTES } from "@/config/routes";
-import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
-import type { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
 import { useAppSelector } from "@/store/hook";
 import { getUser } from "@/store/user/user.reducer";
+
+declare global {
+  interface Window {
+    PaystackPop?: {
+      setup: (options: Record<string, unknown>) => {
+        openIframe: () => void;
+      };
+    };
+  }
+}
 
 const PLAN_LABELS: Record<string, string> = {
   business: "Business",
   conglomerate: "Conglomerate",
   "conglomerate-pro": "Conglomerate Pro",
 };
+
+function getPaystackReference(response: unknown): string | null {
+  if (!response || typeof response !== "object") return null;
+  const data = response as Record<string, unknown>;
+  const candidates = [
+    data.reference,
+    data.trxref,
+    data.trans,
+    data.transaction,
+  ];
+  for (const value of candidates) {
+    if (typeof value === "string" && value.trim().length > 0) {
+      return value;
+    }
+  }
+  return null;
+}
 
 export default function SubscriptionPaymentPage() {
   const router = useRouter();
@@ -58,27 +83,17 @@ export default function SubscriptionPaymentPage() {
     setPhone(phoneValue ?? "");
   }, [user, authLoading, router]);
 
-  const flutterwaveConfig = {
-    public_key: process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY!,
-    tx_ref: `blockmec_sub_${plan}_${Date.now()}`,
-    amount: Number.parseFloat(amount),
-    currency: currency.toUpperCase(),
-    payment_options: "card,ussd,banktransfer",
-    customer: {
-      email,
-      phone_number: phone,
-      name: name ?? "",
-    },
-    customizations: {
-      title: `BLOCKMEC ${PLAN_LABELS[plan] ?? plan} Plan`,
-      description: `Subscribe to the ${PLAN_LABELS[plan] ?? plan} plan — ${Number(credits).toLocaleString()} credits/month`,
-      logo: `${process.env.NEXT_PUBLIC_APP_URL}/images/blockmec-logo.png`,
-    },
-  };
+  useEffect(() => {
+    const scriptSelector = 'script[src="https://js.paystack.co/v1/inline.js"]';
+    if (document.querySelector(scriptSelector)) return;
 
-  const handleFlutterPayment = useFlutterwave(flutterwaveConfig);
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v1/inline.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !name) {
@@ -92,64 +107,86 @@ export default function SubscriptionPaymentPage() {
 
     setIsProcessing(true);
 
-    handleFlutterPayment({
-      callback: async (response: FlutterWaveResponse) => {
-        closePaymentModal();
+    const paystack = window.PaystackPop;
+    if (!paystack) {
+      toast({
+        title: "Payment unavailable",
+        description: "Unable to initialize Paystack. Please refresh and retry.",
+        variant: "destructive",
+      });
+      setIsProcessing(false);
+      return;
+    }
 
-        if (response.status === "successful") {
-          try {
-            const res = await fetch("/api/user/subscription", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                plan,
-                currency: currency.toUpperCase(),
-                transaction_id: response.transaction_id,
-                tx_ref: response.tx_ref,
-              }),
-            });
-
-            const data = await res.json().catch(() => null);
-
-            if (!res.ok) {
-              throw new Error(data?.error ?? "Failed to activate subscription");
-            }
-
-            toast({
-              title: "Subscription activated!",
-              description: `You are now on the ${PLAN_LABELS[plan] ?? plan} plan. ${Number(data.credits_added).toLocaleString()} credits added.`,
-            });
-            router.push(ROUTES.DASHBOARD.DEVELOPER);
-          } catch (error) {
-            console.error("Subscription activation error:", error);
-            toast({
-              title: "Activation failed",
-              description:
-                error instanceof Error
-                  ? error.message
-                  : "Payment received but subscription was not activated. Contact support.",
-              variant: "destructive",
-            });
-          }
-        } else {
+    const handler = paystack.setup({
+      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+      email,
+      amount: Math.round(Number.parseFloat(amount) * 100),
+      currency: currency.toUpperCase(),
+      ref: `blockmec_sub_${plan}_${Date.now()}`,
+      metadata: {
+        name,
+        phone,
+      },
+      callback: async (response: unknown) => {
+        const reference = getPaystackReference(response);
+        if (!reference) {
           toast({
-            title: "Payment failed",
-            description:
-              "Flutterwave payment was not successful. Please try again.",
+            title: "Payment verification failed",
+            description: "Missing transaction reference from Paystack.",
             variant: "destructive",
           });
+          setIsProcessing(false);
+          return;
         }
 
-        setIsProcessing(false);
+        try {
+          const res = await fetch("/api/user/subscription", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              plan,
+              currency,
+              reference,
+            }),
+          });
+
+          if (!res.ok) {
+            const errData = await res.json().catch(() => null);
+            throw new Error(
+              errData?.error ?? "Failed to activate subscription",
+            );
+          }
+
+          toast({
+            title: "Payment successful",
+            description: `Your ${PLAN_LABELS[plan] ?? plan} subscription is now active.`,
+          });
+          router.push(ROUTES.DASHBOARD.DEVELOPER);
+        } catch (error) {
+          toast({
+            title: "Subscription activation failed",
+            description:
+              error instanceof Error
+                ? error.message
+                : "Payment was received but subscription could not be activated.",
+            variant: "destructive",
+          });
+        } finally {
+          setIsProcessing(false);
+        }
       },
       onClose: () => {
         toast({
-          title: "Payment cancelled",
-          description: "Your subscription payment has been cancelled.",
+          title: "Payment Cancelled",
+          description: "You cancelled the payment process.",
+          variant: "destructive",
         });
         setIsProcessing(false);
       },
     });
+
+    handler.openIframe();
   };
 
   const currencySymbol = currency.toUpperCase() === "NGN" ? "₦" : "$";
@@ -192,7 +229,7 @@ export default function SubscriptionPaymentPage() {
             <CardHeader>
               <CardTitle>Payment Details</CardTitle>
               <CardDescription className="text-gray-400">
-                Enter your details to subscribe via Flutterwave
+                Enter your details to subscribe via Paystack
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -274,7 +311,7 @@ export default function SubscriptionPaymentPage() {
                       <>
                         <Wallet className="mr-2 h-4 w-4" />
                         Pay {currencySymbol}
-                        {formattedAmount} with Flutterwave
+                        {formattedAmount} with Paystack
                       </>
                     )}
                   </Button>

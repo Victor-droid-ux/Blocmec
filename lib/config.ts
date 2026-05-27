@@ -29,9 +29,9 @@ export const config = {
 
   // Payment
   payment: {
-    flutterwave: {
-      publicKey: env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY,
-      secretKey: env.FLUTTERWAVE_SECRET_KEY,
+    paystack: {
+      publicKey: env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+      secretKey: env.PAYSTACK_SECRET_KEY,
     },
     blc: {
       walletAddress: env.NEXT_PUBLIC_BLC_CRYPTO_WALLET_ADDRESS,

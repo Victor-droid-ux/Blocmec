@@ -41,7 +41,7 @@ const config: runtime.GetPrismaClientConfig = {
     "isCustomOutput": true
   },
   "relativePath": "../schema",
-  "clientVersion": "6.19.1",
+  "clientVersion": "6.19.3",
   "engineVersion": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
   "datasourceNames": [
     "db"

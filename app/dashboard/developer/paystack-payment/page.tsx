@@ -17,27 +17,49 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Loader2, Wallet } from "lucide-react";
 import { ROUTES } from "@/config/routes";
-import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
-import type { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
 import { useAppSelector } from "@/store/hook";
 import { getUser } from "@/store/user/user.reducer";
 
-export default function FlutterwavePaymentPage() {
+declare global {
+  interface Window {
+    PaystackPop?: {
+      setup: (options: Record<string, unknown>) => {
+        openIframe: () => void;
+      };
+    };
+  }
+}
+
+function getPaystackReference(response: unknown): string | null {
+  if (!response || typeof response !== "object") return null;
+  const data = response as Record<string, unknown>;
+  const candidates = [
+    data.reference,
+    data.trxref,
+    data.trans,
+    data.transaction,
+  ];
+  for (const value of candidates) {
+    if (typeof value === "string" && value.trim().length > 0) {
+      return value;
+    }
+  }
+  return null;
+}
+
+export default function PaystackPaymentPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  // Real auth from Redux store
   const { current: user, loading: authLoading } = useAppSelector(getUser);
 
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Get amount, credits, and currency from URL parameters
   const amount = searchParams.get("amount") || "10.00";
   const credits = searchParams.get("credits") || "1000";
   const currency = searchParams.get("currency") || "USD";
 
-  // User details — populated from Redux store
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -51,31 +73,20 @@ export default function FlutterwavePaymentPage() {
     setEmail(user.email ?? "");
     setName(user.name ?? "");
     const phoneValue = (user as { phone?: string }).phone;
-    setPhone(phoneValue ?? ""); // phone is not in the User type yet
+    setPhone(phoneValue ?? "");
   }, [user, authLoading, router]);
 
-  const flutterwaveConfig = {
-    public_key: process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY!,
-    tx_ref: `blockmec_tx_${Date.now()}`,
-    amount: Number.parseFloat(amount),
-    currency: currency.toUpperCase(),
-    payment_options: "card,ussd,banktransfer",
-    customer: {
-      email,
-      phone_number: phone,
-      name: name ?? "",
-    },
-    customizations: {
-      title: "BLOCKMEC API Credits",
-      description: `Purchase ${credits} API credits`,
-      // Uses the logo already present in /public/images/
-      logo: `${process.env.NEXT_PUBLIC_APP_URL}/images/blockmec-logo.png`,
-    },
-  };
+  useEffect(() => {
+    const scriptSelector = 'script[src="https://js.paystack.co/v1/inline.js"]';
+    if (document.querySelector(scriptSelector)) return;
 
-  const handleFlutterPayment = useFlutterwave(flutterwaveConfig);
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v1/inline.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !name) {
@@ -89,63 +100,87 @@ export default function FlutterwavePaymentPage() {
 
     setIsProcessing(true);
 
-    handleFlutterPayment({
-      callback: async (response: FlutterWaveResponse) => {
-        closePaymentModal();
+    const paystack = window.PaystackPop;
+    if (!paystack) {
+      toast({
+        title: "Payment unavailable",
+        description: "Unable to initialize Paystack. Please refresh and retry.",
+        variant: "destructive",
+      });
+      setIsProcessing(false);
+      return;
+    }
 
-        if (response.status === "successful") {
-          try {
-            const res = await fetch("/api/user/credits", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                credits: parseInt(credits),
-                transaction_id: response.transaction_id,
-                tx_ref: response.tx_ref,
-              }),
-            });
-
-            if (!res.ok) throw new Error("Failed to add credits");
-
-            toast({
-              title: "Payment successful",
-              description: `${credits} API credits have been added to your account.`,
-            });
-            router.push(ROUTES.DASHBOARD.DEVELOPER);
-          } catch (error) {
-            console.error("Credit update error:", error);
-            toast({
-              title: "Credit update failed",
-              description:
-                "Payment was received but credits could not be added. Please contact support.",
-              variant: "destructive",
-            });
-          }
-        } else {
+    const handler = paystack.setup({
+      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+      email,
+      amount: Math.round(Number.parseFloat(amount) * 100),
+      currency: currency.toUpperCase(),
+      ref: `blockmec_tx_${Date.now()}`,
+      metadata: {
+        name,
+        phone,
+        credits,
+      },
+      callback: async (response: unknown) => {
+        const reference = getPaystackReference(response);
+        if (!reference) {
           toast({
-            title: "Payment failed",
-            description:
-              "Flutterwave payment was not successful. Please try again.",
+            title: "Payment verification failed",
+            description: "Missing transaction reference from Paystack.",
             variant: "destructive",
           });
+          setIsProcessing(false);
+          return;
         }
 
-        setIsProcessing(false);
+        try {
+          const res = await fetch("/api/user/credits", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              credits: parseInt(credits, 10),
+              reference,
+              currency,
+              amount: Number.parseFloat(amount),
+            }),
+          });
+
+          if (!res.ok) throw new Error("Failed to add credits");
+
+          toast({
+            title: "Payment successful",
+            description: `${credits} API credits have been added to your account.`,
+          });
+          router.push(ROUTES.DASHBOARD.DEVELOPER);
+        } catch (error) {
+          console.error("Credit update error:", error);
+          toast({
+            title: "Credit update failed",
+            description:
+              "Payment was received but credits could not be added. Please contact support.",
+            variant: "destructive",
+          });
+        } finally {
+          setIsProcessing(false);
+        }
       },
       onClose: () => {
         toast({
           title: "Payment cancelled",
-          description: "Your Flutterwave payment has been cancelled.",
+          description: "Your Paystack payment has been cancelled.",
         });
         setIsProcessing(false);
       },
     });
+
+    handler.openIframe();
   };
 
   const handleCancel = () => {
     toast({
       title: "Payment cancelled",
-      description: "Your Flutterwave payment has been cancelled.",
+      description: "Your Paystack payment has been cancelled.",
     });
     router.push(ROUTES.DASHBOARD.DEVELOPER);
   };
@@ -170,10 +205,10 @@ export default function FlutterwavePaymentPage() {
           Back to Developer Dashboard
         </Button>
         <h2 className="text-2xl font-bold">
-          Flutterwave Payment Gateway ({currency.toUpperCase()})
+          Paystack Payment Gateway ({currency.toUpperCase()})
         </h2>
         <p className="text-gray-400 mt-1">
-          Complete your purchase of API credits using Flutterwave
+          Complete your purchase of API credits using Paystack
         </p>
       </div>
 
@@ -183,7 +218,7 @@ export default function FlutterwavePaymentPage() {
             <CardHeader>
               <CardTitle>Payment Details</CardTitle>
               <CardDescription className="text-gray-400">
-                Enter your details to proceed with Flutterwave payment
+                Enter your details to proceed with Paystack payment
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -230,7 +265,7 @@ export default function FlutterwavePaymentPage() {
                   <div className="flex justify-between mb-2">
                     <span className="text-gray-400">Subtotal:</span>
                     <span>
-                      {currency === "NGN" ? "₦" : "$"}
+                      {currency === "NGN" ? "N" : "$"}
                       {Number.parseFloat(amount).toFixed(
                         currency === "NGN" ? 0 : 2,
                       )}
@@ -238,12 +273,12 @@ export default function FlutterwavePaymentPage() {
                   </div>
                   <div className="flex justify-between mb-2">
                     <span className="text-gray-400">Processing Fee:</span>
-                    <span>{currency === "NGN" ? "₦" : "$"}0.00</span>
+                    <span>{currency === "NGN" ? "N" : "$"}0.00</span>
                   </div>
                   <div className="flex justify-between pt-2 border-t border-[#2a2139]">
                     <span className="font-medium">Total:</span>
                     <span className="font-bold">
-                      {currency === "NGN" ? "₦" : "$"}
+                      {currency === "NGN" ? "N" : "$"}
                       {Number.parseFloat(amount).toFixed(
                         currency === "NGN" ? 0 : 2,
                       )}
@@ -265,11 +300,11 @@ export default function FlutterwavePaymentPage() {
                     ) : (
                       <>
                         <Wallet className="mr-2 h-4 w-4" />
-                        Pay {currency === "NGN" ? "₦" : "$"}
+                        Pay {currency === "NGN" ? "N" : "$"}
                         {Number.parseFloat(amount).toFixed(
                           currency === "NGN" ? 0 : 2,
                         )}{" "}
-                        with Flutterwave
+                        with Paystack
                       </>
                     )}
                   </Button>
@@ -297,14 +332,14 @@ export default function FlutterwavePaymentPage() {
               <div className="bg-[#1a1625] p-4 rounded-md">
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-400">API Credits:</span>
-                  <span>{Number.parseInt(credits).toLocaleString()}</span>
+                  <span>{Number.parseInt(credits, 10).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-400">Price per Credit:</span>
                   <span>
                     $
                     {(
-                      Number.parseFloat(amount) / Number.parseInt(credits)
+                      Number.parseFloat(amount) / Number.parseInt(credits, 10)
                     ).toFixed(4)}
                   </span>
                 </div>
@@ -318,28 +353,20 @@ export default function FlutterwavePaymentPage() {
 
               <div className="space-y-2">
                 <h3 className="font-medium">What You'll Get</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li className="flex items-start gap-2">
-                    <div className="mt-1 min-w-4">•</div>
-                    <p>
-                      {Number.parseInt(credits).toLocaleString()} API credits
-                      added to your account
-                    </p>
+                <ul className="space-y-1 text-sm text-gray-400">
+                  <li>
+                    • {Number.parseInt(credits, 10).toLocaleString()} API
+                    credits
                   </li>
-                  <li className="flex items-start gap-2">
-                    <div className="mt-1 min-w-4">•</div>
-                    <p>Immediate access to all API features</p>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="mt-1 min-w-4">•</div>
-                    <p>Credits never expire</p>
-                  </li>
+                  <li>• Instant credit activation</li>
+                  <li>• Access to all verification endpoints</li>
+                  <li>• Secure payment processing</li>
                 </ul>
               </div>
 
-              <p className="text-xs text-gray-400 text-center">
-                Payments are processed securely by Flutterwave.
-              </p>
+              <div className="mt-4 p-3 bg-[#1a1625] rounded-md text-gray-400 text-xs">
+                Payments are processed securely by Paystack.
+              </div>
             </CardContent>
           </Card>
         </div>

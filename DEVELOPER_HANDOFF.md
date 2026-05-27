@@ -10,6 +10,7 @@
 ## What This Project Does
 
 Blockmec is a blockchain-powered anti-counterfeit solution that enables businesses to:
+
 - Generate secure QR codes for product authentication
 - Verify product authenticity through blockchain
 - Manage batch QR code generation
@@ -19,6 +20,7 @@ Blockmec is a blockchain-powered anti-counterfeit solution that enables business
 ## Current Implementation Status
 
 ### ✅ Completed Features
+
 1. **User Authentication System** (localStorage-based, needs upgrade)
 2. **Dashboard Interface** with analytics visualization
 3. **QR Code Generation** (single & batch)
@@ -27,7 +29,7 @@ Blockmec is a blockchain-powered anti-counterfeit solution that enables business
 6. **Verification Results Pages** (per product type)
 7. **Admin Panel** (basic implementation)
 8. **Developer API Interface** (UI complete)
-9. **Payment Integration UI** (Flutterwave, BLC, Card)
+9. **Payment Integration UI** (Paystack, BLC, Card)
 10. **Script Integration System** (for website embedding)
 11. **AI Data Analyst Interface** (1BASE)
 12. **Multi-view Data Visualizations** (Table, Charts)
@@ -37,7 +39,7 @@ Blockmec is a blockchain-powered anti-counterfeit solution that enables business
 1. **Backend Database** - Currently uses localStorage
 2. **Real Authentication** - JWT/OAuth implementation
 3. **Blockchain Integration** - Smart contract deployment
-4. **Payment Gateway** - Complete Flutterwave integration
+4. **Payment Gateway** - Complete Paystack integration
 5. **File Storage** - AWS S3/Cloudinary integration
 6. **Email Service** - User notifications
 7. **API Endpoints** - Real backend APIs
@@ -48,6 +50,7 @@ Blockmec is a blockchain-powered anti-counterfeit solution that enables business
 ## Project Access
 
 You will receive:
+
 - ✅ GitHub Repository Access
 - ✅ Vercel Project Access
 - ✅ Environment Variables Template
@@ -57,30 +60,35 @@ You will receive:
 ## Your Responsibilities
 
 ### Phase 1: Backend Implementation (Week 1-2)
+
 - Set up PostgreSQL/MongoDB database
 - Implement authentication system
 - Create API endpoints
 - Set up file storage
 
 ### Phase 2: Blockchain Integration (Week 2-3)
+
 - Deploy smart contracts
 - Integrate Web3 functionality
 - Implement QR minting on blockchain
 - Set up verification system
 
 ### Phase 3: Payment & Email (Week 3-4)
-- Complete Flutterwave integration
+
+- Complete Paystack integration
 - Test payment flows
 - Implement email notifications
 - Set up admin notifications
 
 ### Phase 4: Security & Testing (Week 4-5)
+
 - Implement security measures
 - Write comprehensive tests
 - Security audit
 - Performance optimization
 
 ### Phase 5: Deployment & Documentation (Week 5-6)
+
 - Production deployment to Vercel
 - Complete API documentation
 - User documentation
@@ -120,12 +128,14 @@ You will receive:
 ## Communication & Reporting
 
 **Daily Updates Required:**
+
 - What you worked on
 - What you completed
 - Any blockers/issues
 - Next day's plan
 
 **Weekly Deliverables:**
+
 - Working demo of completed features
 - Updated GitHub repository
 - Documentation updates
@@ -134,6 +144,7 @@ You will receive:
 ## Technical Support
 
 You will have access to:
+
 - Current project documentation
 - Design system (shadcn/ui)
 - API specifications
@@ -152,6 +163,7 @@ You will have access to:
 ## Questions?
 
 For any questions or clarifications:
+
 - Create GitHub issues for technical questions
 - Document all architectural decisions
 - Request clarification before implementing major features

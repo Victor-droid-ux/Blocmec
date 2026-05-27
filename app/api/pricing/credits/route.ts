@@ -19,17 +19,17 @@ export async function GET() {
           pricePerCredit: 0.01,
           description: "Pay with credit or debit card",
         },
-        flutterwave_usd: {
-          name: "Flutterwave (USD)",
+        paystack: {
+          name: "Paystack (USD)",
           currency: "USD",
           pricePerCredit: 0.01,
-          description: "Pay with Flutterwave in USD",
+          description: "Pay with Paystack in USD",
         },
-        flutterwave_ngn: {
-          name: "Flutterwave (Naira)",
+        paystack_ngn: {
+          name: "Paystack (Naira)",
           currency: "NGN",
           pricePerCredit: 50,
-          description: "Pay with Flutterwave in Nigerian Naira",
+          description: "Pay with Paystack in Nigerian Naira",
         },
       },
       minimumCredits: 100,

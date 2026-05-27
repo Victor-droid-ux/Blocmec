@@ -23,11 +23,11 @@ This guide explains how to set up the required environment variables for the Blo
 
 ### 💳 Payment Configuration
 
-| Variable                                | Description            | Example                                       |
-| --------------------------------------- | ---------------------- | --------------------------------------------- |
-| `NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY`    | Flutterwave public key | `FLWPUBK_TEST-...`                            |
-| `FLUTTERWAVE_SECRET_KEY`                | Flutterwave secret key | `FLWSECK_TEST-...`                            |
-| `NEXT_PUBLIC_BLC_CRYPTO_WALLET_ADDRESS` | BLC wallet address     | `BLM7F5EB5bB5cF88cfcEe9613368636f458800e62CB` |
+| Variable                                | Description         | Example                                       |
+| --------------------------------------- | ------------------- | --------------------------------------------- |
+| `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY`       | Paystack public key | `pk_test_...`                                 |
+| `PAYSTACK_SECRET_KEY`                   | Paystack secret key | `sk_test_...`                                 |
+| `NEXT_PUBLIC_BLC_CRYPTO_WALLET_ADDRESS` | BLC wallet address  | `BLM7F5EB5bB5cF88cfcEe9613368636f458800e62CB` |
 
 ### 🔐 Security Configuration
 
@@ -117,9 +117,9 @@ Notes:
 
 ## Getting API Keys
 
-### Flutterwave
+### Paystack
 
-1. Sign up at [Flutterwave](https://flutterwave.com)
+1. Sign up at [Paystack](https://paystack.com)
 2. Go to Settings > API Keys
 3. Copy your public and secret keys
 

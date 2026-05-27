@@ -42,7 +42,7 @@ When ready for production, update these values in your hosting platform:
    - Deploy your smart contract and update the address
 
 2. **Payment Configuration**:
-   - Get production Flutterwave keys
+   - Get production Paystack keys
    - Update BLC wallet address
 
 3. **Security**:
@@ -87,7 +87,7 @@ The application includes environment variable validation:
 If you encounter issues:
 
 1. **MetaMask errors**: Ensure `MOCK_BLOCKCHAIN=true` is set
-2. **Payment errors**: Verify Flutterwave test keys are correct
+2. **Payment errors**: Verify Paystack test keys are correct
 3. **Database errors**: Check DATABASE_URL format
 4. **CORS errors**: Ensure CORS_ORIGINS includes your domain
 
