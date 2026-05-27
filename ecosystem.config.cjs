@@ -4,7 +4,7 @@ module.exports = {
       name: "blockmec-qr",
       script: "npm",
       args: "run start",
-      cwd: "/var/www/blockmec-qr-code",
+      cwd: "/var/www/Blocmec",
       env: {
         NODE_ENV: "production",
         PORT: "3000",
