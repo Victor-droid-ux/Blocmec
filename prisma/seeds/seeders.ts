@@ -1,6 +1,7 @@
 import { PrismaClient, UserRole } from "../generated/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { createClient } from "@supabase/supabase-js";
+import ws from "ws";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
@@ -8,6 +9,16 @@ const prisma = new PrismaClient({ adapter });
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+    // Node 20 doesn't provide native WebSocket; use ws transport for admin calls.
+    realtime: {
+      transport: ws,
+    },
+  },
 );
 
 export const seedDevelopment = async () => await runBaseSeeders();
