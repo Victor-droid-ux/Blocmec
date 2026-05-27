@@ -1,3 +1,8 @@
+const path = require("path");
+const dotenv = require("dotenv");
+
+dotenv.config({ path: path.join(__dirname, ".env.local") });
+
 module.exports = {
   apps: [
     {
@@ -6,6 +11,7 @@ module.exports = {
       args: ".next/standalone/server.js",
       cwd: "/var/www/Blocmec",
       env: {
+        ...process.env,
         NODE_ENV: "production",
         PORT: "3000",
       },
