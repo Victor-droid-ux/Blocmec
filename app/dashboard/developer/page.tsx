@@ -892,13 +892,13 @@ export default function DeveloperPage() {
       router.push(
         `/dashboard/developer/card-payment?amount=${cost}&credits=${purchaseAmount}`,
       );
-    } else if (paymentMethod === "flutterwave") {
+    } else if (paymentMethod === "paystack") {
       router.push(
-        `/dashboard/developer/flutterwave-payment?amount=${cost}&credits=${purchaseAmount}&currency=USD`,
+        `/dashboard/developer/paystack-payment?amount=${cost}&credits=${purchaseAmount}&currency=USD`,
       );
-    } else if (paymentMethod === "flutterwave-ngn") {
+    } else if (paymentMethod === "paystack-ngn") {
       router.push(
-        `/dashboard/developer/flutterwave-payment?amount=${cost}&credits=${purchaseAmount}&currency=NGN`,
+        `/dashboard/developer/paystack-payment?amount=${cost}&credits=${purchaseAmount}&currency=NGN`,
       );
     }
   };
@@ -963,17 +963,17 @@ export default function DeveloperPage() {
     let methodKey = "card";
     if (paymentMethod === "blc") {
       methodKey = "blc";
-    } else if (paymentMethod === "flutterwave") {
-      methodKey = "flutterwave_usd";
-    } else if (paymentMethod === "flutterwave-ngn") {
-      methodKey = "flutterwave_ngn";
+    } else if (paymentMethod === "paystack") {
+      methodKey = "paystack";
+    } else if (paymentMethod === "paystack-ngn") {
+      methodKey = "paystack_ngn";
     } else if (paymentMethod === "card") {
       methodKey = "card";
     }
 
     const pricePerCredit = pricing.methods[methodKey]?.pricePerCredit ?? 0.01;
     return (amount * pricePerCredit).toFixed(
-      methodKey === "flutterwave_ngn" ? 0 : 2,
+      methodKey === "paystack_ngn" ? 0 : 2,
     );
   };
 
@@ -1094,11 +1094,11 @@ export default function DeveloperPage() {
                             <SelectItem value="card">
                               Credit/Debit Card (USD)
                             </SelectItem>
-                            <SelectItem value="flutterwave">
-                              Flutterwave (USD)
+                            <SelectItem value="paystack">
+                              Paystack (USD)
                             </SelectItem>
-                            <SelectItem value="flutterwave-ngn">
-                              Flutterwave (Naira)
+                            <SelectItem value="paystack-ngn">
+                              Paystack (Naira)
                             </SelectItem>
                           </SelectContent>
                         </Select>
@@ -1108,13 +1108,13 @@ export default function DeveloperPage() {
                         <span className="font-bold text-white">
                           {pricing ? (
                             <>
-                              {paymentMethod === "flutterwave-ngn" ? "₦" : ""}
+                              {paymentMethod === "paystack-ngn" ? "₦" : ""}
                               {calculateCost()}{" "}
                               {pricing.methods[
-                                paymentMethod === "flutterwave"
-                                  ? "flutterwave_usd"
-                                  : paymentMethod === "flutterwave-ngn"
-                                    ? "flutterwave_ngn"
+                                paymentMethod === "paystack"
+                                  ? "paystack"
+                                  : paymentMethod === "paystack-ngn"
+                                    ? "paystack_ngn"
                                     : paymentMethod === "card"
                                       ? "card"
                                       : paymentMethod

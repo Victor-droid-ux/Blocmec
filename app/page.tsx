@@ -42,11 +42,11 @@ export default async function HomePage() {
             />
           </div>
 
-          <h1 className="text-4xl font-bold text-white mb-6">Blockmec Chain</h1>
+          <h1 className="text-4xl font-bold text-white mb-6">Blockmec Verify</h1>
 
           <p className="text-blue-200 text-xl mb-8">
             The Chain for data verification and counterfeit elimination. Secure
-            your products with blockchain technology.
+            your products with BLOCKMEC TECHNOLOGY.
           </p>
 
           <div className="space-y-4">
