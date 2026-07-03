@@ -138,6 +138,10 @@ export async function POST(req: NextRequest) {
     };
     return NextResponse.json({ user: publicUser });
   } catch (err: any) {
+    console.error("[Auth/Signin] Unexpected error", {
+      message: err?.message,
+      stack: err?.stack,
+    });
     return NextResponse.json(
       { error: err?.message ?? "Internal server error" },
       { status: 500 },
