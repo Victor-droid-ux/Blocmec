@@ -40,6 +40,8 @@ export async function enforceUserRateLimit(params: {
     );
   }
 
-  await redis.setex(key, ttl, current + 1);
+  await redis.set(key, current + 1, {
+    ex: ttl,
+  });
   return null;
 }

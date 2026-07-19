@@ -10,11 +10,15 @@ import jsQR from "jsqr";
 interface QRCodeScannerProps {
   onScanSuccess: (data: string) => void;
   onScanError?: (error: string) => void;
+  mode?: "both" | "camera" | "upload";
+  autoStartCamera?: boolean;
 }
 
 export default function QRCodeScanner({
   onScanSuccess,
   onScanError,
+  mode = "both",
+  autoStartCamera = false,
 }: QRCodeScannerProps) {
   const [isScanning, setIsScanning] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -93,6 +97,14 @@ export default function QRCodeScanner({
 
   // Start scanning frames once video is playing
   useEffect(() => {
+    if (autoStartCamera && mode !== "upload" && !isScanning) {
+      startCamera();
+    }
+    // startCamera is intentionally excluded to avoid recreating stream initialization loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoStartCamera, mode]);
+
+  useEffect(() => {
     if (isScanning) {
       animationRef.current = requestAnimationFrame(scanFrame);
     }
@@ -159,19 +171,25 @@ export default function QRCodeScanner({
     <div className="space-y-4">
       {!isScanning ? (
         <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button onClick={startCamera} className="flex items-center gap-2">
-              <Camera className="h-4 w-4" />
-              Start Camera
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2"
-            >
-              <Upload className="h-4 w-4" />
-              Upload Image
-            </Button>
+          <div
+            className={`grid gap-4 ${mode === "both" ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"}`}
+          >
+            {mode !== "upload" && (
+              <Button onClick={startCamera} className="flex items-center gap-2">
+                <Camera className="h-4 w-4" />
+                Start Camera
+              </Button>
+            )}
+            {mode !== "camera" && (
+              <Button
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2"
+              >
+                <Upload className="h-4 w-4" />
+                Upload Image
+              </Button>
+            )}
           </div>
           <input
             ref={fileInputRef}

@@ -11,9 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { QrCode, Camera, Upload, Scan } from "lucide-react";
+import { QrCode, Scan } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import QRCodeScanner from "@/components/qr-code-scanner";
 
 interface VerifyProductPopupProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ export function VerifyProductPopup({
   isOpen,
   onClose,
 }: VerifyProductPopupProps) {
+  const [activeTab, setActiveTab] = useState("manual");
   const [qrInput, setQrInput] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
@@ -85,7 +87,7 @@ export function VerifyProductPopup({
           </DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue="manual" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 bg-slate-800">
             <TabsTrigger
               value="manual"
@@ -138,22 +140,35 @@ export function VerifyProductPopup({
           </TabsContent>
 
           <TabsContent value="camera" className="space-y-4">
-            <div className="text-center py-8">
-              <Camera className="h-16 w-16 text-slate-400 mx-auto mb-4" />
-              <p className="text-slate-400 mb-2">Camera scanning</p>
-              <p className="text-sm text-slate-500">
-                Coming in a future update
-              </p>
+            <div className="rounded-lg border border-slate-700 p-3">
+              <QRCodeScanner
+                mode="camera"
+                autoStartCamera
+                onScanSuccess={(data) => handleVerify(data)}
+                onScanError={(message) => {
+                  toast({
+                    title: "Camera Scan Error",
+                    description: message,
+                    variant: "destructive",
+                  });
+                }}
+              />
             </div>
           </TabsContent>
 
           <TabsContent value="upload" className="space-y-4">
-            <div className="text-center py-8">
-              <Upload className="h-16 w-16 text-slate-400 mx-auto mb-4" />
-              <p className="text-slate-400 mb-2">Upload QR code image</p>
-              <p className="text-sm text-slate-500">
-                Coming in a future update
-              </p>
+            <div className="rounded-lg border border-slate-700 p-3">
+              <QRCodeScanner
+                mode="upload"
+                onScanSuccess={(data) => handleVerify(data)}
+                onScanError={(message) => {
+                  toast({
+                    title: "Upload Scan Error",
+                    description: message,
+                    variant: "destructive",
+                  });
+                }}
+              />
             </div>
           </TabsContent>
         </Tabs>

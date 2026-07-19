@@ -12,3 +12,10 @@ export type MeResponse = {
 };
 
 export type SignInResponse = { user: UserSafe };
+
+export type SignUpResponse = {
+  user: UserSafe | null;
+  message: string;
+  signedIn: boolean;
+  requiresEmailVerification?: boolean;
+};

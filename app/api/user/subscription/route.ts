@@ -83,8 +83,42 @@ export async function POST(req: NextRequest) {
 
     const planSlug = plan as PlanSlug;
     const pricing = PLAN_PRICING[planSlug];
-    const amount =
-      (currency ?? "NGN").toUpperCase() === "NGN" ? pricing.ngn : pricing.usd;
+    const normalizedCurrency = (currency ?? "NGN").toUpperCase();
+    const amount = normalizedCurrency === "NGN" ? pricing.ngn : pricing.usd;
+
+    const existingCompleted = await prisma.transaction.findUnique({
+      where: { transaction_reference: reference },
+      select: {
+        id: true,
+        user_id: true,
+        status: true,
+      },
+    });
+
+    if (existingCompleted) {
+      if (existingCompleted.user_id && existingCompleted.user_id !== user.id) {
+        return NextResponse.json(
+          { error: "Payment reference already belongs to another account" },
+          { status: 409 },
+        );
+      }
+
+      if (existingCompleted.status === "completed") {
+        const currentUser = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { subscription_plan: true, api_credits: true },
+        });
+
+        return NextResponse.json({
+          success: true,
+          idempotent: true,
+          subscription_plan:
+            currentUser?.subscription_plan ?? user.subscription_plan,
+          api_credits: currentUser?.api_credits ?? user.api_credits,
+          credits_added: 0,
+        });
+      }
+    }
 
     // Verify with Paystack
     const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY;
@@ -130,8 +164,7 @@ export async function POST(req: NextRequest) {
       verifyData.status !== true ||
       txData?.status !== "success" ||
       txData?.reference !== reference ||
-      (txData?.currency ?? "").toUpperCase() !==
-        (currency ?? "NGN").toUpperCase() ||
+      (txData?.currency ?? "").toUpperCase() !== normalizedCurrency ||
       (txData?.amount ?? 0) < expectedAmountMinor
     ) {
       return NextResponse.json(
@@ -140,39 +173,96 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Update user's plan and add monthly credits
-    const updated = await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        subscription_plan: planSlug,
-        api_credits: { increment: pricing.credits },
-      },
-      select: { subscription_plan: true, api_credits: true },
-    });
+    const { updated, idempotent } = await prisma.$transaction(async (tx) => {
+      const existing = await tx.transaction.findUnique({
+        where: { transaction_reference: txData.reference },
+        select: {
+          id: true,
+          user_id: true,
+          status: true,
+        },
+      });
 
-    // Record the transaction
-    await prisma.transaction.create({
-      data: {
-        user_id: user.id,
-        type: "subscription",
-        amount: amount,
-        currency: (currency ?? "NGN").toUpperCase(),
-        status: "completed",
-        payment_method: "paystack",
-        payment_provider_id: String(txData.id),
-        transaction_reference: txData.reference,
-        credits_added: pricing.credits,
-        metadata: { plan: planSlug, reference },
-      },
+      if (existing) {
+        if (existing.user_id && existing.user_id !== user.id) {
+          throw new Error(
+            "Payment reference already belongs to another account",
+          );
+        }
+
+        if (existing.status === "completed") {
+          const currentUser = await tx.user.findUnique({
+            where: { id: user.id },
+            select: { subscription_plan: true, api_credits: true },
+          });
+
+          return {
+            updated: {
+              subscription_plan:
+                currentUser?.subscription_plan ?? user.subscription_plan,
+              api_credits: currentUser?.api_credits ?? user.api_credits,
+            },
+            idempotent: true,
+          };
+        }
+
+        await tx.transaction.update({
+          where: { id: existing.id },
+          data: {
+            user_id: existing.user_id ?? user.id,
+            status: "completed",
+            payment_method: "paystack",
+            payment_provider_id: String(txData.id),
+            credits_added: pricing.credits,
+            metadata: { plan: planSlug, reference },
+          },
+        });
+      } else {
+        await tx.transaction.create({
+          data: {
+            user_id: user.id,
+            type: "subscription",
+            amount: amount,
+            currency: normalizedCurrency,
+            status: "completed",
+            payment_method: "paystack",
+            payment_provider_id: String(txData.id),
+            transaction_reference: txData.reference,
+            credits_added: pricing.credits,
+            metadata: { plan: planSlug, reference },
+          },
+        });
+      }
+
+      const updatedUser = await tx.user.update({
+        where: { id: user.id },
+        data: {
+          subscription_plan: planSlug,
+          api_credits: { increment: pricing.credits },
+        },
+        select: { subscription_plan: true, api_credits: true },
+      });
+
+      return {
+        updated: updatedUser,
+        idempotent: false,
+      };
     });
 
     return NextResponse.json({
       success: true,
+      idempotent,
       subscription_plan: updated.subscription_plan,
       api_credits: updated.api_credits,
-      credits_added: pricing.credits,
+      credits_added: idempotent ? 0 : pricing.credits,
     });
   } catch (error: any) {
+    if (
+      error?.message === "Payment reference already belongs to another account"
+    ) {
+      return NextResponse.json({ error: error.message }, { status: 409 });
+    }
+
     return NextResponse.json(
       { error: error?.message ?? "Failed to activate subscription" },
       { status: 500 },

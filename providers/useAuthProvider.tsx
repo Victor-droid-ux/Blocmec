@@ -3,10 +3,10 @@
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { post } from "@/lib/apiClient";
 import { useAppDispatch } from "@/store/hook";
-import { setUser, logout } from "@/store/user/user.reducer";
+import { setAuthLoading, setUser, logout } from "@/store/user/user.reducer";
 import { API_ENDPOINTS } from "@/config/endpoints";
 import { User } from "@/types/store/user";
-import { MeResponse, SignInResponse } from "@/types/api/api";
+import { MeResponse, SignInResponse, SignUpResponse } from "@/types/api/api";
 
 export type AuthContextValue = {
   user?: User | null;
@@ -17,6 +17,12 @@ export type AuthContextValue = {
     password: string,
     opts?: { endpoint?: string },
   ) => Promise<User>;
+  signUp: (
+    name: string,
+    email: string,
+    password: string,
+    opts?: { companyName?: string; next?: string },
+  ) => Promise<SignUpResponse>;
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
 };
@@ -39,6 +45,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     let mounted = true;
     (async () => {
+      dispatch(setAuthLoading(true));
       setLoading(true);
       try {
         const res = await post<MeResponse>(
@@ -47,7 +54,13 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
           { timeoutMs: 5000 },
         );
         if (!mounted) return;
-        if (res.ok && res.data?.user) dispatch(setUser(res.data.user as User));
+        if (res.ok) {
+          if (res.data?.user) {
+            dispatch(setUser(res.data.user as User));
+          } else {
+            dispatch(setUser(null));
+          }
+        }
       } catch {
         if (!mounted) return;
         dispatch(setUser(null));
@@ -58,7 +71,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [dispatch]);
 
   const signIn = async (
     email: string,
@@ -74,12 +87,11 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         { email, password },
         { timeoutMs: 15_000 },
       );
-      console.log("signIn response:", res);
       if (!res.ok) {
         const msg =
           typeof res.error === "string"
             ? res.error
-            : (res.error as any)?.message ?? `Sign-in failed (${res.status})`;
+            : ((res.error as any)?.message ?? `Sign-in failed (${res.status})`);
         setError(msg);
         throw new Error(msg);
       }
@@ -100,12 +112,17 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await post(API_ENDPOINTS.AUTH.SIGN_OUT, {}, { timeoutMs: 8000 });
+      const res = await post(
+        API_ENDPOINTS.AUTH.SIGN_OUT,
+        {},
+        { timeoutMs: 8000 },
+      );
       if (!res.ok) {
         const msg =
           typeof res.error === "string"
             ? res.error
-            : (res.error as any)?.message ?? `Sign-out failed (${res.status})`;
+            : ((res.error as any)?.message ??
+              `Sign-out failed (${res.status})`);
         setError(msg);
         throw new Error(msg);
       }
@@ -115,12 +132,73 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const refresh = async (): Promise<void> => {
+  const signUp = async (
+    name: string,
+    email: string,
+    password: string,
+    opts?: { companyName?: string; next?: string },
+  ): Promise<SignUpResponse> => {
+    setLoading(true);
+    setError(null);
     try {
-      const res = await post<MeResponse>(API_ENDPOINTS.AUTH.ME, {}, { timeoutMs: 5000 });
-      if (res.ok && res.data?.user) dispatch(setUser(res.data.user as User));
+      const res = await post<SignUpResponse>(
+        API_ENDPOINTS.AUTH.SIGN_UP,
+        {
+          name,
+          email,
+          password,
+          confirmPassword: password,
+          companyName: opts?.companyName,
+          next: opts?.next,
+        },
+        { timeoutMs: 15_000 },
+      );
+
+      if (!res.ok) {
+        const msg =
+          typeof res.error === "string"
+            ? res.error
+            : ((res.error as any)?.message ?? `Sign-up failed (${res.status})`);
+        setError(msg);
+        throw new Error(msg);
+      }
+
+      const payload = res.data;
+      if (!payload) {
+        const msg = "Sign-up succeeded but no response payload was returned";
+        setError(msg);
+        throw new Error(msg);
+      }
+
+      if (payload.signedIn && payload.user) {
+        dispatch(setUser(payload.user as User));
+      }
+
+      return payload;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const refresh = async (): Promise<void> => {
+    dispatch(setAuthLoading(true));
+    try {
+      const res = await post<MeResponse>(
+        API_ENDPOINTS.AUTH.ME,
+        {},
+        { timeoutMs: 5000 },
+      );
+      if (res.ok) {
+        if (res.data?.user) {
+          dispatch(setUser(res.data.user as User));
+        } else {
+          dispatch(setUser(null));
+        }
+        return;
+      }
+      dispatch(setAuthLoading(false));
     } catch {
-      // ignore
+      dispatch(setAuthLoading(false));
     }
   };
 
@@ -129,6 +207,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
       loading,
       error,
       signIn,
+      signUp,
       signOut,
       refresh,
     }),

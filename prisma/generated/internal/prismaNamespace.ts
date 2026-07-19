@@ -395,6 +395,8 @@ export const ModelName = {
   Batch: 'Batch',
   QrCode: 'QrCode',
   Transaction: 'Transaction',
+  UserFile: 'UserFile',
+  UserSettings: 'UserSettings',
   User: 'User',
   Verification: 'Verification',
   WebhookEndpoint: 'WebhookEndpoint',
@@ -415,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "apiKey" | "auditLog" | "batch" | "qrCode" | "transaction" | "user" | "verification" | "webhookEndpoint" | "webhookDeliveryJob" | "webhookEventPayload"
+    modelProps: "apiKey" | "auditLog" | "batch" | "qrCode" | "transaction" | "userFile" | "userSettings" | "user" | "verification" | "webhookEndpoint" | "webhookDeliveryJob" | "webhookEventPayload"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -786,6 +788,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TransactionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TransactionCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserFile: {
+      payload: Prisma.$UserFilePayload<ExtArgs>
+      fields: Prisma.UserFileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserFileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserFileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>
+        }
+        findFirst: {
+          args: Prisma.UserFileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserFileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>
+        }
+        findMany: {
+          args: Prisma.UserFileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>[]
+        }
+        create: {
+          args: Prisma.UserFileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>
+        }
+        createMany: {
+          args: Prisma.UserFileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserFileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>[]
+        }
+        delete: {
+          args: Prisma.UserFileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>
+        }
+        update: {
+          args: Prisma.UserFileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>
+        }
+        deleteMany: {
+          args: Prisma.UserFileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserFileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserFileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>[]
+        }
+        upsert: {
+          args: Prisma.UserFileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserFilePayload>
+        }
+        aggregate: {
+          args: Prisma.UserFileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserFile>
+        }
+        groupBy: {
+          args: Prisma.UserFileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserFileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserFileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserFileCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserSettings: {
+      payload: Prisma.$UserSettingsPayload<ExtArgs>
+      fields: Prisma.UserSettingsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserSettingsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserSettingsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        findFirst: {
+          args: Prisma.UserSettingsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserSettingsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        findMany: {
+          args: Prisma.UserSettingsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>[]
+        }
+        create: {
+          args: Prisma.UserSettingsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        createMany: {
+          args: Prisma.UserSettingsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserSettingsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>[]
+        }
+        delete: {
+          args: Prisma.UserSettingsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        update: {
+          args: Prisma.UserSettingsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserSettingsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserSettingsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserSettingsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserSettingsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        aggregate: {
+          args: Prisma.UserSettingsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserSettings>
+        }
+        groupBy: {
+          args: Prisma.UserSettingsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserSettingsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserSettingsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserSettingsCountAggregateOutputType> | number
         }
       }
     }
@@ -1290,12 +1440,55 @@ export const TransactionScalarFieldEnum = {
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
+export const UserFileScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  original_name: 'original_name',
+  stored_name: 'stored_name',
+  mime_type: 'mime_type',
+  size_bytes: 'size_bytes',
+  storage_path: 'storage_path',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserFileScalarFieldEnum = (typeof UserFileScalarFieldEnum)[keyof typeof UserFileScalarFieldEnum]
+
+
+export const UserSettingsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  company_name: 'company_name',
+  company_email: 'company_email',
+  company_website: 'company_website',
+  company_address: 'company_address',
+  timezone: 'timezone',
+  language: 'language',
+  date_format: 'date_format',
+  email_notifications: 'email_notifications',
+  sms_notifications: 'sms_notifications',
+  push_notifications: 'push_notifications',
+  two_factor_auth: 'two_factor_auth',
+  session_timeout_minutes: 'session_timeout_minutes',
+  api_access_enabled: 'api_access_enabled',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserSettingsScalarFieldEnum = (typeof UserSettingsScalarFieldEnum)[keyof typeof UserSettingsScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   supabase_id: 'supabase_id',
   name: 'name',
   username: 'username',
+  phone: 'phone',
+  location: 'location',
+  department: 'department',
+  bio: 'bio',
+  avatar_url: 'avatar_url',
   role: 'role',
   status: 'status',
   api_credits: 'api_credits',
@@ -1583,6 +1776,13 @@ export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInput
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'UserRole'
  */
 export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
@@ -1607,13 +1807,6 @@ export type EnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'UserStatus[]'
  */
 export type ListEnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1778,6 +1971,8 @@ export type GlobalOmitConfig = {
   batch?: Prisma.BatchOmit
   qrCode?: Prisma.QrCodeOmit
   transaction?: Prisma.TransactionOmit
+  userFile?: Prisma.UserFileOmit
+  userSettings?: Prisma.UserSettingsOmit
   user?: Prisma.UserOmit
   verification?: Prisma.VerificationOmit
   webhookEndpoint?: Prisma.WebhookEndpointOmit

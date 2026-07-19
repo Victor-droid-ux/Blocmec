@@ -43,7 +43,7 @@ export default function QRPreview({
         const productData = {
           productName,
           productType,
-          batchNumber: batchNumber || "DEMO-BATCH",
+          batchNumber: batchNumber || "UNSPECIFIED-BATCH",
           description: description || "No description provided",
           timestamp: Date.now(),
           additionalFields: additionalFields || {},

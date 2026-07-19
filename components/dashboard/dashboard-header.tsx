@@ -10,7 +10,11 @@ export function DashboardHeader() {
 
   const tabs = [
     { id: "dashboard", label: "dashboard", path: ROUTES.DASHBOARD.ROOT },
-    { id: "batch-files", label: "batch files", path: ROUTES.DASHBOARD.BATCH_FILES },
+    {
+      id: "batch-files",
+      label: "batch files",
+      path: ROUTES.DASHBOARD.BATCH_FILES,
+    },
     { id: "developer", label: "developer", path: ROUTES.DASHBOARD.DEVELOPER },
   ];
 
@@ -24,8 +28,8 @@ export function DashboardHeader() {
   const activeTab = getActiveTab();
 
   return (
-    <div className='mb-6'>
-      <div className='flex space-x-1'>
+    <div className="mb-6">
+      <div className="flex space-x-1">
         {tabs.map((tab) => (
           <Link
             key={tab.id}
@@ -34,7 +38,7 @@ export function DashboardHeader() {
               "px-4 py-2 text-sm font-medium rounded-t-md transition-colors",
               activeTab === tab.id
                 ? "bg-purple-600 text-white"
-                : "text-gray-400 hover:text-white hover:bg-[#231c35]",
+                : "text-slate-500 hover:text-slate-900 hover:bg-slate-200 dark:text-gray-400 dark:hover:text-white dark:hover:bg-[#231c35]",
             )}
           >
             {tab.label}

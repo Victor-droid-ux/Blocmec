@@ -17,6 +17,16 @@ export async function POST() {
     if (!supabase) return NextResponse.json({ user: null });
 
     const userRes = await supabase.auth.getUser();
+    if (userRes.error) {
+      const code = (userRes.error as { code?: string }).code;
+      if (code === "refresh_token_not_found") {
+        await supabase.auth.signOut({ scope: "local" }).catch(() => {
+          // Ignore failures while trying to clear stale cookies.
+        });
+      }
+      return NextResponse.json({ user: null });
+    }
+
     const supaUser = userRes.data?.user;
     if (!supaUser) return NextResponse.json({ user: null });
 

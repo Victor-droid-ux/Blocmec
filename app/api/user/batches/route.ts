@@ -1,22 +1,66 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import {
+  createOptionalServerSupabaseClient,
+  hasSupabaseEnv,
+} from "@/lib/supabase/server";
 import prisma from "@/lib/prisma";
+import { UserRole } from "@/prisma/generated/enums";
 
 async function getAuthenticatedUser() {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.auth.getUser();
+  if (!hasSupabaseEnv()) {
+    return null;
+  }
 
-  if (error || !data.user) {
+  const supabase = await createOptionalServerSupabaseClient();
+  if (!supabase) {
+    return null;
+  }
+
+  let authUser: {
+    id: string;
+    email?: string | null;
+    user_metadata?: any;
+  } | null = null;
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user?.id) {
+      return null;
+    }
+    authUser = data.user;
+  } catch {
+    return null;
+  }
+
+  if (!authUser) {
     return null;
   }
 
   let user = await prisma.user.findUnique({
-    where: { supabase_id: data.user.id },
+    where: { supabase_id: authUser.id },
   });
 
-  if (!user && data.user.email) {
+  if (!user && authUser.email) {
     user = await prisma.user.findUnique({
-      where: { email: data.user.email },
+      where: { email: authUser.email.trim().toLowerCase() },
+    });
+  }
+
+  if (!user && authUser.email) {
+    const normalizedEmail = authUser.email.trim().toLowerCase();
+    user = await prisma.user.upsert({
+      where: { email: normalizedEmail },
+      update: {
+        supabase_id: authUser.id,
+        email_verified: true,
+        updated_at: new Date(),
+      },
+      create: {
+        email: normalizedEmail,
+        supabase_id: authUser.id,
+        name: authUser.user_metadata?.full_name ?? null,
+        role: UserRole.user,
+        email_verified: true,
+      },
     });
   }
 

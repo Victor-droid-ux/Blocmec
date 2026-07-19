@@ -67,6 +67,16 @@ export type QrCode = Prisma.QrCodeModel
  */
 export type Transaction = Prisma.TransactionModel
 /**
+ * Model UserFile
+ * 
+ */
+export type UserFile = Prisma.UserFileModel
+/**
+ * Model UserSettings
+ * 
+ */
+export type UserSettings = Prisma.UserSettingsModel
+/**
  * Model User
  * 
  */

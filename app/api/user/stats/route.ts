@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import {
   createOptionalServerSupabaseClient,
   hasSupabaseEnv,
@@ -6,7 +6,7 @@ import {
 import prisma from "@/lib/prisma";
 import { UserRole } from "@/prisma/generated/enums";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     if (!hasSupabaseEnv()) {
       return NextResponse.json({
@@ -27,12 +27,27 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const {
-      data: { user: supUser },
-      error: supError,
-    } = await supabase.auth.getUser();
+    let supUser: {
+      id?: string;
+      email?: string | null;
+      user_metadata?: any;
+    } | null = null;
+    try {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
 
-    if (supError || !supUser?.id) {
+      if (error || !user?.id) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+      supUser = user;
+    } catch {
+      // Treat transient auth client failures as unauthorized rather than 500s.
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (!supUser?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -46,13 +61,22 @@ export async function GET(req: NextRequest) {
     }
 
     if (!user) {
-      if (!supUser.email) {
+      const normalizedEmail = supUser.email?.trim().toLowerCase();
+      if (!normalizedEmail) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
 
-      user = await prisma.user.create({
-        data: {
-          email: supUser.email,
+      // Upsert avoids race-condition 500s when multiple first-load requests
+      // try to create the same user immediately after login.
+      user = await prisma.user.upsert({
+        where: { email: normalizedEmail },
+        update: {
+          supabase_id: supUser.id,
+          email_verified: true,
+          updated_at: new Date(),
+        },
+        create: {
+          email: normalizedEmail,
           supabase_id: supUser.id,
           name: supUser.user_metadata?.full_name ?? null,
           role: UserRole.user,
@@ -61,26 +85,33 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const [qrCodeCount, batchCount, expiredQrCodes, totalCredits] =
-      await Promise.all([
+    const [qrCodeCountResult, batchCountResult, expiredQrCodesResult] =
+      await Promise.allSettled([
         prisma.qrCode.count({ where: { user_id: user.id } }),
         prisma.batch.count({ where: { user_id: user.id } }),
         prisma.qrCode.count({
           where: {
             user_id: user.id,
-            status: "expired",
+            expires_at: {
+              lte: new Date(),
+            },
           },
         }),
-        prisma.user.findUnique({
-          where: { id: user.id },
-          select: { api_credits: true },
-        }),
       ]);
+
+    const qrCodeCount =
+      qrCodeCountResult.status === "fulfilled" ? qrCodeCountResult.value : 0;
+    const batchCount =
+      batchCountResult.status === "fulfilled" ? batchCountResult.value : 0;
+    const expiredQrCodes =
+      expiredQrCodesResult.status === "fulfilled"
+        ? expiredQrCodesResult.value
+        : 0;
 
     return NextResponse.json({
       totalQrCodes: qrCodeCount,
       expiredQrCodes,
-      apiCredits: totalCredits?.api_credits ?? 0,
+      apiCredits: user.api_credits ?? 0,
       totalBatches: batchCount,
     });
   } catch (err: unknown) {

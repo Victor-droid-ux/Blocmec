@@ -63,7 +63,9 @@ export default function QRVerificationPage() {
       const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
         const text = await response.text();
-        throw new Error(`Expected JSON response, got: ${text.substring(0, 100)}...`);
+        throw new Error(
+          `Expected JSON response, got: ${text.substring(0, 100)}...`,
+        );
       }
 
       const result = await response.json();
@@ -76,7 +78,7 @@ export default function QRVerificationPage() {
           data: encodeURIComponent(
             JSON.stringify({
               productName: result.productName,
-              id: result.data?.id || "demo-" + Date.now(),
+              id: result.data?.id || "unavailable",
               timestamp: Date.now(),
               type: "verification",
             }),
@@ -91,7 +93,9 @@ export default function QRVerificationPage() {
       }
     } catch (err) {
       console.error("Verification error:", err);
-      setError(err instanceof Error ? err.message : "An unexpected error occurred");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+      );
     } finally {
       setIsVerifying(false);
     }
@@ -109,54 +113,56 @@ export default function QRVerificationPage() {
   };
 
   return (
-    <div className='min-h-screen bg-slate-900 p-4'>
-      <div className='max-w-4xl mx-auto'>
-        <div className='text-center mb-8'>
-          <h1 className='text-4xl font-bold text-white mb-4'>QR Code Verification</h1>
-          <p className='text-slate-300 text-lg'>
+    <div className="min-h-screen bg-slate-900 p-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-white mb-4">
+            QR Code Verification
+          </h1>
+          <p className="text-slate-300 text-lg">
             Verify product authenticity using blockchain technology
           </p>
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Manual Input */}
-          <Card className='bg-slate-800/50 border-slate-700'>
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle className='text-white flex items-center'>
-                <QrCode className='h-5 w-5 mr-2' />
+              <CardTitle className="text-white flex items-center">
+                <QrCode className="h-5 w-5 mr-2" />
                 Manual Verification
               </CardTitle>
-              <CardDescription className='text-slate-400'>
+              <CardDescription className="text-slate-400">
                 Enter QR code data manually for verification
               </CardDescription>
             </CardHeader>
-            <CardContent className='space-y-4'>
+            <CardContent className="space-y-4">
               <div>
-                <Label htmlFor='qr-data' className='text-white'>
+                <Label htmlFor="qr-data" className="text-white">
                   QR Code Data
                 </Label>
                 <Input
-                  id='qr-data'
+                  id="qr-data"
                   value={qrData}
                   onChange={(e) => setQrData(e.target.value)}
-                  placeholder='Enter QR code data...'
-                  className='bg-slate-700 border-slate-600 text-white'
+                  placeholder="Enter QR code data..."
+                  className="bg-slate-700 border-slate-600 text-white"
                 />
               </div>
 
               <Button
                 onClick={() => handleVerifyQR()}
                 disabled={isVerifying || !qrData.trim()}
-                className='w-full'
+                className="w-full"
               >
                 {isVerifying ? (
                   <>
-                    <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     Verifying...
                   </>
                 ) : (
                   <>
-                    <CheckCircle className='h-4 w-4 mr-2' />
+                    <CheckCircle className="h-4 w-4 mr-2" />
                     Verify Product
                   </>
                 )}
@@ -165,36 +171,36 @@ export default function QRVerificationPage() {
           </Card>
 
           {/* QR Scanner */}
-          <Card className='bg-slate-800/50 border-slate-700'>
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle className='text-white flex items-center'>
-                <QrCode className='h-5 w-5 mr-2' />
+              <CardTitle className="text-white flex items-center">
+                <QrCode className="h-5 w-5 mr-2" />
                 QR Code Scanner
               </CardTitle>
-              <CardDescription className='text-slate-400'>
+              <CardDescription className="text-slate-400">
                 Use your camera to scan QR codes directly
               </CardDescription>
             </CardHeader>
-            <CardContent className='space-y-4'>
+            <CardContent className="space-y-4">
               {!showScanner ? (
                 <Button
                   onClick={() => setShowScanner(true)}
-                  variant='outline'
-                  className='w-full bg-slate-700 border-slate-600 text-white hover:bg-slate-600'
+                  variant="outline"
+                  className="w-full bg-slate-700 border-slate-600 text-white hover:bg-slate-600"
                 >
-                  <QrCode className='h-4 w-4 mr-2' />
+                  <QrCode className="h-4 w-4 mr-2" />
                   Start Camera Scanner
                 </Button>
               ) : (
-                <div className='space-y-4'>
+                <div className="space-y-4">
                   <QRCodeScanner
                     onScanSuccess={handleScanSuccess}
                     onScanError={handleScanError}
                   />
                   <Button
                     onClick={() => setShowScanner(false)}
-                    variant='outline'
-                    className='w-full bg-slate-700 border-slate-600 text-white hover:bg-slate-600'
+                    variant="outline"
+                    className="w-full bg-slate-700 border-slate-600 text-white hover:bg-slate-600"
                   >
                     Stop Scanner
                   </Button>
@@ -206,45 +212,42 @@ export default function QRVerificationPage() {
 
         {/* Error Display */}
         {error && (
-          <Alert className='mt-6 bg-red-950/20 border-red-800'>
-            <AlertTriangle className='h-4 w-4' />
-            <AlertDescription className='text-red-300'>{error}</AlertDescription>
+          <Alert className="mt-6 bg-red-950/20 border-red-800">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription className="text-red-300">
+              {error}
+            </AlertDescription>
           </Alert>
         )}
 
         {/* Success Result */}
         {result && (
-          <Alert className='mt-6 bg-green-950/20 border-green-800'>
-            <CheckCircle className='h-4 w-4' />
-            <AlertDescription className='text-green-300'>
+          <Alert className="mt-6 bg-green-950/20 border-green-800">
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription className="text-green-300">
               {result.message}
             </AlertDescription>
           </Alert>
         )}
 
-        {/* Demo Instructions */}
-        <Card className='mt-8 bg-slate-800/30 border-slate-700'>
+        {/* Verification Guidance */}
+        <Card className="mt-8 bg-slate-800/30 border-slate-700">
           <CardHeader>
-            <CardTitle className='text-white text-lg'>Demo Instructions</CardTitle>
+            <CardTitle className="text-white text-lg">
+              Verification Tips
+            </CardTitle>
           </CardHeader>
-          <CardContent className='text-slate-300'>
-            <p className='mb-2'>Try these demo QR codes:</p>
-            <ul className='list-disc list-inside space-y-1 text-sm'>
+          <CardContent className="text-slate-300">
+            <p className="mb-2">For reliable verification results:</p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
-                <code className='bg-slate-700 px-2 py-1 rounded'>
-                  {"blockmec-demo-coca-cola"}
-                </code>{" "}
-                - Valid product
+                Use the exact QR content generated by your Blockmec product
+                flow.
               </li>
+              <li>When scanning, keep the code fully visible and well lit.</li>
               <li>
-                <code className='bg-slate-700 px-2 py-1 rounded'>
-                  {"blockmec-demo-invalid"}
-                </code>{" "}
-                - Invalid product
-              </li>
-              <li>
-                <code className='bg-slate-700 px-2 py-1 rounded'>{"any-text"}</code> -
-                Test with any text
+                If verification fails, regenerate the QR code from your
+                dashboard and retry.
               </li>
             </ul>
           </CardContent>

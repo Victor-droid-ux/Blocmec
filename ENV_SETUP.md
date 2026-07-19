@@ -44,6 +44,14 @@ This guide explains how to set up the required environment variables for the Blo
 \`\`\`env
 DATABASE_URL=postgresql://username:password@localhost:5432/blockmec_db
 REDIS_URL=redis://localhost:6379
+UPSTASH_REDIS_REST_URL=https://<your-upstash-db>.upstash.io
+UPSTASH_REDIS_REST_TOKEN=<your-upstash-rest-token>
+\`\`\`
+
+To enable Redis-backed rate limiting in development, also add:
+
+\`\`\`env
+ENABLE_REDIS_RATE_LIMIT_IN_DEV=true
 \`\`\`
 
 ### 📧 Email Configuration

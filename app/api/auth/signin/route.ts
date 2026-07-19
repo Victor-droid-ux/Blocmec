@@ -54,6 +54,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: flat }, { status: 400 });
     }
     const input = parsed.data as SignInInput;
+    const normalizedEmail = input.email.trim().toLowerCase();
 
     // Development mode — only active when Supabase is not configured AND dev passwords are set
     if (
@@ -61,16 +62,27 @@ export async function POST(req: NextRequest) {
       process.env.NODE_ENV === "development" &&
       DEV_CREDENTIALS
     ) {
-      const devCreds = DEV_CREDENTIALS[input.email];
-      if (devCreds && devCreds.password === input.password) {
+      const devCreds = DEV_CREDENTIALS[normalizedEmail];
+      if (!devCreds) {
+        return NextResponse.json(
+          {
+            error:
+              "No account was found for this email address. Please create an account and try again.",
+            code: "user_not_found",
+          },
+          { status: 404 },
+        );
+      }
+
+      if (devCreds.password === input.password) {
         let user = await prisma.user.findUnique({
-          where: { email: input.email },
+          where: { email: normalizedEmail },
         });
         if (!user) {
           user = await prisma.user.create({
             data: {
-              email: input.email,
-              name: input.email.split("@")[0],
+              email: normalizedEmail,
+              name: normalizedEmail.split("@")[0],
               role: devCreds.role,
               supabase_id: generateDevUUID(),
               email_verified: true,
@@ -85,8 +97,12 @@ export async function POST(req: NextRequest) {
         };
         return NextResponse.json({ user: publicUser });
       }
+
       return NextResponse.json(
-        { error: "Invalid credentials" },
+        {
+          error: "The password you entered is incorrect. Please try again.",
+          code: "incorrect_password",
+        },
         { status: 401 },
       );
     }
@@ -101,13 +117,32 @@ export async function POST(req: NextRequest) {
     }
 
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: input.email,
+      email: normalizedEmail,
       password: input.password,
     });
 
     if (error || !data?.session) {
+      const existingUser = await prisma.user.findUnique({
+        where: { email: normalizedEmail },
+        select: { id: true },
+      });
+
+      if (!existingUser) {
+        return NextResponse.json(
+          {
+            error:
+              "No account was found for this email address. Please create an account and try again.",
+            code: "user_not_found",
+          },
+          { status: 404 },
+        );
+      }
+
       return NextResponse.json(
-        { error: "Invalid credentials" },
+        {
+          error: "The password you entered is incorrect. Please try again.",
+          code: "incorrect_password",
+        },
         { status: 401 },
       );
     }
@@ -120,13 +155,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const emailVerified = Boolean(supabaseUser.email_confirmed_at);
+
     const user = await prisma.user.upsert({
-      where: { email: input.email },
-      update: { supabase_id: supabaseUser.id, updated_at: new Date() },
+      where: { email: normalizedEmail },
+      update: {
+        supabase_id: supabaseUser.id,
+        email: normalizedEmail,
+        email_verified: emailVerified,
+        updated_at: new Date(),
+      },
       create: {
-        email: input.email,
+        email: normalizedEmail,
         supabase_id: supabaseUser.id,
         role: UserRole.user,
+        email_verified: emailVerified,
       },
     });
 

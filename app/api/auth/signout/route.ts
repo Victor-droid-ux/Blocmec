@@ -16,7 +16,7 @@ export async function POST(_req: NextRequest) {
 
     const supabase = await createOptionalServerSupabaseClient();
     if (supabase) {
-      await supabase.auth.signOut();
+      await supabase.auth.signOut({ scope: "local" });
     }
     return NextResponse.json({ ok: true, message: "Signed out" });
   } catch (err: unknown) {

@@ -3,6 +3,9 @@ import { UserRole } from "@/prisma/generated/enums";
 // src/config/routes.ts
 export const ROUTES = {
   LOGIN: "/",
+  SIGNUP: "/signup",
+  AUTH_CALLBACK: "/auth/callback",
+  CONTACT_SALES: "/contact-sales",
   DASHBOARD: {
     ROOT: "/dashboard",
     ANALYTICS: "/dashboard/analytics",

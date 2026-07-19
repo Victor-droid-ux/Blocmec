@@ -187,7 +187,7 @@ export default function PaystackPaymentPage() {
 
   if (authLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-[#1a1625]">
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50 dark:bg-[#1a1625]">
         <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-purple-500"></div>
       </div>
     );
@@ -207,17 +207,17 @@ export default function PaystackPaymentPage() {
         <h2 className="text-2xl font-bold">
           Paystack Payment Gateway ({currency.toUpperCase()})
         </h2>
-        <p className="text-gray-400 mt-1">
+        <p className="text-slate-500 dark:text-gray-400 mt-1">
           Complete your purchase of API credits using Paystack
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
-          <Card className="bg-[#231c35] border-[#2a2139] text-white">
+          <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
             <CardHeader>
               <CardTitle>Payment Details</CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-slate-500 dark:text-gray-400">
                 Enter your details to proceed with Paystack payment
               </CardDescription>
             </CardHeader>
@@ -232,7 +232,7 @@ export default function PaystackPaymentPage() {
                       placeholder="user@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                      className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                       required
                     />
                   </div>
@@ -244,7 +244,7 @@ export default function PaystackPaymentPage() {
                       placeholder="Full Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                      className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                       required
                     />
                   </div>
@@ -256,14 +256,14 @@ export default function PaystackPaymentPage() {
                       placeholder="Phone number (optional)"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                      className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                     />
                   </div>
                 </div>
 
-                <div className="bg-[#1a1625] p-4 rounded-md">
+                <div className="bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md">
                   <div className="flex justify-between mb-2">
-                    <span className="text-gray-400">Subtotal:</span>
+                    <span className="text-slate-500 dark:text-gray-400">Subtotal:</span>
                     <span>
                       {currency === "NGN" ? "N" : "$"}
                       {Number.parseFloat(amount).toFixed(
@@ -272,10 +272,10 @@ export default function PaystackPaymentPage() {
                     </span>
                   </div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-gray-400">Processing Fee:</span>
+                    <span className="text-slate-500 dark:text-gray-400">Processing Fee:</span>
                     <span>{currency === "NGN" ? "N" : "$"}0.00</span>
                   </div>
-                  <div className="flex justify-between pt-2 border-t border-[#2a2139]">
+                  <div className="flex justify-between pt-2 border-t border-slate-200 dark:border-[#2a2139]">
                     <span className="font-medium">Total:</span>
                     <span className="font-bold">
                       {currency === "NGN" ? "N" : "$"}
@@ -311,7 +311,7 @@ export default function PaystackPaymentPage() {
                   <Button
                     type="button"
                     variant="outline"
-                    className="flex-1 border-gray-600 text-gray-300 hover:bg-[#2a2139] bg-transparent"
+                    className="dashboard-outline-btn flex-1"
                     onClick={handleCancel}
                     disabled={isProcessing}
                   >
@@ -324,18 +324,18 @@ export default function PaystackPaymentPage() {
         </div>
 
         <div>
-          <Card className="bg-[#231c35] border-[#2a2139] text-white sticky top-20">
+          <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white sticky top-20">
             <CardHeader>
               <CardTitle>Order Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="bg-[#1a1625] p-4 rounded-md">
+              <div className="bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md">
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-400">API Credits:</span>
+                  <span className="text-slate-500 dark:text-gray-400">API Credits:</span>
                   <span>{Number.parseInt(credits, 10).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-400">Price per Credit:</span>
+                  <span className="text-slate-500 dark:text-gray-400">Price per Credit:</span>
                   <span>
                     $
                     {(
@@ -343,7 +343,7 @@ export default function PaystackPaymentPage() {
                     ).toFixed(4)}
                   </span>
                 </div>
-                <div className="flex justify-between pt-2 border-t border-[#2a2139]">
+                <div className="flex justify-between pt-2 border-t border-slate-200 dark:border-[#2a2139]">
                   <span className="font-medium">Total Amount:</span>
                   <span className="font-bold">
                     ${Number.parseFloat(amount).toFixed(2)}
@@ -353,7 +353,7 @@ export default function PaystackPaymentPage() {
 
               <div className="space-y-2">
                 <h3 className="font-medium">What You'll Get</h3>
-                <ul className="space-y-1 text-sm text-gray-400">
+                <ul className="space-y-1 text-sm text-slate-500 dark:text-gray-400">
                   <li>
                     • {Number.parseInt(credits, 10).toLocaleString()} API
                     credits
@@ -364,7 +364,7 @@ export default function PaystackPaymentPage() {
                 </ul>
               </div>
 
-              <div className="mt-4 p-3 bg-[#1a1625] rounded-md text-gray-400 text-xs">
+              <div className="mt-4 p-3 bg-slate-50 dark:bg-[#1a1625] rounded-md text-slate-500 dark:text-gray-400 text-xs">
                 Payments are processed securely by Paystack.
               </div>
             </CardContent>

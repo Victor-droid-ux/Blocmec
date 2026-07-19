@@ -160,3 +160,9 @@
 .dark .status-failed {
   @apply bg-red-900 text-red-100 border-red-800;
 }
+
+@layer components {
+  .dashboard-outline-btn {
+    @apply border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-violet-500 dark:border-[#2a2139] dark:bg-[#1a1625] dark:text-gray-200 dark:hover:bg-[#2a2139] dark:hover:text-white dark:focus-visible:ring-purple-500;
+  }
+}
