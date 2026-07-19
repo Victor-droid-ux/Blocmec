@@ -1,0 +1,16 @@
+model UserFile {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String   @db.Uuid
+  original_name  String   @db.VarChar(512)
+  stored_name    String   @db.VarChar(512)
+  mime_type      String   @db.VarChar(255)
+  size_bytes     Int
+  storage_path   String   @db.VarChar(1024)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], name: "idx_user_files_user_id")
+  @@index([created_at], name: "idx_user_files_created_at")
+}

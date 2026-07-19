@@ -18,6 +18,11 @@ model User {
   supabase_id         String?     @unique @db.Uuid
   name                String?     @db.VarChar(255)
   username            String?     @db.VarChar(255)
+  phone               String?     @db.VarChar(50)
+  location            String?     @db.VarChar(255)
+  department          String?     @db.VarChar(255)
+  bio                 String?
+  avatar_url          String?     @db.VarChar(1024)
   role                UserRole    @default(user)
   status              UserStatus  @default(active)
   api_credits         Int         @default(0)
@@ -36,4 +41,6 @@ model User {
   audit_logs    AuditLog[]
   webhooks      WebhookEndpoint[]
   webhook_payloads WebhookEventPayload[]
+  uploaded_files UserFile[]
+  settings      UserSettings?
 }

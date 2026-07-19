@@ -272,7 +272,7 @@ export default function BatchFilesPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-[#1a1625]">
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50 dark:bg-[#1a1625]">
         <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-purple-500" />
       </div>
     );
@@ -285,10 +285,10 @@ export default function BatchFilesPage() {
 
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-gray-400" />
             <Input
               placeholder="Search batch files..."
-              className="pl-10 bg-[#231c35] border-0 text-white placeholder:text-gray-400 focus-visible:ring-purple-500"
+              className="pl-10 bg-white border border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-0 dark:text-white placeholder:text-slate-500 dark:placeholder:text-gray-400 focus-visible:ring-purple-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -299,7 +299,7 @@ export default function BatchFilesPage() {
               size="icon"
               onClick={fetchBatches}
               disabled={isLoading}
-              className="text-gray-400 hover:text-white"
+              className="text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white"
             >
               <RefreshCw
                 className={`h-5 w-5 ${isLoading ? "animate-spin" : ""}`}
@@ -318,7 +318,7 @@ export default function BatchFilesPage() {
         {filteredBatches.length > 0 ? (
           <>
             <div className="rounded-md overflow-hidden">
-              <div className="bg-[#231c35] px-6 py-4 grid grid-cols-12 gap-4 text-gray-400 font-medium">
+              <div className="bg-white dark:bg-[#231c35] px-6 py-4 grid grid-cols-12 gap-4 text-slate-500 dark:text-gray-400 font-medium">
                 <div className="col-span-4">Batch Name</div>
                 <div className="col-span-2">Status</div>
                 <div className="col-span-2">Date Created</div>
@@ -330,17 +330,17 @@ export default function BatchFilesPage() {
                 {filteredBatches.map((batch) => (
                   <div
                     key={batch.id}
-                    className="bg-[#231c35] px-6 py-4 grid grid-cols-12 gap-4 items-center"
+                    className="bg-white dark:bg-[#231c35] px-6 py-4 grid grid-cols-12 gap-4 items-center"
                   >
                     <div className="col-span-4 flex items-center gap-3">
-                      <div className="w-12 h-12 bg-[#3a2d5d] flex items-center justify-center rounded-md text-purple-400 text-xs font-bold uppercase">
+                      <div className="w-12 h-12 bg-[#3a2d5d] flex items-center justify-center rounded-md text-violet-600 dark:text-purple-400 text-xs font-bold uppercase">
                         {batch.productType.substring(0, 3)}
                       </div>
                       <div>
                         <div className="font-medium text-white">
                           {batch.name}
                         </div>
-                        <div className="text-gray-400 text-sm capitalize">
+                        <div className="text-slate-500 dark:text-gray-400 text-sm capitalize">
                           {batch.productType}
                         </div>
                       </div>
@@ -361,11 +361,11 @@ export default function BatchFilesPage() {
                       </span>
                     </div>
 
-                    <div className="col-span-2 text-gray-300">
+                    <div className="col-span-2 text-slate-600 dark:text-gray-300">
                       {new Date(batch.createdAt).toLocaleDateString()}
                     </div>
 
-                    <div className="col-span-2 text-gray-300">
+                    <div className="col-span-2 text-slate-600 dark:text-gray-300">
                       {batch.qrCodeCount.toLocaleString()}
                     </div>
 
@@ -373,7 +373,7 @@ export default function BatchFilesPage() {
                       <Button
                         size="icon"
                         variant="ghost"
-                        className="h-9 w-9 text-gray-400 hover:text-white hover:bg-[#2a2139]"
+                        className="h-9 w-9 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:bg-[#2a2139]"
                         title="Download QR Codes"
                         onClick={() => handleDownloadBatch(batch)}
                         disabled={isGeneratingQRCodes}
@@ -383,7 +383,7 @@ export default function BatchFilesPage() {
                       <Button
                         size="icon"
                         variant="ghost"
-                        className="h-9 w-9 text-gray-400 hover:text-white hover:bg-[#2a2139]"
+                        className="h-9 w-9 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:bg-[#2a2139]"
                         title="Print QR Codes"
                         onClick={() => handlePrintBatch(batch)}
                         disabled={isGeneratingQRCodes}
@@ -393,7 +393,7 @@ export default function BatchFilesPage() {
                       <Button
                         size="icon"
                         variant="ghost"
-                        className="h-9 w-9 text-gray-400 hover:text-white hover:bg-[#2a2139]"
+                        className="h-9 w-9 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:bg-[#2a2139]"
                         title="Delete Batch"
                         onClick={() => handleDeleteBatch(batch.id)}
                       >
@@ -405,7 +405,7 @@ export default function BatchFilesPage() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between text-gray-400 text-sm">
+            <div className="mt-4 flex items-center justify-between text-slate-500 dark:text-gray-400 text-sm">
               <span>
                 Showing {filteredBatches.length} of {total} batch files
               </span>
@@ -413,6 +413,7 @@ export default function BatchFilesPage() {
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
+                    className="dashboard-outline-btn"
                     size="sm"
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
@@ -421,6 +422,7 @@ export default function BatchFilesPage() {
                   </Button>
                   <Button
                     variant="outline"
+                    className="dashboard-outline-btn"
                     size="sm"
                     onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                     disabled={page === totalPages}
@@ -432,12 +434,12 @@ export default function BatchFilesPage() {
             </div>
           </>
         ) : (
-          <div className="bg-[#231c35] rounded-md p-8 text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#2a2139] mb-4">
-              <AlertCircle className="h-6 w-6 text-purple-400" />
+          <div className="bg-white dark:bg-[#231c35] rounded-md p-8 text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-[#2a2139] mb-4">
+              <AlertCircle className="h-6 w-6 text-violet-600 dark:text-purple-400" />
             </div>
             <h3 className="text-xl font-medium mb-2">No batch files found</h3>
-            <p className="text-gray-400 mb-6 max-w-md mx-auto">
+            <p className="text-slate-500 dark:text-gray-400 mb-6 max-w-md mx-auto">
               {searchTerm
                 ? `No batch files match "${searchTerm}"`
                 : "You haven't created any batch files yet."}

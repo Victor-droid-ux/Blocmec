@@ -26,8 +26,16 @@ export default function DashboardPage() {
   });
   const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.user.current);
+  const authLoading = useSelector((state: RootState) => state.user.loading);
 
   useEffect(() => {
+    if (authLoading) return;
+
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
     const fetchStats = async () => {
       try {
         const res = await fetch(API_ENDPOINTS.USER.STATS);
@@ -42,51 +50,51 @@ export default function DashboardPage() {
       }
     };
     fetchStats();
-  }, []);
+  }, [authLoading, user]);
 
   return (
     <AuthGuard>
       <DashboardShell>
         <DashboardHeader />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="bg-[#231c35] border-0 text-white">
+          <Card className="bg-card border border-slate-200 text-card-foreground dark:bg-[#231c35] dark:border-0 dark:text-white">
             <CardHeader className="pb-2">
               <CardTitle className="text-4xl font-bold">
                 {loading ? "..." : stats.totalQrCodes.toLocaleString()}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-purple-400">Total Files</p>
+              <p className="text-violet-600 dark:text-purple-400">Total Files</p>
             </CardContent>
           </Card>
-          <Card className="bg-[#231c35] border-0 text-white">
+          <Card className="bg-card border border-slate-200 text-card-foreground dark:bg-[#231c35] dark:border-0 dark:text-white">
             <CardHeader className="pb-2">
               <CardTitle className="text-4xl font-bold">
                 {loading ? "..." : stats.expiredQrCodes.toLocaleString()}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-purple-400">Expired QR Codes</p>
+              <p className="text-violet-600 dark:text-purple-400">Expired QR Codes</p>
             </CardContent>
           </Card>
-          <Card className="bg-[#231c35] border-0 text-white">
+          <Card className="bg-card border border-slate-200 text-card-foreground dark:bg-[#231c35] dark:border-0 dark:text-white">
             <CardHeader className="pb-2">
               <CardTitle className="text-4xl font-bold">
                 {loading ? "..." : stats.apiCredits.toLocaleString()}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-purple-400">API Credits</p>
+              <p className="text-violet-600 dark:text-purple-400">API Credits</p>
             </CardContent>
           </Card>
-          <Card className="bg-[#231c35] border-0 text-white">
+          <Card className="bg-card border border-slate-200 text-card-foreground dark:bg-[#231c35] dark:border-0 dark:text-white">
             <CardHeader className="pb-2">
               <CardTitle className="text-4xl font-bold">
                 {loading ? "..." : stats.totalBatches.toLocaleString()}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-purple-400">Batch Created</p>
+              <p className="text-violet-600 dark:text-purple-400">Batch Created</p>
             </CardContent>
           </Card>
         </div>

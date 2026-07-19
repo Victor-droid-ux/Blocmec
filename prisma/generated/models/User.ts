@@ -39,6 +39,11 @@ export type UserMinAggregateOutputType = {
   supabase_id: string | null
   name: string | null
   username: string | null
+  phone: string | null
+  location: string | null
+  department: string | null
+  bio: string | null
+  avatar_url: string | null
   role: $Enums.UserRole | null
   status: $Enums.UserStatus | null
   api_credits: number | null
@@ -57,6 +62,11 @@ export type UserMaxAggregateOutputType = {
   supabase_id: string | null
   name: string | null
   username: string | null
+  phone: string | null
+  location: string | null
+  department: string | null
+  bio: string | null
+  avatar_url: string | null
   role: $Enums.UserRole | null
   status: $Enums.UserStatus | null
   api_credits: number | null
@@ -75,6 +85,11 @@ export type UserCountAggregateOutputType = {
   supabase_id: number
   name: number
   username: number
+  phone: number
+  location: number
+  department: number
+  bio: number
+  avatar_url: number
   role: number
   status: number
   api_credits: number
@@ -103,6 +118,11 @@ export type UserMinAggregateInputType = {
   supabase_id?: true
   name?: true
   username?: true
+  phone?: true
+  location?: true
+  department?: true
+  bio?: true
+  avatar_url?: true
   role?: true
   status?: true
   api_credits?: true
@@ -121,6 +141,11 @@ export type UserMaxAggregateInputType = {
   supabase_id?: true
   name?: true
   username?: true
+  phone?: true
+  location?: true
+  department?: true
+  bio?: true
+  avatar_url?: true
   role?: true
   status?: true
   api_credits?: true
@@ -139,6 +164,11 @@ export type UserCountAggregateInputType = {
   supabase_id?: true
   name?: true
   username?: true
+  phone?: true
+  location?: true
+  department?: true
+  bio?: true
+  avatar_url?: true
   role?: true
   status?: true
   api_credits?: true
@@ -244,6 +274,11 @@ export type UserGroupByOutputType = {
   supabase_id: string | null
   name: string | null
   username: string | null
+  phone: string | null
+  location: string | null
+  department: string | null
+  bio: string | null
+  avatar_url: string | null
   role: $Enums.UserRole
   status: $Enums.UserStatus
   api_credits: number
@@ -285,6 +320,11 @@ export type UserWhereInput = {
   supabase_id?: Prisma.UuidNullableFilter<"User"> | string | null
   name?: Prisma.StringNullableFilter<"User"> | string | null
   username?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  location?: Prisma.StringNullableFilter<"User"> | string | null
+  department?: Prisma.StringNullableFilter<"User"> | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
+  avatar_url?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   api_credits?: Prisma.IntFilter<"User"> | number
@@ -302,6 +342,8 @@ export type UserWhereInput = {
   audit_logs?: Prisma.AuditLogListRelationFilter
   webhooks?: Prisma.WebhookEndpointListRelationFilter
   webhook_payloads?: Prisma.WebhookEventPayloadListRelationFilter
+  uploaded_files?: Prisma.UserFileListRelationFilter
+  settings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -310,6 +352,11 @@ export type UserOrderByWithRelationInput = {
   supabase_id?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   username?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  department?: Prisma.SortOrderInput | Prisma.SortOrder
+  bio?: Prisma.SortOrderInput | Prisma.SortOrder
+  avatar_url?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -327,6 +374,8 @@ export type UserOrderByWithRelationInput = {
   audit_logs?: Prisma.AuditLogOrderByRelationAggregateInput
   webhooks?: Prisma.WebhookEndpointOrderByRelationAggregateInput
   webhook_payloads?: Prisma.WebhookEventPayloadOrderByRelationAggregateInput
+  uploaded_files?: Prisma.UserFileOrderByRelationAggregateInput
+  settings?: Prisma.UserSettingsOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -338,6 +387,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
   username?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  location?: Prisma.StringNullableFilter<"User"> | string | null
+  department?: Prisma.StringNullableFilter<"User"> | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
+  avatar_url?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   api_credits?: Prisma.IntFilter<"User"> | number
@@ -355,6 +409,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   audit_logs?: Prisma.AuditLogListRelationFilter
   webhooks?: Prisma.WebhookEndpointListRelationFilter
   webhook_payloads?: Prisma.WebhookEventPayloadListRelationFilter
+  uploaded_files?: Prisma.UserFileListRelationFilter
+  settings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
 }, "id" | "email" | "supabase_id">
 
 export type UserOrderByWithAggregationInput = {
@@ -363,6 +419,11 @@ export type UserOrderByWithAggregationInput = {
   supabase_id?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   username?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  department?: Prisma.SortOrderInput | Prisma.SortOrder
+  bio?: Prisma.SortOrderInput | Prisma.SortOrder
+  avatar_url?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -389,6 +450,11 @@ export type UserScalarWhereWithAggregatesInput = {
   supabase_id?: Prisma.UuidNullableWithAggregatesFilter<"User"> | string | null
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   username?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  location?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  department?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  avatar_url?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   api_credits?: Prisma.IntWithAggregatesFilter<"User"> | number
@@ -407,6 +473,11 @@ export type UserCreateInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -424,6 +495,8 @@ export type UserCreateInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -432,6 +505,11 @@ export type UserUncheckedCreateInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -449,6 +527,8 @@ export type UserUncheckedCreateInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -457,6 +537,11 @@ export type UserUpdateInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -474,6 +559,8 @@ export type UserUpdateInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -482,6 +569,11 @@ export type UserUncheckedUpdateInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -499,6 +591,8 @@ export type UserUncheckedUpdateInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -507,6 +601,11 @@ export type UserCreateManyInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -525,6 +624,11 @@ export type UserUpdateManyMutationInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -543,6 +647,11 @@ export type UserUncheckedUpdateManyInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -571,6 +680,11 @@ export type UserCountOrderByAggregateInput = {
   supabase_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   username?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  department?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
+  avatar_url?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -593,6 +707,11 @@ export type UserMaxOrderByAggregateInput = {
   supabase_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   username?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  department?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
+  avatar_url?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -611,6 +730,11 @@ export type UserMinOrderByAggregateInput = {
   supabase_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   username?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  department?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
+  avatar_url?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -701,16 +825,40 @@ export type UserUpdateOneWithoutTransactionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTransactionsInput, Prisma.UserUpdateWithoutTransactionsInput>, Prisma.UserUncheckedUpdateWithoutTransactionsInput>
 }
 
+export type UserCreateNestedOneWithoutUploaded_filesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUploaded_filesInput, Prisma.UserUncheckedCreateWithoutUploaded_filesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUploaded_filesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUploaded_filesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUploaded_filesInput, Prisma.UserUncheckedCreateWithoutUploaded_filesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUploaded_filesInput
+  upsert?: Prisma.UserUpsertWithoutUploaded_filesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUploaded_filesInput, Prisma.UserUpdateWithoutUploaded_filesInput>, Prisma.UserUncheckedUpdateWithoutUploaded_filesInput>
+}
+
+export type UserCreateNestedOneWithoutSettingsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSettingsInput, Prisma.UserUncheckedCreateWithoutSettingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSettingsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSettingsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSettingsInput, Prisma.UserUncheckedCreateWithoutSettingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSettingsInput
+  upsert?: Prisma.UserUpsertWithoutSettingsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSettingsInput, Prisma.UserUpdateWithoutSettingsInput>, Prisma.UserUncheckedUpdateWithoutSettingsInput>
+}
+
 export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
 
 export type EnumUserStatusFieldUpdateOperationsInput = {
   set?: $Enums.UserStatus
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type UserCreateNestedOneWithoutWebhooksInput = {
@@ -747,6 +895,11 @@ export type UserCreateWithoutApi_keysInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -763,6 +916,8 @@ export type UserCreateWithoutApi_keysInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApi_keysInput = {
@@ -771,6 +926,11 @@ export type UserUncheckedCreateWithoutApi_keysInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -787,6 +947,8 @@ export type UserUncheckedCreateWithoutApi_keysInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApi_keysInput = {
@@ -811,6 +973,11 @@ export type UserUpdateWithoutApi_keysInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -827,6 +994,8 @@ export type UserUpdateWithoutApi_keysInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApi_keysInput = {
@@ -835,6 +1004,11 @@ export type UserUncheckedUpdateWithoutApi_keysInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -851,6 +1025,8 @@ export type UserUncheckedUpdateWithoutApi_keysInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAudit_logsInput = {
@@ -859,6 +1035,11 @@ export type UserCreateWithoutAudit_logsInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -875,6 +1056,8 @@ export type UserCreateWithoutAudit_logsInput = {
   api_keys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAudit_logsInput = {
@@ -883,6 +1066,11 @@ export type UserUncheckedCreateWithoutAudit_logsInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -899,6 +1087,8 @@ export type UserUncheckedCreateWithoutAudit_logsInput = {
   api_keys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAudit_logsInput = {
@@ -923,6 +1113,11 @@ export type UserUpdateWithoutAudit_logsInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -939,6 +1134,8 @@ export type UserUpdateWithoutAudit_logsInput = {
   api_keys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAudit_logsInput = {
@@ -947,6 +1144,11 @@ export type UserUncheckedUpdateWithoutAudit_logsInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -963,6 +1165,8 @@ export type UserUncheckedUpdateWithoutAudit_logsInput = {
   api_keys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBatchesInput = {
@@ -971,6 +1175,11 @@ export type UserCreateWithoutBatchesInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -987,6 +1196,8 @@ export type UserCreateWithoutBatchesInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBatchesInput = {
@@ -995,6 +1206,11 @@ export type UserUncheckedCreateWithoutBatchesInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1011,6 +1227,8 @@ export type UserUncheckedCreateWithoutBatchesInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBatchesInput = {
@@ -1035,6 +1253,11 @@ export type UserUpdateWithoutBatchesInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1051,6 +1274,8 @@ export type UserUpdateWithoutBatchesInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBatchesInput = {
@@ -1059,6 +1284,11 @@ export type UserUncheckedUpdateWithoutBatchesInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1075,6 +1305,8 @@ export type UserUncheckedUpdateWithoutBatchesInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutQr_codesInput = {
@@ -1083,6 +1315,11 @@ export type UserCreateWithoutQr_codesInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1099,6 +1336,8 @@ export type UserCreateWithoutQr_codesInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutQr_codesInput = {
@@ -1107,6 +1346,11 @@ export type UserUncheckedCreateWithoutQr_codesInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1123,6 +1367,8 @@ export type UserUncheckedCreateWithoutQr_codesInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutQr_codesInput = {
@@ -1147,6 +1393,11 @@ export type UserUpdateWithoutQr_codesInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1163,6 +1414,8 @@ export type UserUpdateWithoutQr_codesInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQr_codesInput = {
@@ -1171,6 +1424,11 @@ export type UserUncheckedUpdateWithoutQr_codesInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1187,6 +1445,8 @@ export type UserUncheckedUpdateWithoutQr_codesInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransactionsInput = {
@@ -1195,6 +1455,11 @@ export type UserCreateWithoutTransactionsInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1211,6 +1476,8 @@ export type UserCreateWithoutTransactionsInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -1219,6 +1486,11 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1235,6 +1507,8 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -1259,6 +1533,11 @@ export type UserUpdateWithoutTransactionsInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1275,6 +1554,8 @@ export type UserUpdateWithoutTransactionsInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -1283,6 +1564,11 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1299,6 +1585,288 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUploaded_filesInput = {
+  id?: string
+  email: string
+  supabase_id?: string | null
+  name?: string | null
+  username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  api_credits?: number
+  subscription_plan?: string
+  email_verified?: boolean
+  verification_token?: string | null
+  reset_token?: string | null
+  reset_token_expires?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  qr_codes?: Prisma.QrCodeCreateNestedManyWithoutUserInput
+  batches?: Prisma.BatchCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  api_keys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
+  webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUploaded_filesInput = {
+  id?: string
+  email: string
+  supabase_id?: string | null
+  name?: string | null
+  username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  api_credits?: number
+  subscription_plan?: string
+  email_verified?: boolean
+  verification_token?: string | null
+  reset_token?: string | null
+  reset_token_expires?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  qr_codes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutUserInput
+  batches?: Prisma.BatchUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  api_keys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
+  webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUploaded_filesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUploaded_filesInput, Prisma.UserUncheckedCreateWithoutUploaded_filesInput>
+}
+
+export type UserUpsertWithoutUploaded_filesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUploaded_filesInput, Prisma.UserUncheckedUpdateWithoutUploaded_filesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUploaded_filesInput, Prisma.UserUncheckedCreateWithoutUploaded_filesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUploaded_filesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUploaded_filesInput, Prisma.UserUncheckedUpdateWithoutUploaded_filesInput>
+}
+
+export type UserUpdateWithoutUploaded_filesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  api_credits?: Prisma.IntFieldUpdateOperationsInput | number
+  subscription_plan?: Prisma.StringFieldUpdateOperationsInput | string
+  email_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verification_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reset_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reset_token_expires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qr_codes?: Prisma.QrCodeUpdateManyWithoutUserNestedInput
+  batches?: Prisma.BatchUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  api_keys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
+  webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUploaded_filesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  api_credits?: Prisma.IntFieldUpdateOperationsInput | number
+  subscription_plan?: Prisma.StringFieldUpdateOperationsInput | string
+  email_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verification_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reset_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reset_token_expires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qr_codes?: Prisma.QrCodeUncheckedUpdateManyWithoutUserNestedInput
+  batches?: Prisma.BatchUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  api_keys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
+  webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSettingsInput = {
+  id?: string
+  email: string
+  supabase_id?: string | null
+  name?: string | null
+  username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  api_credits?: number
+  subscription_plan?: string
+  email_verified?: boolean
+  verification_token?: string | null
+  reset_token?: string | null
+  reset_token_expires?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  qr_codes?: Prisma.QrCodeCreateNestedManyWithoutUserInput
+  batches?: Prisma.BatchCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  api_keys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
+  webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSettingsInput = {
+  id?: string
+  email: string
+  supabase_id?: string | null
+  name?: string | null
+  username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  api_credits?: number
+  subscription_plan?: string
+  email_verified?: boolean
+  verification_token?: string | null
+  reset_token?: string | null
+  reset_token_expires?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  qr_codes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutUserInput
+  batches?: Prisma.BatchUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  api_keys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
+  webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSettingsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSettingsInput, Prisma.UserUncheckedCreateWithoutSettingsInput>
+}
+
+export type UserUpsertWithoutSettingsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSettingsInput, Prisma.UserUncheckedUpdateWithoutSettingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSettingsInput, Prisma.UserUncheckedCreateWithoutSettingsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSettingsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSettingsInput, Prisma.UserUncheckedUpdateWithoutSettingsInput>
+}
+
+export type UserUpdateWithoutSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  api_credits?: Prisma.IntFieldUpdateOperationsInput | number
+  subscription_plan?: Prisma.StringFieldUpdateOperationsInput | string
+  email_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verification_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reset_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reset_token_expires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qr_codes?: Prisma.QrCodeUpdateManyWithoutUserNestedInput
+  batches?: Prisma.BatchUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  api_keys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
+  webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  api_credits?: Prisma.IntFieldUpdateOperationsInput | number
+  subscription_plan?: Prisma.StringFieldUpdateOperationsInput | string
+  email_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verification_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reset_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reset_token_expires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  qr_codes?: Prisma.QrCodeUncheckedUpdateManyWithoutUserNestedInput
+  batches?: Prisma.BatchUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  api_keys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
+  webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWebhooksInput = {
@@ -1307,6 +1875,11 @@ export type UserCreateWithoutWebhooksInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1323,6 +1896,8 @@ export type UserCreateWithoutWebhooksInput = {
   api_keys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWebhooksInput = {
@@ -1331,6 +1906,11 @@ export type UserUncheckedCreateWithoutWebhooksInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1347,6 +1927,8 @@ export type UserUncheckedCreateWithoutWebhooksInput = {
   api_keys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWebhooksInput = {
@@ -1371,6 +1953,11 @@ export type UserUpdateWithoutWebhooksInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1387,6 +1974,8 @@ export type UserUpdateWithoutWebhooksInput = {
   api_keys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWebhooksInput = {
@@ -1395,6 +1984,11 @@ export type UserUncheckedUpdateWithoutWebhooksInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1411,6 +2005,8 @@ export type UserUncheckedUpdateWithoutWebhooksInput = {
   api_keys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWebhook_payloadsInput = {
@@ -1419,6 +2015,11 @@ export type UserCreateWithoutWebhook_payloadsInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1435,6 +2036,8 @@ export type UserCreateWithoutWebhook_payloadsInput = {
   api_keys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWebhook_payloadsInput = {
@@ -1443,6 +2046,11 @@ export type UserUncheckedCreateWithoutWebhook_payloadsInput = {
   supabase_id?: string | null
   name?: string | null
   username?: string | null
+  phone?: string | null
+  location?: string | null
+  department?: string | null
+  bio?: string | null
+  avatar_url?: string | null
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1459,6 +2067,8 @@ export type UserUncheckedCreateWithoutWebhook_payloadsInput = {
   api_keys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
+  uploaded_files?: Prisma.UserFileUncheckedCreateNestedManyWithoutUserInput
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWebhook_payloadsInput = {
@@ -1483,6 +2093,11 @@ export type UserUpdateWithoutWebhook_payloadsInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1499,6 +2114,8 @@ export type UserUpdateWithoutWebhook_payloadsInput = {
   api_keys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWebhook_payloadsInput = {
@@ -1507,6 +2124,11 @@ export type UserUncheckedUpdateWithoutWebhook_payloadsInput = {
   supabase_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1523,6 +2145,8 @@ export type UserUncheckedUpdateWithoutWebhook_payloadsInput = {
   api_keys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
+  uploaded_files?: Prisma.UserFileUncheckedUpdateManyWithoutUserNestedInput
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -1538,6 +2162,7 @@ export type UserCountOutputType = {
   audit_logs: number
   webhooks: number
   webhook_payloads: number
+  uploaded_files: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1548,6 +2173,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   audit_logs?: boolean | UserCountOutputTypeCountAudit_logsArgs
   webhooks?: boolean | UserCountOutputTypeCountWebhooksArgs
   webhook_payloads?: boolean | UserCountOutputTypeCountWebhook_payloadsArgs
+  uploaded_files?: boolean | UserCountOutputTypeCountUploaded_filesArgs
 }
 
 /**
@@ -1609,6 +2235,13 @@ export type UserCountOutputTypeCountWebhook_payloadsArgs<ExtArgs extends runtime
   where?: Prisma.WebhookEventPayloadWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUploaded_filesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserFileWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1616,6 +2249,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   supabase_id?: boolean
   name?: boolean
   username?: boolean
+  phone?: boolean
+  location?: boolean
+  department?: boolean
+  bio?: boolean
+  avatar_url?: boolean
   role?: boolean
   status?: boolean
   api_credits?: boolean
@@ -1633,6 +2271,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   audit_logs?: boolean | Prisma.User$audit_logsArgs<ExtArgs>
   webhooks?: boolean | Prisma.User$webhooksArgs<ExtArgs>
   webhook_payloads?: boolean | Prisma.User$webhook_payloadsArgs<ExtArgs>
+  uploaded_files?: boolean | Prisma.User$uploaded_filesArgs<ExtArgs>
+  settings?: boolean | Prisma.User$settingsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1642,6 +2282,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   supabase_id?: boolean
   name?: boolean
   username?: boolean
+  phone?: boolean
+  location?: boolean
+  department?: boolean
+  bio?: boolean
+  avatar_url?: boolean
   role?: boolean
   status?: boolean
   api_credits?: boolean
@@ -1660,6 +2305,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   supabase_id?: boolean
   name?: boolean
   username?: boolean
+  phone?: boolean
+  location?: boolean
+  department?: boolean
+  bio?: boolean
+  avatar_url?: boolean
   role?: boolean
   status?: boolean
   api_credits?: boolean
@@ -1678,6 +2328,11 @@ export type UserSelectScalar = {
   supabase_id?: boolean
   name?: boolean
   username?: boolean
+  phone?: boolean
+  location?: boolean
+  department?: boolean
+  bio?: boolean
+  avatar_url?: boolean
   role?: boolean
   status?: boolean
   api_credits?: boolean
@@ -1690,7 +2345,7 @@ export type UserSelectScalar = {
   updated_at?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "supabase_id" | "name" | "username" | "role" | "status" | "api_credits" | "subscription_plan" | "email_verified" | "verification_token" | "reset_token" | "reset_token_expires" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "supabase_id" | "name" | "username" | "phone" | "location" | "department" | "bio" | "avatar_url" | "role" | "status" | "api_credits" | "subscription_plan" | "email_verified" | "verification_token" | "reset_token" | "reset_token_expires" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   qr_codes?: boolean | Prisma.User$qr_codesArgs<ExtArgs>
   batches?: boolean | Prisma.User$batchesArgs<ExtArgs>
@@ -1699,6 +2354,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   audit_logs?: boolean | Prisma.User$audit_logsArgs<ExtArgs>
   webhooks?: boolean | Prisma.User$webhooksArgs<ExtArgs>
   webhook_payloads?: boolean | Prisma.User$webhook_payloadsArgs<ExtArgs>
+  uploaded_files?: boolean | Prisma.User$uploaded_filesArgs<ExtArgs>
+  settings?: boolean | Prisma.User$settingsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1714,6 +2371,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     audit_logs: Prisma.$AuditLogPayload<ExtArgs>[]
     webhooks: Prisma.$WebhookEndpointPayload<ExtArgs>[]
     webhook_payloads: Prisma.$WebhookEventPayloadPayload<ExtArgs>[]
+    uploaded_files: Prisma.$UserFilePayload<ExtArgs>[]
+    settings: Prisma.$UserSettingsPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1721,6 +2380,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     supabase_id: string | null
     name: string | null
     username: string | null
+    phone: string | null
+    location: string | null
+    department: string | null
+    bio: string | null
+    avatar_url: string | null
     role: $Enums.UserRole
     status: $Enums.UserStatus
     api_credits: number
@@ -2132,6 +2796,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   audit_logs<T extends Prisma.User$audit_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   webhooks<T extends Prisma.User$webhooksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$webhooksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookEndpointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   webhook_payloads<T extends Prisma.User$webhook_payloadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$webhook_payloadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookEventPayloadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  uploaded_files<T extends Prisma.User$uploaded_filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploaded_filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserFilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  settings<T extends Prisma.User$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$settingsArgs<ExtArgs>>): Prisma.Prisma__UserSettingsClient<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2166,6 +2832,11 @@ export interface UserFieldRefs {
   readonly supabase_id: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly username: Prisma.FieldRef<"User", 'String'>
+  readonly phone: Prisma.FieldRef<"User", 'String'>
+  readonly location: Prisma.FieldRef<"User", 'String'>
+  readonly department: Prisma.FieldRef<"User", 'String'>
+  readonly bio: Prisma.FieldRef<"User", 'String'>
+  readonly avatar_url: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
   readonly api_credits: Prisma.FieldRef<"User", 'Int'>
@@ -2729,6 +3400,49 @@ export type User$webhook_payloadsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.WebhookEventPayloadScalarFieldEnum | Prisma.WebhookEventPayloadScalarFieldEnum[]
+}
+
+/**
+ * User.uploaded_files
+ */
+export type User$uploaded_filesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserFile
+   */
+  select?: Prisma.UserFileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserFile
+   */
+  omit?: Prisma.UserFileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserFileInclude<ExtArgs> | null
+  where?: Prisma.UserFileWhereInput
+  orderBy?: Prisma.UserFileOrderByWithRelationInput | Prisma.UserFileOrderByWithRelationInput[]
+  cursor?: Prisma.UserFileWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserFileScalarFieldEnum | Prisma.UserFileScalarFieldEnum[]
+}
+
+/**
+ * User.settings
+ */
+export type User$settingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserSettings
+   */
+  select?: Prisma.UserSettingsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserSettings
+   */
+  omit?: Prisma.UserSettingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserSettingsInclude<ExtArgs> | null
+  where?: Prisma.UserSettingsWhereInput
 }
 
 /**

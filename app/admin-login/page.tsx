@@ -129,8 +129,10 @@ export default async function AdminLoginPage() {
           <AdminLoginForm />
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            <p>Need help? Contact system administrator</p>
-            <p className="mt-2">Demo: info@blockmec.org / Akachukwu1@1</p>
+            <p>Need help? Contact your organization administrator.</p>
+            <p className="mt-2">
+              For access issues, email support@blockmec.com.
+            </p>
           </div>
         </div>
       </div>

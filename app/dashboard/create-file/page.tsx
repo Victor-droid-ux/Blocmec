@@ -215,7 +215,7 @@ export default function CreateFilePage() {
           placeholder={placeholder}
           value={additionalFields[key] || ""}
           onChange={(e) => handleAdditionalFieldChange(key, e.target.value)}
-          className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+          className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
         />
       </div>
     );
@@ -233,7 +233,7 @@ export default function CreateFilePage() {
           placeholder={placeholder}
           value={additionalFields[key] || ""}
           onChange={(e) => handleAdditionalFieldChange(key, e.target.value)}
-          className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+          className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
         />
       </div>
     );
@@ -658,10 +658,10 @@ export default function CreateFilePage() {
                   handleAdditionalFieldChange("oemCertified", v)
                 }
               >
-                <SelectTrigger className="bg-[#1a1625] border-0 text-white focus:ring-purple-500">
+                <SelectTrigger className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus:ring-purple-500">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#231c35] border-[#2a2139] text-white">
+                <SelectContent className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                   <SelectItem value="Yes">Yes</SelectItem>
                   <SelectItem value="No">No</SelectItem>
                 </SelectContent>
@@ -928,10 +928,10 @@ export default function CreateFilePage() {
                   handleAdditionalFieldChange("propertyType", v)
                 }
               >
-                <SelectTrigger className="bg-[#1a1625] border-0 text-white focus:ring-purple-500">
+                <SelectTrigger className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus:ring-purple-500">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#231c35] border-[#2a2139] text-white">
+                <SelectContent className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                   {[
                     "House",
                     "Apartment",
@@ -957,7 +957,7 @@ export default function CreateFilePage() {
                   handleAdditionalFieldChange("description", e.target.value)
                 }
                 rows={4}
-                className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
               />
             </div>
           </>,
@@ -973,7 +973,7 @@ export default function CreateFilePage() {
       <DashboardShell>
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Create Batch File</h2>
-          <p className="text-gray-400 mt-1">
+          <p className="text-slate-500 dark:text-gray-400 mt-1">
             Generate a batch of unique QR codes for your products
           </p>
         </div>
@@ -1075,7 +1075,7 @@ export default function CreateFilePage() {
             </CardContent>
           </Card>
 
-          <div className="bg-[#231c35] rounded-md p-6">
+          <div className="bg-white dark:bg-[#231c35] rounded-md p-6">
             <Accordion type="single" collapsible defaultValue="item-1">
               <AccordionItem value="item-1">
                 <AccordionTrigger className="text-xl font-semibold">
@@ -1102,7 +1102,7 @@ export default function CreateFilePage() {
             productImage={productImage}
           />
 
-          <div className="bg-[#231c35] rounded-md p-6">
+          <div className="bg-white dark:bg-[#231c35] rounded-md p-6">
             <h2 className="text-xl font-semibold mb-4">QR Code Settings</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
@@ -1110,11 +1110,11 @@ export default function CreateFilePage() {
                 <Select value={qrType} onValueChange={setQrType}>
                   <SelectTrigger
                     id="qr-type"
-                    className="bg-[#1a1625] border-0 text-white"
+                    className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white"
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#231c35] border-[#2a2139] text-white">
+                  <SelectContent className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                     <SelectItem value="standard">Standard</SelectItem>
                     <SelectItem value="secure">Secure (Encrypted)</SelectItem>
                     <SelectItem value="timed">Timed (Expiring)</SelectItem>
@@ -1128,10 +1128,10 @@ export default function CreateFilePage() {
                   type="number"
                   value={expiryDays}
                   onChange={(e) => setExpiryDays(e.target.value)}
-                  className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                  className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                   min="1"
                 />
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-slate-500 dark:text-gray-400">
                   Leave empty for non-expiring QR codes
                 </p>
               </div>
@@ -1142,10 +1142,10 @@ export default function CreateFilePage() {
                   type="number"
                   value={verificationLimit}
                   onChange={(e) => setVerificationLimit(e.target.value)}
-                  className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                  className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                   min="0"
                 />
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-slate-500 dark:text-gray-400">
                   0 = unlimited verifications
                 </p>
               </div>
@@ -1169,6 +1169,7 @@ export default function CreateFilePage() {
             <Button
               type="button"
               variant="outline"
+              className="dashboard-outline-btn"
               onClick={() => router.push("/dashboard/batch-files")}
             >
               Cancel

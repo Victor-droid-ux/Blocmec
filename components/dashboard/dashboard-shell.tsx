@@ -9,13 +9,18 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { UserNav } from "@/components/dashboard/user-nav";
 import { Sidebar } from "@/components/dashboard/sidebar";
+import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { RootState } from "@/store/store";
 import { ROUTES } from "@/config/routes";
 
 interface DashboardShellProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function DashboardShell({ children, className, ...props }: DashboardShellProps) {
+export function DashboardShell({
+  children,
+  className,
+  ...props
+}: DashboardShellProps) {
   const router = useRouter();
   const user = useSelector((state: RootState) => state.user.current);
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -28,40 +33,43 @@ export function DashboardShell({ children, className, ...props }: DashboardShell
   };
 
   return (
-    <div className='flex min-h-screen bg-[#1a1625] text-white'>
+    <div className="flex min-h-screen bg-slate-100 text-slate-900 dark:bg-[#1a1625] dark:text-white">
       <Sidebar open={sidebarOpen} />
 
-      <div className='flex flex-1 flex-col'>
-        <header className='sticky top-0 z-40 flex h-16 items-center gap-4 border-b border-[#2a2139] bg-[#1a1625] px-4'>
+      <div className="flex flex-1 flex-col">
+        <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b border-slate-200 bg-slate-100 px-4 dark:border-[#2a2139] dark:bg-[#1a1625]">
           <Button
-            variant='ghost'
-            size='icon'
-            className='md:hidden'
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
-            <Menu className='h-5 w-5' />
-            <span className='sr-only'>Toggle Menu</span>
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
           </Button>
 
-          <div className='flex items-center gap-2'>
-            <div className='h-8 w-8 rounded-full bg-white'></div>
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-full bg-white"></div>
             <div>
-              <div className='flex items-center'>
-                <h2 className='text-lg font-semibold'>Hello {displayName}</h2>
-                <span className='ml-2 rounded-md bg-purple-800 px-2 py-0.5 text-xs text-purple-200'>
+              <div className="flex items-center">
+                <h2 className="text-lg font-semibold">Hello {displayName}</h2>
+                <span className="ml-2 rounded-md bg-purple-800 px-2 py-0.5 text-xs text-purple-200">
                   organization
                 </span>
               </div>
-              <p className='text-sm text-gray-400'>{displayEmail}</p>
+              <p className="text-sm text-slate-500 dark:text-gray-400">
+                {displayEmail}
+              </p>
             </div>
           </div>
 
-          <div className='ml-auto flex items-center gap-4'>
+          <div className="ml-auto flex items-center gap-4">
+            <ModeToggle />
             <Button
-              className='bg-purple-600 hover:bg-purple-700'
+              className="bg-purple-600 hover:bg-purple-700"
               onClick={handleCreateNewFile}
             >
-              <Plus className='mr-2 h-4 w-4' />
+              <Plus className="mr-2 h-4 w-4" />
               Create New File
             </Button>
             <UserNav />

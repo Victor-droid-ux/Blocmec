@@ -27,6 +27,12 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import {
   Copy,
@@ -49,6 +55,9 @@ import {
 } from "lucide-react";
 import AuthGuard from "@/components/dashboard/auth-guard";
 import { API_ENDPOINTS } from "@/config/endpoints";
+import { ROUTES } from "@/config/routes";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 interface UserProfile {
   id: string;
@@ -191,7 +200,7 @@ function WebhookEventToggleGroup({
               {option.label}
             </p>
             {layout === "detailed" ? (
-              <p className="text-xs text-gray-400">{option.description}</p>
+              <p className="text-xs text-slate-500 dark:text-gray-400">{option.description}</p>
             ) : null}
           </div>
           <Switch
@@ -304,6 +313,8 @@ async function fetchWithRetryOnServiceUnavailable(
 export default function DeveloperPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const authLoading = useSelector((state: RootState) => state.user.loading);
+  const currentUser = useSelector((state: RootState) => state.user.current);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [webhooks, setWebhooks] = useState<WebhookEndpoint[]>([]);
@@ -356,7 +367,17 @@ export default function DeveloperPage() {
     admin: false,
   });
 
+  const isFreePlan =
+    (profile?.subscription_plan ?? "free").toLowerCase() === "free";
+
   useEffect(() => {
+    if (authLoading) return;
+
+    if (!currentUser) {
+      setLoading(false);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const [profileRes, keysRes, pricingRes, webhooksRes] =
@@ -400,7 +421,7 @@ export default function DeveloperPage() {
       }
     };
     fetchData();
-  }, [toast]);
+  }, [authLoading, currentUser, toast]);
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -979,7 +1000,7 @@ export default function DeveloperPage() {
 
   if (loading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-[#1a1625]">
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50 dark:bg-[#1a1625]">
         <Loader2 className="h-10 w-10 animate-spin text-purple-500" />
       </div>
     );
@@ -992,7 +1013,7 @@ export default function DeveloperPage() {
         <div className="space-y-6">
           <div>
             <h2 className="text-3xl font-bold tracking-tight">Developer API</h2>
-            <p className="text-gray-400 mt-2">
+            <p className="text-slate-500 dark:text-gray-400 mt-2">
               Integrate BLOCKMEC QR verification into your products and stop
               counterfeits.
             </p>
@@ -1032,10 +1053,10 @@ export default function DeveloperPage() {
 
             {/* API Credits Tab */}
             <TabsContent value="api-credits" className="space-y-6">
-              <Card className="bg-[#231c35] border-[#2a2139] text-white">
+              <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Coins className="h-5 w-5 text-purple-400" />
+                    <Coins className="h-5 w-5 text-violet-600 dark:text-purple-400" />
                     API Credits Balance
                   </CardTitle>
                 </CardHeader>
@@ -1044,22 +1065,22 @@ export default function DeveloperPage() {
                     <div className="space-y-4">
                       <div>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm text-gray-300">
+                          <span className="text-sm text-slate-600 dark:text-gray-300">
                             Available Credits
                           </span>
                           <span className="text-xl font-bold">
                             {(profile?.api_credits ?? 0).toLocaleString()}
                           </span>
                         </div>
-                        <div className="w-full h-2 bg-[#1a1625] rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-slate-50 dark:bg-[#1a1625] rounded-full overflow-hidden">
                           <div
                             className="bg-green-600 h-full rounded-full"
                             style={{ width: "100%" }}
                           />
                         </div>
                       </div>
-                      <div className="bg-[#1a1625] p-4 rounded-md">
-                        <p className="text-sm text-gray-400">
+                      <div className="bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md">
+                        <p className="text-sm text-slate-500 dark:text-gray-400">
                           Subscription Plan
                         </p>
                         <p className="text-lg font-semibold capitalize">
@@ -1068,7 +1089,7 @@ export default function DeveloperPage() {
                       </div>
                     </div>
 
-                    <div className="bg-[#1a1625] p-4 rounded-md space-y-4">
+                    <div className="bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md space-y-4">
                       <h3 className="text-lg font-medium">Purchase Credits</h3>
                       <div className="space-y-2">
                         <Label>Number of Credits</Label>
@@ -1077,7 +1098,7 @@ export default function DeveloperPage() {
                           value={purchaseAmount}
                           onChange={(e) => setPurchaseAmount(e.target.value)}
                           min="100"
-                          className="bg-[#2a2139] border-0 text-white"
+                          className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white"
                         />
                       </div>
                       <div className="space-y-2">
@@ -1086,10 +1107,10 @@ export default function DeveloperPage() {
                           value={paymentMethod}
                           onValueChange={setPaymentMethod}
                         >
-                          <SelectTrigger className="bg-[#2a2139] border-0 text-white">
+                          <SelectTrigger className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-[#231c35] border-[#2a2139] text-white">
+                          <SelectContent className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                             <SelectItem value="blc">BLC Tokens</SelectItem>
                             <SelectItem value="card">
                               Credit/Debit Card (USD)
@@ -1103,9 +1124,9 @@ export default function DeveloperPage() {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div className="flex justify-between text-sm text-gray-400">
+                      <div className="flex justify-between text-sm text-slate-500 dark:text-gray-400">
                         <span>Cost:</span>
-                        <span className="font-bold text-white">
+                        <span className="font-bold text-slate-900 dark:text-white">
                           {pricing ? (
                             <>
                               {paymentMethod === "paystack-ngn" ? "₦" : ""}
@@ -1137,10 +1158,10 @@ export default function DeveloperPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-[#231c35] border-[#2a2139] text-white">
+              <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <ShoppingCart className="h-5 w-5 text-purple-400" />
+                    <ShoppingCart className="h-5 w-5 text-violet-600 dark:text-purple-400" />
                     Subscription Plans
                   </CardTitle>
                 </CardHeader>
@@ -1187,10 +1208,10 @@ export default function DeveloperPage() {
                     ].map((plan) => (
                       <div
                         key={plan.name}
-                        className={`bg-[#1a1625] p-6 rounded-lg border relative ${
+                        className={`bg-slate-50 dark:bg-[#1a1625] p-6 rounded-lg border relative ${
                           plan.popular
                             ? "border-orange-500"
-                            : "border-[#2a2139]"
+                            : "border-slate-200 dark:border-[#2a2139]"
                         } ${
                           profile?.subscription_plan === plan.slug
                             ? "ring-2 ring-purple-500"
@@ -1212,10 +1233,10 @@ export default function DeveloperPage() {
                             {plan.price}
                           </div>
                           {plan.price !== "Custom" && (
-                            <div className="text-sm text-gray-400">/month</div>
+                            <div className="text-sm text-slate-500 dark:text-gray-400">/month</div>
                           )}
                         </div>
-                        <div className="text-center text-sm text-gray-300 mb-6">
+                        <div className="text-center text-sm text-slate-600 dark:text-gray-300 mb-6">
                           <Check className="h-4 w-4 text-green-500 inline mr-1" />
                           {plan.credits} API credits/month
                         </div>
@@ -1226,12 +1247,12 @@ export default function DeveloperPage() {
                               ? "default"
                               : "outline"
                           }
-                          disabled={
-                            profile?.subscription_plan === plan.slug ||
-                            plan.slug === "enterprise"
-                          }
+                          disabled={profile?.subscription_plan === plan.slug}
                           onClick={() => {
-                            if (plan.slug === "enterprise") return;
+                            if (plan.slug === "enterprise") {
+                              router.push(ROUTES.CONTACT_SALES);
+                              return;
+                            }
                             router.push(
                               `/dashboard/developer/subscription-payment?plan=${plan.slug}&amount=${plan.ngnAmount}&currency=NGN&credits=${plan.creditsNum}`,
                             );
@@ -1252,28 +1273,76 @@ export default function DeveloperPage() {
 
             {/* API Keys Tab */}
             <TabsContent value="api-keys" className="space-y-6">
-              <Card className="bg-[#231c35] border-[#2a2139] text-white">
+              <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div>
                       <CardTitle>API Keys</CardTitle>
-                      <CardDescription className="text-gray-400">
+                      <CardDescription className="text-slate-500 dark:text-gray-400">
                         Your API keys grant access to BLOCKMEC verification
                         services.
                       </CardDescription>
                     </div>
-                    <Button
-                      className="bg-purple-600 hover:bg-purple-700"
-                      onClick={handleGenerateApiKey}
-                    >
-                      <Key className="mr-2 h-4 w-4" />
-                      Create New Key
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        className="bg-purple-600 hover:bg-purple-700"
+                        onClick={handleGenerateApiKey}
+                        disabled={isFreePlan}
+                      >
+                        <Key className="mr-2 h-4 w-4" />
+                        Create New Key
+                      </Button>
+                      {isFreePlan ? (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-amber-300 hover:text-amber-200"
+                                aria-label="Why is API key creation disabled?"
+                              >
+                                <Info className="h-4 w-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs">
+                              Free plan accounts cannot create production API
+                              keys. Upgrade to a paid plan to unlock API keys,
+                              script token generation, and webhook automation.
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      ) : null}
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {isFreePlan && (
+                    <div className="rounded-md border border-amber-500/40 bg-amber-500/10 p-4 text-amber-900 dark:text-amber-100">
+                      <p className="font-medium">
+                        API keys require a paid subscription in production.
+                      </p>
+                      <p className="mt-1 text-sm text-amber-800 dark:text-amber-200/90">
+                        Upgrade your plan in the API Credits tab to unlock API
+                        key generation, script integration, and production
+                        webhooks.
+                      </p>
+                      <Button
+                        className="mt-3 bg-amber-500 text-black hover:bg-amber-400"
+                        onClick={() =>
+                          router.push(
+                            "/dashboard/developer/subscription-payment?plan=business&amount=5000&currency=NGN&credits=5000",
+                          )
+                        }
+                      >
+                        Upgrade to Business
+                      </Button>
+                    </div>
+                  )}
+
                   {apiKeys.length === 0 ? (
-                    <div className="text-center py-8 text-gray-400">
+                    <div className="text-center py-8 text-slate-500 dark:text-gray-400">
                       <Key className="h-12 w-12 mx-auto mb-3 opacity-20" />
                       <p>No API keys yet. Create one to get started.</p>
                     </div>
@@ -1281,13 +1350,13 @@ export default function DeveloperPage() {
                     apiKeys.map((key) => (
                       <div
                         key={key.id}
-                        className="bg-[#1a1625] p-4 rounded-md flex items-center justify-between gap-4"
+                        className="bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md flex items-center justify-between gap-4"
                       >
                         <div className="flex-1 min-w-0">
                           <p className="font-medium">
                             {key.name ?? "Unnamed Key"}
                           </p>
-                          <p className="text-sm text-gray-400 font-mono">
+                          <p className="text-sm text-slate-500 dark:text-gray-400 font-mono">
                             {key.key_prefix}••••••••
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
@@ -1322,7 +1391,7 @@ export default function DeveloperPage() {
                     ))
                   )}
 
-                  <div className="border-t border-[#2a2139] pt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="border-t border-slate-200 dark:border-[#2a2139] pt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <h3 className="text-lg font-medium">Key Permissions</h3>
                       {Object.entries(keyPermissions).map(([key, val]) => (
@@ -1355,10 +1424,10 @@ export default function DeveloperPage() {
                     <div className="space-y-4">
                       <h3 className="text-lg font-medium">Key Expiration</h3>
                       <Select value={keyExpiry} onValueChange={setKeyExpiry}>
-                        <SelectTrigger className="bg-[#1a1625] border-0 text-white">
+                        <SelectTrigger className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#231c35] border-[#2a2139] text-white">
+                        <SelectContent className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                           <SelectItem value="30">30 days</SelectItem>
                           <SelectItem value="90">90 days</SelectItem>
                           <SelectItem value="180">180 days</SelectItem>
@@ -1374,10 +1443,10 @@ export default function DeveloperPage() {
 
             {/* Integration Tab */}
             <TabsContent value="integration" className="space-y-6">
-              <Card className="bg-[#231c35] border-[#2a2139] text-white">
+              <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileCode className="h-5 w-5 text-purple-400" />
+                    <FileCode className="h-5 w-5 text-violet-600 dark:text-purple-400" />
                     Website Integration
                   </CardTitle>
                 </CardHeader>
@@ -1388,7 +1457,7 @@ export default function DeveloperPage() {
                       placeholder="example.com"
                       value={domainName}
                       onChange={(e) => setDomainName(e.target.value)}
-                      className="bg-[#1a1625] border-0 text-white"
+                      className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white"
                     />
                   </div>
                   {apiKeys.filter((k) => k.status === "active").length ===
@@ -1414,12 +1483,12 @@ export default function DeveloperPage() {
                       <Textarea
                         value={generatedScript}
                         readOnly
-                        className="bg-[#1a1625] border-0 text-white font-mono text-sm h-24"
+                        className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white font-mono text-sm h-24"
                       />
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="absolute right-2 top-2 h-7 w-7 text-gray-400"
+                        className="absolute right-2 top-2 h-7 w-7 text-slate-500 dark:text-gray-400"
                         onClick={() =>
                           copyToClipboard(generatedScript, "Script")
                         }
@@ -1431,28 +1500,32 @@ export default function DeveloperPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-[#231c35] border-[#2a2139] text-white">
+              <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Info className="h-5 w-5 text-purple-400" />
+                    <Info className="h-5 w-5 text-violet-600 dark:text-purple-400" />
                     API Documentation
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-[#1a1625] p-4 rounded-md">
+                  <div className="bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md">
                     <h3 className="text-lg font-medium mb-4">
                       Example API Usage
                     </h3>
+                    <p className="text-xs text-slate-500 dark:text-gray-400 mb-4">
+                      Use your dashboard-hosted API routes. Supply your key with
+                      the <code>x-api-key</code> header.
+                    </p>
                     <div className="space-y-4">
                       <div>
                         <h4 className="text-sm font-medium mb-2">
                           Generate a QR Code
                         </h4>
-                        <pre className="bg-[#2a2139] p-3 rounded-md text-xs overflow-x-auto">
-                          <code className="text-gray-300">{`fetch('https://api.blockmec.org/v1/qr/generate', {
+                        <pre className="bg-slate-100 dark:bg-[#2a2139] p-3 rounded-md text-xs overflow-x-auto">
+                          <code className="text-slate-600 dark:text-gray-300">{`fetch('https://your-domain.com/api/generate-qr', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
+    'x-api-key': 'bm_your_api_key',
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
@@ -1467,15 +1540,30 @@ export default function DeveloperPage() {
                         <h4 className="text-sm font-medium mb-2">
                           Verify a QR Code
                         </h4>
-                        <pre className="bg-[#2a2139] p-3 rounded-md text-xs overflow-x-auto">
-                          <code className="text-gray-300">{`fetch('https://api.blockmec.org/v1/qr/verify', {
+                        <pre className="bg-slate-100 dark:bg-[#2a2139] p-3 rounded-md text-xs overflow-x-auto">
+                          <code className="text-slate-600 dark:text-gray-300">{`fetch('https://your-domain.com/api/verify-qr', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
+    'x-api-key': 'bm_your_api_key',
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
     tokenId: 'BM-xxx-xxx'
+  })
+})`}</code>
+                        </pre>
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-medium mb-2">
+                          Generate Domain-Bound Script
+                        </h4>
+                        <pre className="bg-slate-100 dark:bg-[#2a2139] p-3 rounded-md text-xs overflow-x-auto">
+                          <code className="text-slate-600 dark:text-gray-300">{`fetch('/api/user/script-token', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    apiKeyId: 'your_api_key_id',
+    domain: 'example.com'
   })
 })`}</code>
                         </pre>
@@ -1487,22 +1575,22 @@ export default function DeveloperPage() {
             </TabsContent>
 
             <TabsContent value="webhooks" className="space-y-6">
-              <Card className="bg-[#231c35] border-[#2a2139] text-white">
+              <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                 <CardHeader>
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <CardTitle className="flex items-center gap-2">
-                        <Webhook className="h-5 w-5 text-purple-400" />
+                        <Webhook className="h-5 w-5 text-violet-600 dark:text-purple-400" />
                         Webhook Endpoints
                       </CardTitle>
-                      <CardDescription className="text-gray-400">
+                      <CardDescription className="text-slate-500 dark:text-gray-400">
                         Send generated QR batches to your backend as signed
                         server-to-server events.
                       </CardDescription>
                     </div>
                     <Button
                       variant="outline"
-                      className="border-[#2a2139] bg-[#1a1625]"
+                      className="dashboard-outline-btn"
                       onClick={fetchWebhooks}
                       disabled={isWebhookRefreshing}
                     >
@@ -1517,14 +1605,14 @@ export default function DeveloperPage() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="space-y-4 rounded-md bg-[#1a1625] p-4">
+                    <div className="space-y-4 rounded-md bg-slate-50 dark:bg-[#1a1625] p-4">
                       <h3 className="text-lg font-medium">Create Webhook</h3>
                       <div className="space-y-2">
                         <Label>Name</Label>
                         <Input
                           value={webhookName}
                           onChange={(e) => setWebhookName(e.target.value)}
-                          className="bg-[#2a2139] border-0 text-white"
+                          className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white"
                           placeholder="Primary webhook"
                         />
                       </div>
@@ -1535,10 +1623,10 @@ export default function DeveloperPage() {
                           onChange={(e) =>
                             setWebhookEndpointUrl(e.target.value)
                           }
-                          className="bg-[#2a2139] border-0 text-white"
+                          className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white"
                           placeholder="https://example.com/api/blockmec/webhooks"
                         />
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-slate-500 dark:text-gray-400">
                           Webhook endpoints must use https:// and be publicly
                           reachable.
                         </p>
@@ -1550,10 +1638,10 @@ export default function DeveloperPage() {
                           onChange={(e) =>
                             setWebhookAllowedDomainsInput(e.target.value)
                           }
-                          className="bg-[#2a2139] border-0 text-white min-h-[90px]"
+                          className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white min-h-[90px]"
                           placeholder={"example.com\napi.example.com"}
                         />
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-slate-500 dark:text-gray-400">
                           One domain per line or comma-separated. If provided,
                           webhook endpoint host must match one of these domains.
                         </p>
@@ -1568,10 +1656,10 @@ export default function DeveloperPage() {
                             )
                           }
                         >
-                          <SelectTrigger className="bg-[#2a2139] border-0 text-white">
+                          <SelectTrigger className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white">
                             <SelectValue placeholder="Optional API key binding" />
                           </SelectTrigger>
-                          <SelectContent className="bg-[#231c35] border-[#2a2139] text-white">
+                          <SelectContent className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                             <SelectItem value="none">No key binding</SelectItem>
                             {apiKeys
                               .filter((key) => key.status === "active")
@@ -1596,7 +1684,7 @@ export default function DeveloperPage() {
                             onChange={(e) =>
                               setWebhookTimeoutMs(e.target.value)
                             }
-                            className="bg-[#2a2139] border-0 text-white"
+                            className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white"
                           />
                         </div>
                         <div className="space-y-2">
@@ -1609,7 +1697,7 @@ export default function DeveloperPage() {
                             onChange={(e) =>
                               setWebhookMaxRetries(e.target.value)
                             }
-                            className="bg-[#2a2139] border-0 text-white"
+                            className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white"
                           />
                         </div>
                       </div>
@@ -1618,7 +1706,7 @@ export default function DeveloperPage() {
                         <WebhookEventToggleGroup
                           state={webhookEvents}
                           setState={setWebhookEvents}
-                          itemClassName="bg-[#2a2139]"
+                          itemClassName="bg-slate-100 dark:bg-[#2a2139]"
                         />
                       </div>
                       <Button
@@ -1647,9 +1735,9 @@ export default function DeveloperPage() {
                       )}
                     </div>
 
-                    <div className="space-y-4 rounded-md bg-[#1a1625] p-4">
+                    <div className="space-y-4 rounded-md bg-slate-50 dark:bg-[#1a1625] p-4">
                       <h3 className="text-lg font-medium">Signing Secret</h3>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-slate-500 dark:text-gray-400">
                         Use this secret to verify webhook signatures on your
                         server. It is only returned when the webhook is created.
                       </p>
@@ -1659,11 +1747,11 @@ export default function DeveloperPage() {
                           "Create a webhook to reveal its signing secret."
                         }
                         readOnly
-                        className="bg-[#2a2139] border-0 text-white font-mono text-sm min-h-[140px]"
+                        className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white font-mono text-sm min-h-[140px]"
                       />
                       <Button
                         variant="outline"
-                        className="border-[#2a2139] bg-[#2a2139]/30"
+                        className="dashboard-outline-btn"
                         onClick={() =>
                           latestWebhookSecret &&
                           copyToClipboard(latestWebhookSecret, "Webhook secret")
@@ -1673,7 +1761,7 @@ export default function DeveloperPage() {
                         <Shield className="mr-2 h-4 w-4" />
                         Copy Signing Secret
                       </Button>
-                      <div className="rounded-md border border-[#2a2139] bg-[#231c35] p-3 text-xs text-gray-300">
+                      <div className="rounded-md border border-slate-200 dark:border-[#2a2139] bg-white dark:bg-[#231c35] p-3 text-xs text-slate-600 dark:text-gray-300">
                         <p className="font-medium mb-2">
                           Headers sent with each delivery
                         </p>
@@ -1682,9 +1770,9 @@ export default function DeveloperPage() {
                         <p>X-Blockmec-Timestamp</p>
                         <p>X-Blockmec-Signature</p>
                       </div>
-                      <div className="rounded-md border border-[#2a2139] bg-[#231c35] p-3 text-xs text-gray-300 space-y-2">
+                      <div className="rounded-md border border-slate-200 dark:border-[#2a2139] bg-white dark:bg-[#231c35] p-3 text-xs text-slate-600 dark:text-gray-300 space-y-2">
                         <p className="font-medium">Canonical webhook payload</p>
-                        <pre className="bg-[#1a1625] p-3 rounded-md overflow-x-auto text-[11px] leading-relaxed">
+                        <pre className="bg-slate-50 dark:bg-[#1a1625] p-3 rounded-md overflow-x-auto text-[11px] leading-relaxed">
                           {`{
   "event": "qr.generated",
   "delivery_id": "uuid",
@@ -1700,12 +1788,12 @@ export default function DeveloperPage() {
                     </div>
                   </div>
 
-                  <Card className="bg-[#1a1625] border-[#2a2139] text-white">
+                  <Card className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139] text-slate-900 dark:text-white">
                     <CardHeader>
                       <CardTitle className="text-base">
                         Payload Viewer
                       </CardTitle>
-                      <CardDescription className="text-gray-400">
+                      <CardDescription className="text-slate-500 dark:text-gray-400">
                         Fetch full payload details using a payload_ref ID.
                       </CardDescription>
                     </CardHeader>
@@ -1714,12 +1802,12 @@ export default function DeveloperPage() {
                         <Input
                           value={payloadLookupId}
                           onChange={(e) => setPayloadLookupId(e.target.value)}
-                          className="bg-[#2a2139] border-0 text-white"
+                          className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white"
                           placeholder="Enter payload ID from payload_ref"
                         />
                         <Button
                           variant="outline"
-                          className="border-[#2a2139] bg-[#2a2139]/30"
+                          className="dashboard-outline-btn"
                           onClick={handleLookupPayload}
                           disabled={payloadLookupLoading}
                         >
@@ -1738,7 +1826,7 @@ export default function DeveloperPage() {
                             ? JSON.stringify(payloadLookupData, null, 2)
                             : "No payload loaded yet."
                         }
-                        className="bg-[#2a2139] border-0 text-white font-mono min-h-[170px]"
+                        className="bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white font-mono min-h-[170px]"
                       />
                     </CardContent>
                   </Card>
@@ -1748,12 +1836,12 @@ export default function DeveloperPage() {
                       <h3 className="text-lg font-medium">
                         Registered Webhooks
                       </h3>
-                      <span className="text-sm text-gray-400">
+                      <span className="text-sm text-slate-500 dark:text-gray-400">
                         {webhooks.length} configured
                       </span>
                     </div>
                     {webhooks.length === 0 ? (
-                      <div className="rounded-md bg-[#1a1625] p-8 text-center text-gray-400">
+                      <div className="rounded-md bg-slate-50 dark:bg-[#1a1625] p-8 text-center text-slate-500 dark:text-gray-400">
                         <Webhook className="h-12 w-12 mx-auto mb-3 opacity-20" />
                         <p>No webhooks configured yet.</p>
                       </div>
@@ -1762,7 +1850,7 @@ export default function DeveloperPage() {
                         {webhooks.map((webhook) => (
                           <div
                             key={webhook.id}
-                            className="rounded-md bg-[#1a1625] p-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"
+                            className="rounded-md bg-slate-50 dark:bg-[#1a1625] p-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"
                           >
                             <div className="min-w-0 flex-1">
                               <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -1786,7 +1874,7 @@ export default function DeveloperPage() {
                                   </span>
                                 )}
                               </div>
-                              <p className="text-sm text-gray-300 break-all">
+                              <p className="text-sm text-slate-600 dark:text-gray-300 break-all">
                                 {webhook.endpoint_url}
                               </p>
                               <p className="mt-2 text-xs text-gray-500">
@@ -1815,7 +1903,7 @@ export default function DeveloperPage() {
                             <div className="flex items-center gap-2 flex-wrap">
                               <Button
                                 variant="outline"
-                                className="border-[#2a2139] bg-[#2a2139]/30"
+                                className="dashboard-outline-btn"
                                 onClick={() => openEditWebhookModal(webhook)}
                               >
                                 <Code className="mr-2 h-4 w-4" />
@@ -1823,7 +1911,7 @@ export default function DeveloperPage() {
                               </Button>
                               <Button
                                 variant="outline"
-                                className="border-[#2a2139] bg-[#2a2139]/30"
+                                className="dashboard-outline-btn"
                                 onClick={() => handleTestWebhook(webhook.id)}
                               >
                                 <Send className="mr-2 h-4 w-4" />
@@ -1831,7 +1919,7 @@ export default function DeveloperPage() {
                               </Button>
                               <Button
                                 variant="outline"
-                                className="border-[#2a2139] bg-[#2a2139]/30"
+                                className="dashboard-outline-btn"
                                 onClick={() =>
                                   handleToggleWebhookStatus(webhook)
                                 }
@@ -1863,10 +1951,10 @@ export default function DeveloperPage() {
               </Card>
 
               {editingWebhook && (
-                <Card className="bg-[#231c35] border-[#2a2139] text-white">
+                <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                   <CardHeader>
                     <CardTitle>Edit Webhook</CardTitle>
-                    <CardDescription className="text-gray-400">
+                    <CardDescription className="text-slate-500 dark:text-gray-400">
                       Update endpoint, events, retry policy, status, and domain
                       constraints.
                     </CardDescription>
@@ -1877,7 +1965,7 @@ export default function DeveloperPage() {
                       <Input
                         value={editWebhookName}
                         onChange={(e) => setEditWebhookName(e.target.value)}
-                        className="bg-[#1a1625] border-0 text-white"
+                        className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white"
                       />
                     </div>
                     <div className="space-y-2">
@@ -1887,9 +1975,9 @@ export default function DeveloperPage() {
                         onChange={(e) =>
                           setEditWebhookEndpointUrl(e.target.value)
                         }
-                        className="bg-[#1a1625] border-0 text-white"
+                        className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white"
                       />
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-slate-500 dark:text-gray-400">
                         Updated webhook endpoints must use https:// and be
                         publicly reachable.
                       </p>
@@ -1901,7 +1989,7 @@ export default function DeveloperPage() {
                         onChange={(e) =>
                           setEditWebhookAllowedDomainsInput(e.target.value)
                         }
-                        className="bg-[#1a1625] border-0 text-white min-h-[90px]"
+                        className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white min-h-[90px]"
                         placeholder={"example.com\napi.example.com"}
                       />
                     </div>
@@ -1916,10 +2004,10 @@ export default function DeveloperPage() {
                             )
                           }
                         >
-                          <SelectTrigger className="bg-[#1a1625] border-0 text-white">
+                          <SelectTrigger className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-[#231c35] border-[#2a2139] text-white">
+                          <SelectContent className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
                             <SelectItem value="active">active</SelectItem>
                             <SelectItem value="paused">paused</SelectItem>
                             <SelectItem value="disabled">disabled</SelectItem>
@@ -1936,7 +2024,7 @@ export default function DeveloperPage() {
                           onChange={(e) =>
                             setEditWebhookTimeoutMs(e.target.value)
                           }
-                          className="bg-[#1a1625] border-0 text-white"
+                          className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white"
                         />
                       </div>
                       <div className="space-y-2">
@@ -1949,7 +2037,7 @@ export default function DeveloperPage() {
                           onChange={(e) =>
                             setEditWebhookMaxRetries(e.target.value)
                           }
-                          className="bg-[#1a1625] border-0 text-white"
+                          className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white"
                         />
                       </div>
                     </div>
@@ -1959,14 +2047,14 @@ export default function DeveloperPage() {
                         state={editWebhookEvents}
                         setState={setEditWebhookEvents}
                         layout="compact"
-                        itemClassName="bg-[#1a1625]"
+                        itemClassName="bg-slate-50 dark:bg-[#1a1625]"
                       />
                     </div>
                   </CardContent>
                   <CardFooter className="flex items-center justify-end gap-2">
                     <Button
                       variant="outline"
-                      className="border-[#2a2139] bg-[#1a1625]"
+                      className="dashboard-outline-btn"
                       onClick={closeEditWebhookModal}
                       disabled={isEditWebhookSubmitting}
                     >

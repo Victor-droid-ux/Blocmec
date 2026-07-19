@@ -197,7 +197,7 @@ export default function SubscriptionPaymentPage() {
 
   if (authLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-[#1a1625]">
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50 dark:bg-[#1a1625]">
         <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-purple-500"></div>
       </div>
     );
@@ -217,7 +217,7 @@ export default function SubscriptionPaymentPage() {
         <h2 className="text-2xl font-bold">
           Subscribe — {PLAN_LABELS[plan] ?? plan} Plan
         </h2>
-        <p className="text-gray-400 mt-1">
+        <p className="text-slate-500 dark:text-gray-400 mt-1">
           Unlock webhooks, API keys, and {Number(credits).toLocaleString()}{" "}
           credits/month
         </p>
@@ -225,10 +225,10 @@ export default function SubscriptionPaymentPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
-          <Card className="bg-[#231c35] border-[#2a2139] text-white">
+          <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
             <CardHeader>
               <CardTitle>Payment Details</CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-slate-500 dark:text-gray-400">
                 Enter your details to subscribe via Paystack
               </CardDescription>
             </CardHeader>
@@ -243,7 +243,7 @@ export default function SubscriptionPaymentPage() {
                       placeholder="user@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                      className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                       required
                     />
                   </div>
@@ -255,7 +255,7 @@ export default function SubscriptionPaymentPage() {
                       placeholder="Full Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                      className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                       required
                     />
                   </div>
@@ -267,27 +267,27 @@ export default function SubscriptionPaymentPage() {
                       placeholder="Phone number (optional)"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500"
+                      className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                     />
                   </div>
                 </div>
 
-                <div className="bg-[#1a1625] p-4 rounded-md space-y-2">
+                <div className="bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Plan:</span>
+                    <span className="text-slate-500 dark:text-gray-400">Plan:</span>
                     <span className="font-medium">
                       {PLAN_LABELS[plan] ?? plan}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Credits included:</span>
+                    <span className="text-slate-500 dark:text-gray-400">Credits included:</span>
                     <span>{Number(credits).toLocaleString()} / month</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Billing cycle:</span>
+                    <span className="text-slate-500 dark:text-gray-400">Billing cycle:</span>
                     <span>Monthly</span>
                   </div>
-                  <div className="flex justify-between pt-2 border-t border-[#2a2139]">
+                  <div className="flex justify-between pt-2 border-t border-slate-200 dark:border-[#2a2139]">
                     <span className="font-medium">Total:</span>
                     <span className="font-bold text-lg">
                       {currencySymbol}
@@ -318,7 +318,7 @@ export default function SubscriptionPaymentPage() {
                   <Button
                     type="button"
                     variant="outline"
-                    className="flex-1 border-gray-600 text-gray-300 hover:bg-[#2a2139] bg-transparent"
+                    className="dashboard-outline-btn flex-1"
                     onClick={() => router.push(ROUTES.DASHBOARD.DEVELOPER)}
                     disabled={isProcessing}
                   >
@@ -331,7 +331,7 @@ export default function SubscriptionPaymentPage() {
         </div>
 
         <div>
-          <Card className="bg-[#231c35] border-[#2a2139] text-white sticky top-20">
+          <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white sticky top-20">
             <CardHeader>
               <CardTitle>What you get</CardTitle>
             </CardHeader>
@@ -354,7 +354,7 @@ export default function SubscriptionPaymentPage() {
                 <div className="h-2 w-2 rounded-full bg-purple-400" />
                 <span>Priority support</span>
               </div>
-              <div className="mt-4 p-3 bg-[#1a1625] rounded-md text-gray-400 text-xs">
+              <div className="mt-4 p-3 bg-slate-50 dark:bg-[#1a1625] rounded-md text-slate-500 dark:text-gray-400 text-xs">
                 Subscription activates immediately after payment. Credits are
                 added to your account automatically.
               </div>

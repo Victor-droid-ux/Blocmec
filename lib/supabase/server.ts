@@ -5,7 +5,8 @@ function getSupabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key =
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
 
   if (!url || !key) {
     return null;
@@ -18,7 +19,7 @@ export function hasSupabaseEnv() {
   return getSupabaseConfig() !== null;
 }
 
-async function createSupabaseServerClient() {
+export async function createClient() {
   const cookieStore = await cookies();
   const config = getSupabaseConfig();
 
@@ -51,7 +52,7 @@ async function createSupabaseServerClient() {
 }
 
 export async function createServerSupabaseClient() {
-  return createSupabaseServerClient();
+  return createClient();
 }
 
 export async function createOptionalServerSupabaseClient() {
@@ -59,5 +60,5 @@ export async function createOptionalServerSupabaseClient() {
     return null;
   }
 
-  return createSupabaseServerClient();
+  return createClient();
 }

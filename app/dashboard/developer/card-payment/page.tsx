@@ -151,7 +151,7 @@ const handleCancel = () => {
 
   if (isLoading) {
     return (
-      <div className='flex h-screen w-full items-center justify-center bg-[#1a1625]'>
+      <div className='flex h-screen w-full items-center justify-center bg-slate-50 dark:bg-[#1a1625]'>
         <div className='h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-purple-500'></div>
       </div>
     );
@@ -169,17 +169,17 @@ const handleCancel = () => {
           Back to Developer Dashboard
         </Button>
         <h2 className='text-2xl font-bold'>Card Payment Gateway</h2>
-        <p className='text-gray-400 mt-1'>
+        <p className='text-slate-500 dark:text-gray-400 mt-1'>
           Complete your purchase of API credits using your credit or debit card
         </p>
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
         <div className='md:col-span-2'>
-          <Card className='bg-[#231c35] border-[#2a2139] text-white'>
+          <Card className='bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white'>
             <CardHeader>
               <CardTitle>Payment Details</CardTitle>
-              <CardDescription className='text-gray-400'>
+              <CardDescription className='text-slate-500 dark:text-gray-400'>
                 Enter your card details to complete your purchase
               </CardDescription>
             </CardHeader>
@@ -194,10 +194,10 @@ const handleCancel = () => {
                         placeholder='1234 5678 9012 3456'
                         value={cardNumber}
                         onChange={handleCardNumberChange}
-                        className='pl-10 bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500'
+                        className='pl-10 bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500'
                         maxLength={19}
                       />
-                      <CreditCard className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400' />
+                      <CreditCard className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-gray-400' />
                       <div className='absolute right-3 top-1/2 -translate-y-1/2 flex gap-1'>
                         <div className='w-8 h-5 bg-gray-700 rounded'></div>
                         <div className='w-8 h-5 bg-gray-700 rounded'></div>
@@ -212,7 +212,7 @@ const handleCancel = () => {
                       placeholder='John Smith'
                       value={cardName}
                       onChange={(e) => setCardName(e.target.value)}
-                      className='bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500'
+                      className='bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500'
                     />
                   </div>
 
@@ -221,10 +221,10 @@ const handleCancel = () => {
                       <Label>Expiry Date</Label>
                       <div className='flex gap-2'>
                         <Select value={expiryMonth} onValueChange={setExpiryMonth}>
-                          <SelectTrigger className='bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500'>
+                          <SelectTrigger className='bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500'>
                             <SelectValue placeholder='MM' />
                           </SelectTrigger>
-                          <SelectContent className='bg-[#231c35] border-[#2a2139] text-white'>
+                          <SelectContent className='bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white'>
                             {Array.from({ length: 12 }, (_, i) => {
                               const month = (i + 1).toString().padStart(2, "0");
                               return (
@@ -237,10 +237,10 @@ const handleCancel = () => {
                         </Select>
 
                         <Select value={expiryYear} onValueChange={setExpiryYear}>
-                          <SelectTrigger className='bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500'>
+                          <SelectTrigger className='bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500'>
                             <SelectValue placeholder='YY' />
                           </SelectTrigger>
-                          <SelectContent className='bg-[#231c35] border-[#2a2139] text-white'>
+                          <SelectContent className='bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white'>
                             {Array.from({ length: 10 }, (_, i) => {
                               const year = (new Date().getFullYear() + i)
                                 .toString()
@@ -266,25 +266,25 @@ const handleCancel = () => {
                           onChange={(e) =>
                             setCvv(e.target.value.replace(/\D/g, "").substring(0, 4))
                           }
-                          className='pl-10 bg-[#1a1625] border-0 text-white focus-visible:ring-purple-500'
+                          className='pl-10 bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500'
                           maxLength={4}
                         />
-                        <Lock className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400' />
+                        <Lock className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-gray-400' />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className='bg-[#1a1625] p-4 rounded-md'>
+                <div className='bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md'>
                   <div className='flex justify-between mb-2'>
-                    <span className='text-gray-400'>Subtotal:</span>
+                    <span className='text-slate-500 dark:text-gray-400'>Subtotal:</span>
                     <span>${Number.parseFloat(amount).toFixed(2)}</span>
                   </div>
                   <div className='flex justify-between mb-2'>
-                    <span className='text-gray-400'>Processing Fee:</span>
+                    <span className='text-slate-500 dark:text-gray-400'>Processing Fee:</span>
                     <span>$0.00</span>
                   </div>
-                  <div className='flex justify-between pt-2 border-t border-[#2a2139]'>
+                  <div className='flex justify-between pt-2 border-t border-slate-200 dark:border-[#2a2139]'>
                     <span className='font-medium'>Total:</span>
                     <span className='font-bold'>
                       ${Number.parseFloat(amount).toFixed(2)}
@@ -313,7 +313,7 @@ const handleCancel = () => {
                   <Button
                     type='button'
                     variant='outline'
-                    className='flex-1 border-gray-600 text-gray-300 hover:bg-[#2a2139]'
+                    className='dashboard-outline-btn flex-1'
                     onClick={handleCancel}
                     disabled={isProcessing}
                   >
@@ -326,23 +326,23 @@ const handleCancel = () => {
         </div>
 
         <div>
-          <Card className='bg-[#231c35] border-[#2a2139] text-white sticky top-20'>
+          <Card className='bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white sticky top-20'>
             <CardHeader>
               <CardTitle>Order Summary</CardTitle>
             </CardHeader>
             <CardContent className='space-y-4'>
-              <div className='bg-[#1a1625] p-4 rounded-md'>
+              <div className='bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md'>
                 <div className='flex justify-between mb-2'>
-                  <span className='text-gray-400'>API Credits:</span>
+                  <span className='text-slate-500 dark:text-gray-400'>API Credits:</span>
                   <span>{Number.parseInt(credits).toLocaleString()}</span>
                 </div>
                 <div className='flex justify-between mb-2'>
-                  <span className='text-gray-400'>Price per Credit:</span>
+                  <span className='text-slate-500 dark:text-gray-400'>Price per Credit:</span>
                   <span>
                     ${(Number.parseFloat(amount) / Number.parseInt(credits)).toFixed(4)}
                   </span>
                 </div>
-                <div className='flex justify-between pt-2 border-t border-[#2a2139]'>
+                <div className='flex justify-between pt-2 border-t border-slate-200 dark:border-[#2a2139]'>
                   <span className='font-medium'>Total Amount:</span>
                   <span className='font-bold'>
                     ${Number.parseFloat(amount).toFixed(2)}
@@ -352,7 +352,7 @@ const handleCancel = () => {
 
               <div className='space-y-2'>
                 <h3 className='font-medium'>What You'll Get</h3>
-                <ul className='space-y-2 text-sm text-gray-400'>
+                <ul className='space-y-2 text-sm text-slate-500 dark:text-gray-400'>
                   <li className='flex items-start gap-2'>
                     <div className='mt-1 min-w-4'>•</div>
                     <p>
@@ -377,7 +377,7 @@ const handleCancel = () => {
                 <div className='w-8 h-5 bg-gray-700 rounded'></div>
                 <div className='w-8 h-5 bg-gray-700 rounded'></div>
               </div>
-              <p className='text-xs text-gray-400 text-center'>
+              <p className='text-xs text-slate-500 dark:text-gray-400 text-center'>
                 All payments are secure and encrypted. We accept all major credit cards.
               </p>
             </CardContent>

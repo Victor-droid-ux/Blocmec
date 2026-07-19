@@ -127,7 +127,7 @@ export default function BLCPaymentPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-[#1a1625]">
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50 dark:bg-[#1a1625]">
         <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-purple-500"></div>
       </div>
     );
@@ -145,38 +145,38 @@ export default function BLCPaymentPage() {
           Back to Developer Dashboard
         </Button>
         <h2 className="text-2xl font-bold">BLC Payment Gateway</h2>
-        <p className="text-gray-400 mt-1">
+        <p className="text-slate-500 dark:text-gray-400 mt-1">
           Complete your purchase of API credits using BLOCKMEC tokens
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
-          <Card className="bg-[#231c35] border-[#2a2139] text-white">
+          <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
             <CardHeader>
               <CardTitle>Payment Details</CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-slate-500 dark:text-gray-400">
                 Send BLC tokens to the address below to complete your purchase
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="p-6 bg-[#1a1625] rounded-lg flex flex-col items-center justify-center">
+              <div className="p-6 bg-slate-50 dark:bg-[#1a1625] rounded-lg flex flex-col items-center justify-center">
                 <div className="bg-white p-4 rounded-lg mb-4">
                   <QrCode className="h-48 w-48 text-black" />
                 </div>
-                <p className="text-sm text-gray-400 mb-2">
+                <p className="text-sm text-slate-500 dark:text-gray-400 mb-2">
                   Scan QR code or send manually to:
                 </p>
                 <div className="relative w-full">
                   <Input
                     value={walletAddress}
                     readOnly
-                    className="pr-10 bg-[#2a2139] border-0 text-white focus-visible:ring-purple-500"
+                    className="pr-10 bg-slate-100 border border-slate-200 text-slate-900 dark:bg-[#2a2139] dark:border-0 dark:text-white focus-visible:ring-purple-500"
                   />
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-gray-400 hover:text-white"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white"
                     onClick={() => copyToClipboard(walletAddress)}
                   >
                     <Copy className="h-4 w-4" />
@@ -189,10 +189,10 @@ export default function BLCPaymentPage() {
                 <div className="space-y-2">
                   <Label>Amount to Send</Label>
                   <div className="flex items-center gap-2">
-                    <div className="bg-[#2a2139] p-3 rounded-md font-medium text-lg flex-1 text-center">
+                    <div className="bg-slate-100 dark:bg-[#2a2139] p-3 rounded-md font-medium text-lg flex-1 text-center">
                       {Number.parseFloat(amount).toFixed(2)} BLC
                     </div>
-                    <div className="bg-[#2a2139] p-3 rounded-md text-gray-400 text-sm flex items-center justify-center">
+                    <div className="bg-slate-100 dark:bg-[#2a2139] p-3 rounded-md text-slate-500 dark:text-gray-400 text-sm flex items-center justify-center">
                       ≈ ${(Number.parseFloat(amount) * 20).toFixed(2)} USD
                     </div>
                   </div>
@@ -200,20 +200,20 @@ export default function BLCPaymentPage() {
 
                 <div className="space-y-2">
                   <Label>Credits to Receive</Label>
-                  <div className="bg-[#2a2139] p-3 rounded-md font-medium text-lg text-center">
+                  <div className="bg-slate-100 dark:bg-[#2a2139] p-3 rounded-md font-medium text-lg text-center">
                     {Number.parseInt(credits).toLocaleString()} Credits
                   </div>
                 </div>
               </div>
 
-              <div className="bg-[#2a2139] p-4 rounded-md">
+              <div className="bg-slate-100 dark:bg-[#2a2139] p-4 rounded-md">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-medium">Payment Expires In:</h3>
                   <div className="text-xl font-bold text-yellow-400">
                     {formatTime(countdown)}
                   </div>
                 </div>
-                <div className="w-full bg-[#1a1625] h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-50 dark:bg-[#1a1625] h-2 rounded-full overflow-hidden">
                   <div
                     className="bg-yellow-400 h-full rounded-full"
                     style={{ width: `${(countdown / 900) * 100}%` }}
@@ -224,9 +224,8 @@ export default function BLCPaymentPage() {
                 <div className="bg-yellow-900/20 border border-yellow-600/30 p-4 rounded-md">
                   <p className="text-yellow-400 text-sm flex items-center">
                     <AlertCircle className="h-4 w-4 mr-2" />
-                    No cryptocurrency wallet detected. For a real transaction,
-                    you would need to install MetaMask or another compatible
-                    wallet. For this demo, you can proceed without a wallet.
+                    No cryptocurrency wallet detected. Install MetaMask or
+                    another compatible wallet to complete BLC transfer.
                   </p>
                 </div>
               )}
@@ -249,30 +248,30 @@ export default function BLCPaymentPage() {
                 </Button>
                 <Button
                   variant="outline"
-                  className="flex-1 border-gray-600 text-gray-300 hover:bg-[#2a2139] bg-transparent"
+                  className="dashboard-outline-btn flex-1"
                   onClick={handleCancel}
                   disabled={isProcessing}
                 >
                   Cancel Payment
                 </Button>
               </div>
-              <p className="text-xs text-gray-400 text-center">
-                For demonstration purposes, you can click "I've Sent the BLC"
-                without actually sending any tokens.
+              <p className="text-xs text-slate-500 dark:text-gray-400 text-center">
+                Credits are added after payment confirmation. Only click "I've
+                Sent the BLC" after completing the transfer.
               </p>
             </CardFooter>
           </Card>
         </div>
 
         <div>
-          <Card className="bg-[#231c35] border-[#2a2139] text-white sticky top-20">
+          <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white sticky top-20">
             <CardHeader>
               <CardTitle>Payment Instructions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <h3 className="font-medium">1. Send BLC Tokens</h3>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-slate-500 dark:text-gray-400">
                   Send exactly {Number.parseFloat(amount).toFixed(2)} BLC to the
                   wallet address shown. You can scan the QR code or copy the
                   address.
@@ -281,7 +280,7 @@ export default function BLCPaymentPage() {
 
               <div className="space-y-2">
                 <h3 className="font-medium">2. Confirm Transaction</h3>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-slate-500 dark:text-gray-400">
                   After sending, click the "I've Sent the BLC" button to confirm
                   your payment.
                 </p>
@@ -289,22 +288,24 @@ export default function BLCPaymentPage() {
 
               <div className="space-y-2">
                 <h3 className="font-medium">3. Receive Credits</h3>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-slate-500 dark:text-gray-400">
                   Once your payment is confirmed,{" "}
                   {Number.parseInt(credits).toLocaleString()} API credits will
                   be added to your account.
                 </p>
               </div>
 
-              <div className="bg-[#1a1625] p-4 rounded-md mt-4">
+              <div className="bg-slate-50 dark:bg-[#1a1625] p-4 rounded-md mt-4">
                 <h3 className="font-medium mb-2">Need Help?</h3>
-                <p className="text-sm text-gray-400 mb-4">
+                <p className="text-sm text-slate-500 dark:text-gray-400 mb-4">
                   If you encounter any issues with your payment, please contact
                   our support team.
                 </p>
                 <Button
                   variant="outline"
-                  className="w-full border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white bg-transparent"
+                  className="dashboard-outline-btn w-full"
+                  type="button"
+                  onClick={() => router.push(ROUTES.CONTACT_SALES)}
                 >
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Contact Support

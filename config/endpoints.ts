@@ -3,6 +3,10 @@
 export const API_ENDPOINTS = {
   AUTH: {
     SIGN_IN: "/api/auth/signin",
+    SIGN_UP: "/api/auth/signup",
+    RESEND_VERIFICATION: "/api/auth/resend-verification",
+    EXCHANGE_CODE: "/api/auth/exchange-code",
+    SYNC_USER: "/api/auth/sync-user",
     SIGN_OUT: "/api/auth/signout",
     ADMIN: "/api/auth/admin",
     ME: "/api/auth/me",
@@ -10,6 +14,8 @@ export const API_ENDPOINTS = {
 
   USER: {
     PROFILE: "/api/user/profile",
+    PROFILE_FILES: "/api/user/profile/files",
+    SETTINGS: "/api/user/settings",
     STATS: "/api/user/stats",
     API_KEYS: "/api/user/api-keys",
     SCRIPT_TOKEN: "/api/user/script-token",
@@ -50,5 +56,9 @@ export const API_ENDPOINTS = {
 
   INTERNAL: {
     WEBHOOK_DISPATCH: "/api/internal/webhooks/dispatch",
+  },
+
+  WEBHOOKS: {
+    PAYSTACK: "/api/webhooks/paystack",
   },
 } as const;

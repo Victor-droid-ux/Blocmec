@@ -2,11 +2,39 @@ import { z } from "zod";
 
 export const signInSchema = z.object({
   email: z.email({ message: "Invalid email" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
   csrfToken: z.string().optional(),
 });
 
 export type SignInInput = z.infer<typeof signInSchema>;
+
+export const signUpSchema = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(2, { message: "Full name must be at least 2 characters" })
+      .max(120, { message: "Full name is too long" }),
+    companyName: z
+      .string()
+      .trim()
+      .max(160, { message: "Company name is too long" })
+      .optional()
+      .or(z.literal("")),
+    email: z.email({ message: "Invalid email" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
+    confirmPassword: z.string().min(8),
+  })
+  .refine((vals) => vals.password === vals.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
+
+export type SignUpInput = z.infer<typeof signUpSchema>;
 
 export const updateProfileSchema = z.object({
   name: z
@@ -31,7 +59,11 @@ export const updateProfileSchema = z.object({
     .max(255, { message: "Department is too long" })
     .nullable()
     .optional(),
-  bio: z.string().max(2000, { message: "Bio is too long" }).nullable().optional(),
+  bio: z
+    .string()
+    .max(2000, { message: "Bio is too long" })
+    .nullable()
+    .optional(),
 });
 
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
@@ -52,3 +84,40 @@ export const publicProfileSchema = z.object({
 });
 
 export type PublicProfile = z.infer<typeof publicProfileSchema>;
+
+export const updateUserSettingsSchema = z.object({
+  companyName: z
+    .string()
+    .trim()
+    .max(255, { message: "Company name is too long" })
+    .optional(),
+  companyEmail: z
+    .union([z.email({ message: "Invalid company email" }), z.literal("")])
+    .optional(),
+  companyWebsite: z
+    .string()
+    .trim()
+    .max(1024, { message: "Website is too long" })
+    .optional(),
+  companyAddress: z
+    .string()
+    .trim()
+    .max(2000, { message: "Address is too long" })
+    .optional(),
+  timezone: z.string().trim().max(100).optional(),
+  language: z.string().trim().max(20).optional(),
+  dateFormat: z.string().trim().max(20).optional(),
+  emailNotifications: z.boolean().optional(),
+  smsNotifications: z.boolean().optional(),
+  pushNotifications: z.boolean().optional(),
+  twoFactorAuth: z.boolean().optional(),
+  sessionTimeout: z.coerce
+    .number()
+    .int()
+    .min(5, { message: "Session timeout must be at least 5 minutes" })
+    .max(120, { message: "Session timeout must be at most 120 minutes" })
+    .optional(),
+  apiAccessEnabled: z.boolean().optional(),
+});
+
+export type UpdateUserSettingsInput = z.infer<typeof updateUserSettingsSchema>;

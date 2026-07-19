@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/login-form";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/config/routes";
-import { createOptionalServerSupabaseClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Blockmec - Blockchain Data Verification",
@@ -13,19 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const supabase = await createOptionalServerSupabaseClient();
-
-  if (supabase) {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    if (session) {
-      // server-side redirect
-      redirect(ROUTES.DASHBOARD.ROOT);
-    }
-  }
-
   return (
     <div className="min-h-screen flex">
       {/* Left side - Branding */}
@@ -42,7 +27,9 @@ export default async function HomePage() {
             />
           </div>
 
-          <h1 className="text-4xl font-bold text-white mb-6">Blockmec Verify</h1>
+          <h1 className="text-4xl font-bold text-white mb-6">
+            Blockmec Verify
+          </h1>
 
           <p className="text-blue-200 text-xl mb-8">
             The Chain for data verification and counterfeit elimination. Secure
@@ -106,17 +93,21 @@ export default async function HomePage() {
             />
           </div>
 
-          <LoginForm />
-
-          {/* <div className='mt-6 text-center text-sm text-muted-foreground'>
-            <p>Demo credentials: user@blockmec.org / userpass</p>
-            <p className='mt-2'>
-              Need help?{" "}
-              <Link href='/support' className='text-blue-600 hover:underline'>
-                Contact Support
-              </Link>
+          <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900 dark:border-blue-900/70 dark:bg-blue-950/40 dark:text-blue-100">
+            <p className="font-medium">New to Blockmec?</p>
+            <p className="mt-1">
+              Create your company account to start generating and verifying QR
+              codes.
             </p>
-          </div> */}
+            <Link
+              href={ROUTES.SIGNUP}
+              className="mt-2 inline-flex text-blue-700 hover:text-blue-600 underline underline-offset-2 dark:text-blue-300 dark:hover:text-blue-200"
+            >
+              Create an account
+            </Link>
+          </div>
+
+          <LoginForm />
         </div>
       </div>
     </div>

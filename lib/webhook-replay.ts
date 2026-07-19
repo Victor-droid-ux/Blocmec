@@ -40,7 +40,9 @@ export async function isReplayAndStore(params: {
       return true;
     }
 
-    await redis.setex(key, params.ttlSeconds, "1");
+    await redis.set(key, "1", {
+      ex: params.ttlSeconds,
+    });
     return false;
   }
 

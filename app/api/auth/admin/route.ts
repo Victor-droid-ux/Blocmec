@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: flat }, { status: 400 });
     }
     const input = parsed.data as SignInInput;
+    const normalizedEmail = input.email.trim().toLowerCase();
 
     // Development mode authentication (when Supabase is not configured)
     if (
@@ -49,18 +50,18 @@ export async function POST(req: NextRequest) {
       DEV_ADMIN_CREDENTIAL
     ) {
       if (
-        input.email === DEV_ADMIN_CREDENTIAL.email &&
+        normalizedEmail === DEV_ADMIN_CREDENTIAL.email &&
         input.password === DEV_ADMIN_CREDENTIAL.password
       ) {
         let user = await prisma.user.findUnique({
-          where: { email: input.email },
+          where: { email: normalizedEmail },
         });
 
         if (!user) {
           user = await prisma.user.create({
             data: {
-              email: input.email,
-              name: input.email.split("@")[0],
+              email: normalizedEmail,
+              name: normalizedEmail.split("@")[0],
               role: UserRole.admin,
               supabase_id: generateDevUUID(),
               email_verified: true,
@@ -103,7 +104,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: input.email,
+      email: normalizedEmail,
       password: input.password,
     });
 
@@ -122,9 +123,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = await prisma.user.findUnique({
+    const emailVerified = Boolean(supabaseUser.email_confirmed_at);
+
+    let user = await prisma.user.findUnique({
       where: { supabase_id: supabaseUser.id },
     });
+
+    if (!user) {
+      user = await prisma.user.findUnique({
+        where: { email: normalizedEmail },
+      });
+    }
 
     if (!user || user.role !== UserRole.admin) {
       return NextResponse.json(
@@ -132,6 +141,16 @@ export async function POST(req: NextRequest) {
         { status: 403 },
       );
     }
+
+    user = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        supabase_id: supabaseUser.id,
+        email: normalizedEmail,
+        email_verified: emailVerified,
+        updated_at: new Date(),
+      },
+    });
 
     const publicUser: User = {
       id: user.id,

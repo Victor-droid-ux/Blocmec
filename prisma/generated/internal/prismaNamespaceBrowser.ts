@@ -53,6 +53,8 @@ export const ModelName = {
   Batch: 'Batch',
   QrCode: 'QrCode',
   Transaction: 'Transaction',
+  UserFile: 'UserFile',
+  UserSettings: 'UserSettings',
   User: 'User',
   Verification: 'Verification',
   WebhookEndpoint: 'WebhookEndpoint',
@@ -168,12 +170,55 @@ export const TransactionScalarFieldEnum = {
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
+export const UserFileScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  original_name: 'original_name',
+  stored_name: 'stored_name',
+  mime_type: 'mime_type',
+  size_bytes: 'size_bytes',
+  storage_path: 'storage_path',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserFileScalarFieldEnum = (typeof UserFileScalarFieldEnum)[keyof typeof UserFileScalarFieldEnum]
+
+
+export const UserSettingsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  company_name: 'company_name',
+  company_email: 'company_email',
+  company_website: 'company_website',
+  company_address: 'company_address',
+  timezone: 'timezone',
+  language: 'language',
+  date_format: 'date_format',
+  email_notifications: 'email_notifications',
+  sms_notifications: 'sms_notifications',
+  push_notifications: 'push_notifications',
+  two_factor_auth: 'two_factor_auth',
+  session_timeout_minutes: 'session_timeout_minutes',
+  api_access_enabled: 'api_access_enabled',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserSettingsScalarFieldEnum = (typeof UserSettingsScalarFieldEnum)[keyof typeof UserSettingsScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   supabase_id: 'supabase_id',
   name: 'name',
   username: 'username',
+  phone: 'phone',
+  location: 'location',
+  department: 'department',
+  bio: 'bio',
+  avatar_url: 'avatar_url',
   role: 'role',
   status: 'status',
   api_credits: 'api_credits',

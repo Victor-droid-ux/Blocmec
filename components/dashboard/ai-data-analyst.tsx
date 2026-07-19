@@ -220,7 +220,7 @@ export function AiDataAnalyst() {
 
   const renderTable = (data: Record<string, any>[]) => {
     if (data.length === 0)
-      return <p className="text-gray-400">No data to display</p>;
+      return <p className="text-slate-500 dark:text-gray-400">No data to display</p>;
     const headers = Object.keys(data[0]);
     return (
       <div className="overflow-x-auto rounded-lg border border-purple-800/30">
@@ -244,7 +244,7 @@ export function AiDataAnalyst() {
                 className="border-t border-purple-800/30 hover:bg-purple-900/10 transition-colors"
               >
                 {headers.map((header) => (
-                  <td key={header} className="px-4 py-3 text-sm text-gray-300">
+                  <td key={header} className="px-4 py-3 text-sm text-slate-600 dark:text-gray-300">
                     {typeof row[header] === "number" &&
                     !Number.isInteger(row[header])
                       ? row[header].toFixed(2)
@@ -274,8 +274,8 @@ export function AiDataAnalyst() {
           return (
             <div key={idx} className="space-y-1">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-300">{item[labelKey]}</span>
-                <span className="text-purple-400 font-semibold">
+                <span className="text-slate-600 dark:text-gray-300">{item[labelKey]}</span>
+                <span className="text-violet-600 dark:text-purple-400 font-semibold">
                   {value.toLocaleString()}
                 </span>
               </div>
@@ -284,7 +284,7 @@ export function AiDataAnalyst() {
                   className="h-full bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg transition-all duration-1000 ease-out flex items-center justify-end px-3"
                   style={{ width: `${percentage}%` }}
                 >
-                  <span className="text-xs font-semibold text-white">
+                  <span className="text-xs font-semibold text-slate-900 dark:text-white">
                     {percentage.toFixed(1)}%
                   </span>
                 </div>
@@ -435,9 +435,9 @@ export function AiDataAnalyst() {
                   className="w-4 h-4 rounded"
                   style={{ backgroundColor: colors[idx % colors.length] }}
                 />
-                <span className="text-sm text-gray-300">
+                <span className="text-sm text-slate-600 dark:text-gray-300">
                   {item[labelKey]}:{" "}
-                  <span className="font-semibold text-purple-400">
+                  <span className="font-semibold text-violet-600 dark:text-purple-400">
                     {value.toLocaleString()} ({percentage}%)
                   </span>
                 </span>
@@ -518,7 +518,7 @@ export function AiDataAnalyst() {
   };
 
   return (
-    <Card className="bg-gradient-to-br from-[#1a1625] to-[#231c35] border-[#2a2139] text-white shadow-xl">
+    <Card className="bg-gradient-to-br from-[#1a1625] to-[#231c35] border-slate-200 dark:border-[#2a2139] text-white shadow-xl">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -534,7 +534,7 @@ export function AiDataAnalyst() {
               <CardTitle className="text-xl font-semibold">
                 1BASE Data Analyst
               </CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-slate-500 dark:text-gray-400">
                 Advanced SQL analytics with multi-view visualizations
               </CardDescription>
             </div>
@@ -551,7 +551,7 @@ export function AiDataAnalyst() {
 
       <CardContent className="space-y-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="bg-[#2a2139]/50 p-1 mb-6">
+          <TabsList className="bg-slate-100 dark:bg-[#2a2139]/50 p-1 mb-6">
             <TabsTrigger
               value="query"
               className="data-[state=active]:bg-purple-600"
@@ -571,14 +571,14 @@ export function AiDataAnalyst() {
           <TabsContent value="query" className="space-y-4">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               <div className="lg:col-span-3 space-y-4">
-                <div className="bg-[#1a1625] rounded-lg border border-[#2a2139] p-4">
+                <div className="bg-slate-50 dark:bg-[#1a1625] rounded-lg border border-slate-200 dark:border-[#2a2139] p-4">
                   <Textarea
                     placeholder="SELECT * FROM qr_verifications WHERE created_at >= '2024-01-01' ORDER BY created_at DESC LIMIT 100"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     className="bg-transparent border-none text-white font-mono min-h-[120px] resize-none focus-visible:ring-0"
                   />
-                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#2a2139]">
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200 dark:border-[#2a2139]">
                     <div className="flex items-center gap-2">
                       <Button
                         className="bg-purple-600 hover:bg-purple-700"
@@ -599,7 +599,7 @@ export function AiDataAnalyst() {
                       </Button>
                       <Button
                         variant="outline"
-                        className="border-[#2a2139] bg-[#2a2139]/30"
+                        className="dashboard-outline-btn"
                         onClick={saveQuery}
                         disabled={!query.trim()}
                       >
@@ -607,7 +607,7 @@ export function AiDataAnalyst() {
                         Save
                       </Button>
                     </div>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-slate-500 dark:text-gray-400">
                       Ctrl+Enter to execute
                     </span>
                   </div>
@@ -616,7 +616,7 @@ export function AiDataAnalyst() {
                 {results.map((result) => (
                   <Card
                     key={result.id}
-                    className="bg-[#1a1625] border-[#2a2139]"
+                    className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139]"
                   >
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between mb-2">
@@ -624,7 +624,7 @@ export function AiDataAnalyst() {
                           <Badge className="bg-green-500/20 text-green-400">
                             Success
                           </Badge>
-                          <span className="text-sm text-gray-400">
+                          <span className="text-sm text-slate-500 dark:text-gray-400">
                             {result.timestamp.toLocaleTimeString()} •{" "}
                             {result.executionTime.toFixed(0)}ms •{" "}
                             {result.rowCount} rows
@@ -635,7 +635,7 @@ export function AiDataAnalyst() {
                             variant="outline"
                             size="sm"
                             onClick={() => exportToCSV(result)}
-                            className="border-purple-800/30 text-purple-400"
+                            className="border-violet-200 text-violet-700 dark:border-purple-800/30 dark:text-purple-400"
                           >
                             <Download className="h-4 w-4 mr-1" />
                             CSV
@@ -644,20 +644,20 @@ export function AiDataAnalyst() {
                             variant="outline"
                             size="sm"
                             onClick={() => exportToJSON(result)}
-                            className="border-purple-800/30 text-purple-400"
+                            className="border-violet-200 text-violet-700 dark:border-purple-800/30 dark:text-purple-400"
                           >
                             <Download className="h-4 w-4 mr-1" />
                             JSON
                           </Button>
                         </div>
                       </div>
-                      <pre className="text-xs text-gray-400 font-mono bg-[#2a2139]/30 p-2 rounded overflow-x-auto">
+                      <pre className="text-xs text-slate-500 dark:text-gray-400 font-mono bg-slate-100 dark:bg-[#2a2139]/30 p-2 rounded overflow-x-auto">
                         {result.query}
                       </pre>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="flex items-center gap-2 pb-2 border-b border-[#2a2139]">
-                        <span className="text-sm text-gray-400 mr-2">
+                      <div className="flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-[#2a2139]">
+                        <span className="text-sm text-slate-500 dark:text-gray-400 mr-2">
                           View:
                         </span>
                         {(["table", "bar", "line", "pie", "area"] as const).map(
@@ -683,7 +683,7 @@ export function AiDataAnalyst() {
                                 className={
                                   viewModes[result.id] === mode
                                     ? "bg-purple-600"
-                                    : "border-[#2a2139]"
+                                    : "border-slate-200 dark:border-[#2a2139]"
                                 }
                               >
                                 <Icon className="h-4 w-4 mr-1" />
@@ -693,7 +693,7 @@ export function AiDataAnalyst() {
                           },
                         )}
                       </div>
-                      <div className="bg-[#2a2139]/20 p-4 rounded-lg">
+                      <div className="bg-slate-100 dark:bg-[#2a2139]/20 p-4 rounded-lg">
                         {viewModes[result.id] === "table" &&
                           renderTable(result.data)}
                         {viewModes[result.id] === "bar" &&
@@ -705,24 +705,24 @@ export function AiDataAnalyst() {
                         {viewModes[result.id] === "area" &&
                           renderAreaChart(result.data)}
                       </div>
-                      <div className="grid grid-cols-3 gap-4 p-4 bg-[#2a2139]/30 rounded-lg">
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-slate-100 dark:bg-[#2a2139]/30 rounded-lg">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-purple-400">
+                          <div className="text-2xl font-bold text-violet-600 dark:text-purple-400">
                             {result.rowCount}
                           </div>
-                          <div className="text-xs text-gray-400">Rows</div>
+                          <div className="text-xs text-slate-500 dark:text-gray-400">Rows</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-purple-400">
+                          <div className="text-2xl font-bold text-violet-600 dark:text-purple-400">
                             {Object.keys(result.data[0] || {}).length}
                           </div>
-                          <div className="text-xs text-gray-400">Columns</div>
+                          <div className="text-xs text-slate-500 dark:text-gray-400">Columns</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-purple-400">
+                          <div className="text-2xl font-bold text-violet-600 dark:text-purple-400">
                             {result.executionTime.toFixed(0)}ms
                           </div>
-                          <div className="text-xs text-gray-400">Time</div>
+                          <div className="text-xs text-slate-500 dark:text-gray-400">Time</div>
                         </div>
                       </div>
                     </CardContent>
@@ -743,7 +743,7 @@ export function AiDataAnalyst() {
               </div>
 
               <div className="space-y-4">
-                <Card className="bg-[#1a1625] border-[#2a2139]">
+                <Card className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139]">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm">Sample Queries</CardTitle>
                   </CardHeader>
@@ -753,7 +753,7 @@ export function AiDataAnalyst() {
                         key={i}
                         variant="ghost"
                         size="sm"
-                        className="w-full text-left justify-start h-auto p-2 text-xs text-gray-400 hover:text-white hover:bg-[#2a2139]"
+                        className="w-full text-left justify-start h-auto p-2 text-xs text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:bg-[#2a2139]"
                         onClick={() => setQuery(sampleQuery)}
                       >
                         <Code className="h-3 w-3 mr-2 flex-shrink-0" />
@@ -765,7 +765,7 @@ export function AiDataAnalyst() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#1a1625] border-[#2a2139]">
+                <Card className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139]">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm">Saved Queries</CardTitle>
                   </CardHeader>
@@ -777,7 +777,7 @@ export function AiDataAnalyst() {
                             key={i}
                             variant="ghost"
                             size="sm"
-                            className="w-full text-left justify-start h-auto p-2 text-xs text-gray-400 hover:text-white hover:bg-[#2a2139]"
+                            className="w-full text-left justify-start h-auto p-2 text-xs text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:bg-[#2a2139]"
                             onClick={() => setQuery(savedQuery)}
                           >
                             <Save className="h-3 w-3 mr-2 flex-shrink-0" />
@@ -795,7 +795,7 @@ export function AiDataAnalyst() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#1a1625] border-[#2a2139]">
+                <Card className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139]">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm flex items-center gap-2">
                       <Zap className="h-4 w-4 text-yellow-400" />
@@ -804,19 +804,19 @@ export function AiDataAnalyst() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Total Queries:</span>
+                      <span className="text-slate-500 dark:text-gray-400">Total Queries:</span>
                       <span className="text-white font-medium">
                         {results.length}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Saved:</span>
+                      <span className="text-slate-500 dark:text-gray-400">Saved:</span>
                       <span className="text-white font-medium">
                         {savedQueries.length}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Avg Time:</span>
+                      <span className="text-slate-500 dark:text-gray-400">Avg Time:</span>
                       <span className="text-green-400 font-medium">
                         {results.length > 0
                           ? (
@@ -837,48 +837,48 @@ export function AiDataAnalyst() {
 
           <TabsContent value="insights" className="space-y-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-[#1a1625] border-[#2a2139]">
+              <Card className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139]">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
-                    <Brain className="h-4 w-4 text-purple-400" />
+                    <Brain className="h-4 w-4 text-violet-600 dark:text-purple-400" />
                     Real-time Analytics
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-[#2a2139]/30 p-3 rounded">
-                      <div className="text-xs text-gray-400">
+                    <div className="bg-slate-100 dark:bg-[#2a2139]/30 p-3 rounded">
+                      <div className="text-xs text-slate-500 dark:text-gray-400">
                         Total Verifications
                       </div>
-                      <div className="text-lg font-semibold text-white">
+                      <div className="text-lg font-semibold text-slate-900 dark:text-white">
                         {isInsightsLoading
                           ? "..."
                           : (summary?.totalVerifications ?? 0).toLocaleString()}
                       </div>
                     </div>
-                    <div className="bg-[#2a2139]/30 p-3 rounded">
-                      <div className="text-xs text-gray-400">Success Rate</div>
-                      <div className="text-lg font-semibold text-white">
+                    <div className="bg-slate-100 dark:bg-[#2a2139]/30 p-3 rounded">
+                      <div className="text-xs text-slate-500 dark:text-gray-400">Success Rate</div>
+                      <div className="text-lg font-semibold text-slate-900 dark:text-white">
                         {isInsightsLoading
                           ? "..."
                           : `${summary?.successRate ?? 0}%`}
                       </div>
                     </div>
-                    <div className="bg-[#2a2139]/30 p-3 rounded">
-                      <div className="text-xs text-gray-400">
+                    <div className="bg-slate-100 dark:bg-[#2a2139]/30 p-3 rounded">
+                      <div className="text-xs text-slate-500 dark:text-gray-400">
                         Active QR Codes
                       </div>
-                      <div className="text-lg font-semibold text-white">
+                      <div className="text-lg font-semibold text-slate-900 dark:text-white">
                         {isInsightsLoading
                           ? "..."
                           : (summary?.activeQrCodes ?? 0).toLocaleString()}
                       </div>
                     </div>
-                    <div className="bg-[#2a2139]/30 p-3 rounded">
-                      <div className="text-xs text-gray-400">
+                    <div className="bg-slate-100 dark:bg-[#2a2139]/30 p-3 rounded">
+                      <div className="text-xs text-slate-500 dark:text-gray-400">
                         Avg Response Time
                       </div>
-                      <div className="text-lg font-semibold text-white">
+                      <div className="text-lg font-semibold text-slate-900 dark:text-white">
                         {isInsightsLoading
                           ? "..."
                           : summary?.avgResponseTimeMs != null
@@ -890,7 +890,7 @@ export function AiDataAnalyst() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-[#1a1625] border-[#2a2139]">
+              <Card className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139]">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
                     <Zap className="h-4 w-4 text-yellow-400" />
@@ -907,7 +907,7 @@ export function AiDataAnalyst() {
                       {insights.map((item) => (
                         <div
                           key={item.id}
-                          className="rounded-lg border border-[#2a2139] bg-[#2a2139]/30 p-3"
+                          className="rounded-lg border border-slate-200 dark:border-[#2a2139] bg-slate-100 dark:bg-[#2a2139]/30 p-3"
                         >
                           <div className="mb-1 flex items-center gap-2">
                             <span
@@ -923,7 +923,7 @@ export function AiDataAnalyst() {
                               {item.title}
                             </h4>
                           </div>
-                          <p className="text-xs text-gray-400">
+                          <p className="text-xs text-slate-500 dark:text-gray-400">
                             {item.description}
                           </p>
                         </div>

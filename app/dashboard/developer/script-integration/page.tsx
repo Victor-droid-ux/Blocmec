@@ -194,19 +194,19 @@ export default function ScriptIntegration() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white mb-2">
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
           Script Integration
         </h1>
-        <p className="text-gray-400">
+        <p className="text-slate-500 dark:text-gray-400">
           Integrate Blockmec verification directly into your website with a
           simple script
         </p>
       </div>
 
-      <Card className="bg-[#1a1625] border-[#2a2139]">
+      <Card className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139]">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Code className="h-5 w-5 text-purple-400" />
+            <Code className="h-5 w-5 text-violet-600 dark:text-purple-400" />
             Integration Script
           </CardTitle>
           <CardDescription>
@@ -222,26 +222,28 @@ export default function ScriptIntegration() {
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
                 placeholder="yourdomain.com/verify"
-                className="bg-[#2a2139] border-[#3a3149] text-white"
+                className="bg-slate-100 dark:bg-[#2a2139] border-[#3a3149] text-slate-900 dark:text-white"
               />
             </div>
 
             <div className="space-y-2">
               <Label>Integration Script</Label>
               {isLoadingKey ? (
-                <p className="text-sm text-gray-400">Loading your API key...</p>
+                <p className="text-sm text-slate-500 dark:text-gray-400">
+                  Loading your API key...
+                </p>
               ) : !activeApiKeyId ? (
                 <p className="text-sm text-yellow-400">
                   No active API key found. Create one from the Developer API
                   page to generate your script.
                 </p>
               ) : isGeneratingScript ? (
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-slate-500 dark:text-gray-400">
                   Generating a secure domain-bound script...
                 </p>
               ) : null}
               <div className="relative">
-                <pre className="bg-[#2a2139] p-4 rounded-lg text-sm text-gray-300 overflow-x-auto border border-[#3a3149]">
+                <pre className="bg-slate-100 dark:bg-[#2a2139] p-4 rounded-lg text-sm text-slate-600 dark:text-gray-300 overflow-x-auto border border-[#3a3149]">
                   {scriptCode}
                 </pre>
                 <Button
@@ -261,7 +263,7 @@ export default function ScriptIntegration() {
           </div>
 
           <Tabs defaultValue="features" className="w-full">
-            <TabsList className="bg-[#2a2139]">
+            <TabsList className="bg-slate-100 dark:bg-[#2a2139]">
               <TabsTrigger value="features">Features</TabsTrigger>
               <TabsTrigger value="usage">Usage</TabsTrigger>
               <TabsTrigger value="examples">Examples</TabsTrigger>
@@ -269,67 +271,67 @@ export default function ScriptIntegration() {
 
             <TabsContent value="features" className="space-y-4 mt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-[#2a2139] border-[#3a3149]">
+                <Card className="bg-slate-100 dark:bg-[#2a2139] border-[#3a3149]">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="h-10 w-10 rounded-lg bg-purple-600/20 flex items-center justify-center">
-                        <Zap className="h-5 w-5 text-purple-400" />
+                        <Zap className="h-5 w-5 text-violet-600 dark:text-purple-400" />
                       </div>
-                      <h3 className="font-semibold text-white">
+                      <h3 className="font-semibold text-slate-900 dark:text-white">
                         Auto-Detection
                       </h3>
                     </div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-slate-500 dark:text-gray-400">
                       Automatically detects QR codes in URL parameters and
                       displays verification results
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#2a2139] border-[#3a3149]">
+                <Card className="bg-slate-100 dark:bg-[#2a2139] border-[#3a3149]">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="h-10 w-10 rounded-lg bg-blue-600/20 flex items-center justify-center">
                         <Globe className="h-5 w-5 text-blue-400" />
                       </div>
-                      <h3 className="font-semibold text-white">
+                      <h3 className="font-semibold text-slate-900 dark:text-white">
                         Customizable Widget
                       </h3>
                     </div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-slate-500 dark:text-gray-400">
                       Fully customizable verification widget that matches your
                       brand
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#2a2139] border-[#3a3149]">
+                <Card className="bg-slate-100 dark:bg-[#2a2139] border-[#3a3149]">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="h-10 w-10 rounded-lg bg-green-600/20 flex items-center justify-center">
                         <Settings className="h-5 w-5 text-green-400" />
                       </div>
-                      <h3 className="font-semibold text-white">
+                      <h3 className="font-semibold text-slate-900 dark:text-white">
                         Easy Integration
                       </h3>
                     </div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-slate-500 dark:text-gray-400">
                       Single script tag integration - no complex setup required
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#2a2139] border-[#3a3149]">
+                <Card className="bg-slate-100 dark:bg-[#2a2139] border-[#3a3149]">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="h-10 w-10 rounded-lg bg-yellow-600/20 flex items-center justify-center">
                         <Code className="h-5 w-5 text-yellow-400" />
                       </div>
-                      <h3 className="font-semibold text-white">
+                      <h3 className="font-semibold text-slate-900 dark:text-white">
                         JavaScript API
                       </h3>
                     </div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-slate-500 dark:text-gray-400">
                       Programmatic access via JavaScript API for custom
                       integrations
                     </p>
@@ -341,39 +343,39 @@ export default function ScriptIntegration() {
             <TabsContent value="usage" className="space-y-4 mt-4">
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-semibold text-white mb-2">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
                     1. Add the Script
                   </h3>
-                  <p className="text-sm text-gray-400 mb-3">
+                  <p className="text-sm text-slate-500 dark:text-gray-400 mb-3">
                     Add the integration script to your website's &lt;head&gt;
                     section:
                   </p>
-                  <pre className="bg-[#2a2139] p-4 rounded-lg text-sm text-gray-300 overflow-x-auto border border-[#3a3149]">
+                  <pre className="bg-slate-100 dark:bg-[#2a2139] p-4 rounded-lg text-sm text-slate-600 dark:text-gray-300 overflow-x-auto border border-[#3a3149]">
                     {scriptCode}
                   </pre>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-white mb-2">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
                     2. QR Code Links
                   </h3>
-                  <p className="text-sm text-gray-400 mb-3">
+                  <p className="text-sm text-slate-500 dark:text-gray-400 mb-3">
                     When users scan a QR code, redirect them to your domain with
                     the verification code:
                   </p>
-                  <pre className="bg-[#2a2139] p-4 rounded-lg text-sm text-gray-300 overflow-x-auto border border-[#3a3149]">
+                  <pre className="bg-slate-100 dark:bg-[#2a2139] p-4 rounded-lg text-sm text-slate-600 dark:text-gray-300 overflow-x-auto border border-[#3a3149]">
                     {`https://${domain}?qr=ABC123XYZ`}
                   </pre>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-white mb-2">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
                     3. Programmatic Verification
                   </h3>
-                  <p className="text-sm text-gray-400 mb-3">
+                  <p className="text-sm text-slate-500 dark:text-gray-400 mb-3">
                     You can also trigger verification programmatically:
                   </p>
-                  <pre className="bg-[#2a2139] p-4 rounded-lg text-sm text-gray-300 overflow-x-auto border border-[#3a3149]">
+                  <pre className="bg-slate-100 dark:bg-[#2a2139] p-4 rounded-lg text-sm text-slate-600 dark:text-gray-300 overflow-x-auto border border-[#3a3149]">
                     {`// Trigger verification manually
 window.Blockmec.verify('ABC123XYZ');
 
@@ -389,10 +391,10 @@ window.addEventListener('blockmec:verified', function(e) {
             <TabsContent value="examples" className="space-y-4 mt-4">
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-semibold text-white mb-2">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
                     HTML Integration
                   </h3>
-                  <pre className="bg-[#2a2139] p-4 rounded-lg text-sm text-gray-300 overflow-x-auto border border-[#3a3149]">
+                  <pre className="bg-slate-100 dark:bg-[#2a2139] p-4 rounded-lg text-sm text-slate-600 dark:text-gray-300 overflow-x-auto border border-[#3a3149]">
                     {`<!DOCTYPE html>
 <html>
 <head>
@@ -408,10 +410,10 @@ window.addEventListener('blockmec:verified', function(e) {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-white mb-2">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
                     React Integration
                   </h3>
-                  <pre className="bg-[#2a2139] p-4 rounded-lg text-sm text-gray-300 overflow-x-auto border border-[#3a3149]">
+                  <pre className="bg-slate-100 dark:bg-[#2a2139] p-4 rounded-lg text-sm text-slate-600 dark:text-gray-300 overflow-x-auto border border-[#3a3149]">
                     {`import { useEffect } from 'react';
 
 function VerificationPage() {
@@ -438,10 +440,10 @@ function VerificationPage() {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-white mb-2">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
                     WordPress Integration
                   </h3>
-                  <pre className="bg-[#2a2139] p-4 rounded-lg text-sm text-gray-300 overflow-x-auto border border-[#3a3149]">
+                  <pre className="bg-slate-100 dark:bg-[#2a2139] p-4 rounded-lg text-sm text-slate-600 dark:text-gray-300 overflow-x-auto border border-[#3a3149]">
                     {`// Add to your theme's functions.php
 function add_blockmec_script() {
   ?>
@@ -464,13 +466,19 @@ add_action('wp_head', 'add_blockmec_script');`}
                 Version: 2.0
               </Badge>
             </div>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-slate-500 dark:text-gray-400">
               Need help with integration? Check out our{" "}
-              <a href="#" className="text-purple-400 hover:text-purple-300">
+              <a
+                href="/dashboard/developer"
+                className="text-violet-600 dark:text-purple-400 hover:text-purple-300"
+              >
                 documentation
               </a>{" "}
               or{" "}
-              <a href="#" className="text-purple-400 hover:text-purple-300">
+              <a
+                href="/contact-sales"
+                className="text-violet-600 dark:text-purple-400 hover:text-purple-300"
+              >
                 contact support
               </a>
               .
@@ -479,7 +487,7 @@ add_action('wp_head', 'add_blockmec_script');`}
         </CardContent>
       </Card>
 
-      <Card className="bg-[#1a1625] border-[#2a2139]">
+      <Card className="bg-slate-50 dark:bg-[#1a1625] border-slate-200 dark:border-[#2a2139]">
         <CardHeader>
           <CardTitle>Testing Your Integration</CardTitle>
           <CardDescription>
@@ -488,14 +496,14 @@ add_action('wp_head', 'add_blockmec_script');`}
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2">
-            <Label className="text-sm text-gray-400">
+            <Label className="text-sm text-slate-500 dark:text-gray-400">
               Test with QR Parameter:
             </Label>
             <div className="flex gap-2">
               <Input
                 readOnly
                 value={`https://${domain}?qr=TEST123ABC`}
-                className="bg-[#2a2139] border-[#3a3149] text-white"
+                className="bg-slate-100 dark:bg-[#2a2139] border-[#3a3149] text-slate-900 dark:text-white"
               />
               <Button
                 onClick={() =>
@@ -509,14 +517,14 @@ add_action('wp_head', 'add_blockmec_script');`}
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm text-gray-400">
+            <Label className="text-sm text-slate-500 dark:text-gray-400">
               Test with Verify Parameter:
             </Label>
             <div className="flex gap-2">
               <Input
                 readOnly
                 value={`https://${domain}?verify=SAMPLE456DEF`}
-                className="bg-[#2a2139] border-[#3a3149] text-white"
+                className="bg-slate-100 dark:bg-[#2a2139] border-[#3a3149] text-slate-900 dark:text-white"
               />
               <Button
                 onClick={() =>

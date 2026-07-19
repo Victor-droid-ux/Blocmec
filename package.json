@@ -13,6 +13,7 @@
     "db:migrate": "npx prisma migrate dev",
     "db:generate": "npx prisma generate",
     "db:deploy": "npx prisma migrate deploy",
+    "db:status": "npx prisma migrate status",
     "db:seed": "npx prisma db seed",
     "db:reset": "npx prisma migrate reset",
     "db:studio": "npx prisma studio",
