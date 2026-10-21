@@ -1,6 +1,7 @@
 # InterServer Deployment Guide (153.75.249.15)
 
 This guide deploys this Next.js + Prisma app on your InterServer VPS at 153.75.249.15 using Node.js, PM2, Nginx, and cron.
+It is configured to run the app with a dedicated Linux user `blockmec` and project directory `/home/blockmec/Blockmec` (not under `/root`).
 
 ## 1) Server prerequisites
 
@@ -14,6 +15,14 @@ apt install -y nodejs
 npm install -g pm2
 ```
 
+Create a dedicated app user and folders:
+
+```bash
+id -u blockmec >/dev/null 2>&1 || useradd -m -s /bin/bash blockmec
+mkdir -p /home/blockmec/logs/blockmec-qr
+chown -R blockmec:blockmec /home/blockmec
+```
+
 Confirm versions:
 
 ```bash
@@ -25,11 +34,9 @@ pm2 -v
 ## 2) Clone app and install dependencies
 
 ```bash
-mkdir -p /var/www
-cd /var/www
-git clone <YOUR_REPOSITORY_URL> blockmec-qr-code
-cd blockmec-qr-code
-npm ci
+runuser -u blockmec -- git clone <YOUR_REPOSITORY_URL> /home/blockmec/Blockmec
+cd /home/blockmec/Blockmec
+runuser -u blockmec -- npm ci
 ```
 
 ## 3) Configure environment variables
@@ -58,15 +65,15 @@ Prisma + Supabase note:
 ## 4) Build and migrate
 
 ```bash
-cd /var/www/blockmec-qr-code
-npm run build
-npx prisma migrate deploy
+cd /home/blockmec/Blockmec
+runuser -u blockmec -- npm run build
+runuser -u blockmec -- npx prisma migrate deploy
 ```
 
 If you need seed data:
 
 ```bash
-npm run db:seed
+runuser -u blockmec -- npm run db:seed
 ```
 
 ## 5) Start app with PM2
@@ -74,18 +81,19 @@ npm run db:seed
 The repository includes a PM2 config file at ecosystem.config.cjs.
 
 ```bash
-mkdir -p /var/log/blockmec-qr
-cd /var/www/blockmec-qr-code
-pm2 start ecosystem.config.cjs
-pm2 save
-pm2 startup
+mkdir -p /home/blockmec/logs/blockmec-qr
+chown -R blockmec:blockmec /home/blockmec/logs
+cd /home/blockmec/Blockmec
+runuser -u blockmec -- env BLOCKMEC_APP_DIR=/home/blockmec/Blockmec BLOCKMEC_LOG_DIR=/home/blockmec/logs/blockmec-qr pm2 start ecosystem.config.cjs
+runuser -u blockmec -- pm2 save
+pm2 startup systemd -u blockmec --hp /home/blockmec
 ```
 
 Check app status:
 
 ```bash
-pm2 status
-pm2 logs blockmec-qr --lines 100
+runuser -u blockmec -- pm2 status
+runuser -u blockmec -- pm2 logs blockmec-qr --lines 100
 ```
 
 ## 6) Configure Nginx reverse proxy
@@ -93,7 +101,7 @@ pm2 logs blockmec-qr --lines 100
 Copy the provided Nginx server block:
 
 ```bash
-cp /var/www/blockmec-qr-code/deploy/interserver/nginx.blockmec.conf /etc/nginx/sites-available/blockmec-qr
+cp /home/blockmec/Blockmec/deploy/interserver/nginx.blockmec.conf /etc/nginx/sites-available/blockmec-qr
 ln -sf /etc/nginx/sites-available/blockmec-qr /etc/nginx/sites-enabled/blockmec-qr
 rm -f /etc/nginx/sites-enabled/default
 nginx -t
@@ -110,22 +118,22 @@ curl -I http://153.75.249.15
 
 This project has a dispatch endpoint at /api/internal/webhooks/dispatch. On VPS, schedule it with cron.
 
-Create a root cron entry:
+Create a cron entry for the `blockmec` user:
 
 ```bash
-crontab -e
+crontab -u blockmec -e
 ```
 
 Add:
 
 ```cron
-* * * * * WEBHOOK_DISPATCH_SECRET=<same-secret-in-.env.local> /var/www/blockmec-qr-code/deploy/interserver/cron-dispatch-webhooks.sh http://127.0.0.1 >> /var/log/blockmec-qr/webhook-dispatch.log 2>&1
+* * * * * WEBHOOK_DISPATCH_SECRET=<same-secret-in-.env.local> /home/blockmec/Blockmec/deploy/interserver/cron-dispatch-webhooks.sh http://127.0.0.1 >> /home/blockmec/logs/blockmec-qr/webhook-dispatch.log 2>&1
 ```
 
 Make script executable:
 
 ```bash
-chmod +x /var/www/blockmec-qr-code/deploy/interserver/cron-dispatch-webhooks.sh
+chmod +x /home/blockmec/Blockmec/deploy/interserver/cron-dispatch-webhooks.sh
 ```
 
 ## 8) Open firewall (if enabled)
@@ -142,12 +150,12 @@ ufw status
 For every new release:
 
 ```bash
-cd /var/www/blockmec-qr-code
-git pull
-npm ci
-npm run build
-npx prisma migrate deploy
-pm2 restart blockmec-qr
+cd /home/blockmec/Blockmec
+runuser -u blockmec -- git pull
+runuser -u blockmec -- npm ci
+runuser -u blockmec -- npm run build
+runuser -u blockmec -- npx prisma migrate deploy
+runuser -u blockmec -- pm2 restart blockmec-qr --update-env
 ```
 
 ## 10) Troubleshooting
