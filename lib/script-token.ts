@@ -68,7 +68,7 @@ export function createScriptToken(params: {
     domain: normalizeBoundDomain(params.domain),
     exp:
       Math.floor(Date.now() / 1000) +
-      (params.expiresInSeconds ?? 60 * 60 * 24 * 30),
+      (params.expiresInSeconds ?? 60 * 60 * 24 * 365), // Default to 1 year instead of 30 days
   };
 
   const encodedPayload = base64UrlEncode(JSON.stringify(payload));

@@ -178,9 +178,11 @@ export async function GET(request: NextRequest) {
     return new NextResponse(resolved.error, { status: resolved.status });
   }
 
-  const origin = request.nextUrl.origin;
-  const verificationResultsUrl = `${origin}/verification-results`;
-  const verifyEndpoint = `${origin}/api/verify-qr`;
+  // Use BLOCKMEC_API_URL from environment or fallback to request origin
+  // In production, BLOCKMEC_API_URL must be set to prevent localhost URLs
+  const apiUrl = process.env.BLOCKMEC_API_URL || request.nextUrl.origin;
+  const verificationResultsUrl = `${apiUrl}/verification-results`;
+  const verifyEndpoint = `${apiUrl}/api/verify-qr`;
   const cacheDomain = normalizeBoundDomain(resolved.domain);
   const cacheTokenFingerprint = crypto
     .createHash("sha256")

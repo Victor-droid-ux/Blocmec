@@ -97,6 +97,25 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Create Supabase auth user first - this is REQUIRED for login
+  const supabase = await createServerSupabaseClient();
+  
+  // Generate a temporary password that the user should change on first login
+  const tempPassword = Math.random().toString(36).slice(-16);
+  
+  const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+    email,
+    password: tempPassword,
+    email_confirm: false, // User must confirm email
+  });
+
+  if (authError || !authData.user) {
+    return NextResponse.json(
+      { error: `Failed to create Supabase auth account: ${authError?.message || "Unknown error"}` },
+      { status: 500 },
+    );
+  }
+
   const user = await prisma.user.create({
     data: {
       email,
@@ -107,6 +126,7 @@ export async function POST(req: NextRequest) {
       api_credits: apiCredits,
       subscription_plan: subscriptionPlan,
       email_verified: false,
+      supabase_id: authData.user.id, // Link to Supabase auth user
       updated_at: new Date(),
     },
   });
@@ -118,11 +138,17 @@ export async function POST(req: NextRequest) {
       action: "create_user",
       resource_type: "User",
       resource_id: user.id,
-      metadata: { email, role },
+      metadata: { email, role, supabase_id: authData.user.id },
     },
   });
 
-  return NextResponse.json(formatUser(user), { status: 201 });
+  return NextResponse.json(
+    {
+      ...formatUser(user),
+      message: `User created. Password set to: ${tempPassword}. User must confirm email and change password on first login.`,
+    },
+    { status: 201 },
+  );
 }
 
 // PUT /api/admin/users?id=xxx

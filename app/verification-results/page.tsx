@@ -30,57 +30,65 @@ export default function VerificationResultsPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Memoize search params to prevent infinite re-renders
-  const qrData = useMemo(() => searchParams?.get("data"), [searchParams]);
-  const verified = useMemo(() => searchParams?.get("verified"), [searchParams]);
-  const message = useMemo(() => searchParams?.get("message"), [searchParams]);
+  const resultId = useMemo(() => searchParams?.get("id"), [searchParams]);
 
   useEffect(() => {
     let mounted = true;
 
-    const processVerificationData = () => {
+    const fetchVerificationData = async () => {
       try {
-        if (qrData) {
-          const parsedData = JSON.parse(decodeURIComponent(qrData));
-          const result: VerificationData = {
-            verified: verified === "true",
-            productName:
-              parsedData.productName ||
-              parsedData.data?.productName ||
-              "Unknown Product",
-            transactionId: parsedData.transactionId || parsedData.id || "N/A",
-            blockConfirmations: 0,
-            scanCount: parsedData.data?.scanCount ?? 0,
-            userProducts: 0,
-            hash: parsedData.tokenId || parsedData.id || parsedData.hash || "",
-            productImage: parsedData.productImage ?? undefined,
-            timestamp: parsedData.timestamp || Date.now(),
-            message: message || parsedData.message || "Verification complete",
-            type: parsedData.productType || parsedData.type || "standard",
-          };
-          if (mounted) {
-            setVerificationData(result);
-            setIsLoading(false);
-          }
-        } else {
+        if (!resultId) {
           if (mounted) {
             setVerificationData(null);
             setIsLoading(false);
           }
+          return;
+        }
+
+        // Fetch verification result from backend - never trust client-side URL params
+        const response = await fetch(`/api/verify-qr/result?id=${encodeURIComponent(resultId)}`);
+        
+        if (!response.ok) {
+          if (mounted) {
+            setError("Unable to retrieve verification results");
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        const data = await response.json();
+        
+        if (mounted) {
+          const result: VerificationData = {
+            verified: data.verified === true,
+            productName: data.productName || "Unknown Product",
+            transactionId: data.transactionId || data.id || "N/A",
+            blockConfirmations: data.blockConfirmations ?? 0,
+            scanCount: data.scanCount ?? 0,
+            userProducts: data.userProducts ?? 0,
+            hash: data.hash || "",
+            productImage: data.productImage,
+            timestamp: data.timestamp || Date.now(),
+            message: data.message || "Verification complete",
+            type: data.type || "standard",
+          };
+          setVerificationData(result);
+          setIsLoading(false);
         }
       } catch (err) {
         if (mounted) {
-          setError("Invalid verification data");
+          setError("Failed to load verification data");
           setIsLoading(false);
         }
       }
     };
 
-    processVerificationData();
+    fetchVerificationData();
 
     return () => {
       mounted = false;
     };
-  }, [qrData, verified, message]); // Only depend on memoized values
+  }, [resultId]);
 
   if (isLoading) {
     return (
