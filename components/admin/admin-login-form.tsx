@@ -77,8 +77,13 @@ export function AdminLoginForm() {
   useEffect(() => {
     if (!user) return;
 
-    const role = user.role;
+    // Only redirect after successful login (when form was submitted)
+    // Skip redirect if we're already on admin-login page to allow login form to show
+    if (typeof window !== "undefined" && window.location.pathname === "/admin-login") {
+      return;
+    }
 
+    const role = user.role;
     const dest = getRouteForRole(role);
     router.replace(dest);
   }, [user, router]);
