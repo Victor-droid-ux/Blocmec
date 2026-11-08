@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -129,10 +129,7 @@ export default async function AdminLoginPage() {
           <AdminLoginForm />
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            <p>Need help? Contact your organization administrator.</p>
-            <p className="mt-2">
-              For access issues, email support@blockmec.com.
-            </p>
+            <p>Need help? Contact system administrator</p>
           </div>
         </div>
       </div>
