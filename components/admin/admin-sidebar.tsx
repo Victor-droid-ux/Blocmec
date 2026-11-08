@@ -26,31 +26,37 @@ const navigation = [
     name: "Dashboard",
     href: ROUTES.ADMIN.ROOT,
     icon: BarChart3,
+    tab: "overview",
   },
   {
     name: "User Management",
     href: ROUTES.ADMIN.USERS,
     icon: Users,
+    tab: "users",
   },
   {
     name: "System Logs",
     href: ROUTES.ADMIN.LOGS,
     icon: FileText,
+    tab: "logs",
   },
   {
     name: "Data Analyst",
     href: ROUTES.ADMIN.ANALYST,
     icon: Database,
+    tab: "analyst",
   },
   {
     name: "System Health",
     href: ROUTES.ADMIN.HEALTH,
     icon: Activity,
+    tab: "health",
   },
   {
     name: "Settings",
     href: ROUTES.ADMIN.SETTINGS,
     icon: Settings,
+    tab: "settings",
   },
 ];
 
@@ -96,9 +102,10 @@ export function AdminSidebar() {
       <ScrollArea className='flex-1 px-3 py-4'>
         <nav className='space-y-2'>
           {navigation.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = item.tab === "overview" ? pathname === item.href : pathname === item.href || pathname.includes(`tab=${item.tab}`);
+            const linkHref = item.tab === "overview" ? item.href : `${ROUTES.ADMIN.ROOT}?tab=${item.tab}`;
             return (
-              <Link key={item.name} href={item.href}>
+              <Link key={item.name} href={linkHref}>
                 <Button
                   variant={isActive ? "secondary" : "ghost"}
                   className={cn(

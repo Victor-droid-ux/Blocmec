@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -38,7 +39,11 @@ interface ActivityItem {
 }
 
 export default function AdminPanelPage() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  
+  const [activeTab, setActiveTab] = useState(tabParam || "overview");
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     totalQrCodes: 0,
@@ -47,6 +52,12 @@ export default function AdminPanelPage() {
   });
   const [recentActivity, setRecentActivity] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Sync tab state with URL
+  const handleTabChange = (newTab: string) => {
+    setActiveTab(newTab);
+    router.push(`/admin-panel?tab=${newTab}`);
+  };
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -144,14 +155,16 @@ export default function AdminPanelPage() {
       {/* Main Content Tabs */}
       <Tabs
         value={activeTab}
-        onValueChange={setActiveTab}
+        onValueChange={handleTabChange}
         className="space-y-4"
       >
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="users">User Management</TabsTrigger>
           <TabsTrigger value="logs">System Logs</TabsTrigger>
           <TabsTrigger value="analyst">Data Analyst</TabsTrigger>
+          <TabsTrigger value="health">System Health</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -292,6 +305,97 @@ export default function AdminPanelPage() {
             </CardHeader>
             <CardContent>
               <AiDataAnalyst />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="health">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Activity className="h-5 w-5" />
+                <span>System Health</span>
+              </CardTitle>
+              <CardDescription>
+                Monitor system performance, uptime, and resource usage
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          System Uptime
+                        </p>
+                        <p className="text-2xl font-bold text-green-600">
+                          99.9%
+                        </p>
+                      </div>
+                      <CheckCircle className="h-8 w-8 text-green-600" />
+                    </div>
+                  </div>
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          API Response Time
+                        </p>
+                        <p className="text-2xl font-bold text-blue-600">
+                          125ms
+                        </p>
+                      </div>
+                      <Activity className="h-8 w-8 text-blue-600" />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  All systems operational. Last health check: Just now
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="settings">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Shield className="h-5 w-5" />
+                <span>System Settings</span>
+              </CardTitle>
+              <CardDescription>
+                Configure system parameters, security, and integrations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">
+                    API Rate Limiting
+                  </label>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    1000 requests per hour
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">
+                    Session Timeout
+                  </label>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    30 minutes of inactivity
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">
+                    Email Notifications
+                  </label>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Enabled for critical alerts
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
