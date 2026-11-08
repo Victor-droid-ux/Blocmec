@@ -59,6 +59,13 @@ export default function AdminPanelPage() {
     router.push(`/admin-panel?tab=${newTab}`);
   };
 
+  // Update active tab when URL parameter changes
+  useEffect(() => {
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
