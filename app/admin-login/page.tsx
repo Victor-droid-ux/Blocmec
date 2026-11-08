@@ -20,26 +20,18 @@ export default async function AdminLoginPage() {
     ? (await supabase.auth.getSession()).data.session
     : null;
 
+  // Redirect admins to the admin panel
   if (session?.user?.id) {
     try {
       const user = await prisma.user.findUnique({
         where: { supabase_id: session.user.id },
       });
 
-      // If user exists and is admin -> redirect to admin dashboard
-      if (user && user.role === "admin") {
-        // adjust ROUTES.ADMIN.DASHBOARD to whatever constant you use
+      if (user?.role === "admin") {
         redirect(ROUTES.ADMIN.ROOT);
       }
-
-      // If user exists but is NOT admin -> redirect to normal dashboard
-      if (user) {
-        redirect(ROUTES.DASHBOARD.ROOT);
-      }
     } catch (err) {
-      // log server-side errors (don't reveal to client)
       console.error("AdminLoginPage prisma lookup error:", err);
-      // fall through and render login UI
     }
   }
 
