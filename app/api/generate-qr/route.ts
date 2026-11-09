@@ -10,6 +10,7 @@ import { publishWebhookEvent, WEBHOOK_EVENTS } from "@/lib/webhooks";
 import crypto from "crypto";
 import { enforceUserRateLimit } from "@/lib/plan-rate-limit";
 import { getPlanPolicy, hasAnyPermission } from "@/lib/developer-policy";
+import { normalizeCategoryKey } from "@/lib/product-categories";
 
 const generateQrSchema = z.object({
   productName: z.string().min(1),
@@ -21,10 +22,11 @@ const generateQrSchema = z.object({
   expiryDays: z.number().int().min(1).optional(),
   scanLimit: z.number().int().min(0).default(0),
   metadata: z.record(z.string(), z.any()).optional(),
+  verificationDomain: z.string().url().optional(),
 });
 
 function generateTokenId(): string {
-  return `BM-${Date.now()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+  return crypto.randomUUID();
 }
 
 function hasApiKeyPermission(permissions: unknown, permission: string) {
@@ -180,7 +182,37 @@ export async function POST(req: NextRequest) {
       expiryDays,
       scanLimit,
       metadata,
+      verificationDomain,
     } = parsed.data;
+
+    // Normalize product category (CRITICAL-7: Fix category naming mismatch)
+    const normalizedProductType = normalizeCategoryKey(productType);
+
+    // Validate category restrictions
+    if (dbUser.allowed_categories.length > 0) {
+      if (!dbUser.allowed_categories.includes(normalizedProductType)) {
+        return NextResponse.json(
+          {
+            error: `Category '${normalizedProductType}' is not allowed. Allowed categories: ${dbUser.allowed_categories.join(", ")}`,
+            code: "CATEGORY_NOT_ALLOWED",
+          },
+          { status: 403 },
+        );
+      }
+    }
+
+    // Validate verification domain if provided
+    if (verificationDomain && verificationDomain !== dbUser.verification_domain) {
+      return NextResponse.json(
+        {
+          error: `Verification domain '${verificationDomain}' does not match your registered domain`,
+          code: "INVALID_VERIFICATION_DOMAIN",
+        },
+        { status: 403 },
+      );
+    }
+
+    const domainToUse = verificationDomain || dbUser.verification_domain || (process.env.NEXT_PUBLIC_APP_URL ?? "https://blockmec.com");
 
     // Deduct credits
     if (dbUser.api_credits < quantity) {
@@ -197,96 +229,121 @@ export async function POST(req: NextRequest) {
       ? new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000)
       : null;
 
-    // Create batch
-    const batch = await prisma.batch.create({
-      data: {
-        user_id: dbUser.id,
-        name: `${productName} - ${batchNumber || new Date().toISOString().split("T")[0]}`,
-        product_type: productType,
-        batch_number: batchNumber,
-        total_count: quantity,
-        generated_count: 0,
-        status: "processing",
-        metadata: {
-          companyRegNo,
-          description,
-          ...metadata,
-        },
-        updated_at: new Date(),
-      },
-    });
-
-    // Generate QR codes
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://blockmec.com";
-    const qrCodes = [];
-
-    for (let i = 0; i < quantity; i++) {
-      const tokenId = generateTokenId();
-      const verifyUrl = `${baseUrl}/verify/${tokenId}`;
-
-      // Generate QR image as data URL
-      const qrImageDataUrl = await QRCode.toDataURL(verifyUrl, {
-        width: 512,
-        margin: 2,
-        color: { dark: "#000000", light: "#FFFFFF" },
+    // ATOMIC TRANSACTION: Create batch, generate QR codes, and deduct credits in one transaction
+    const result = await prisma.$transaction(async (tx) => {
+      // Verify user still has credits (race condition protection)
+      const userCheck = await tx.user.findUnique({
+        where: { id: dbUser.id },
+        select: { api_credits: true },
       });
 
-      qrCodes.push({
-        user_id: dbUser.id,
-        token_id: tokenId,
-        batch_id: batch.id,
-        product_type: productType,
-        product_name: productName,
-        qr_data: verifyUrl,
-        qr_image_url: qrImageDataUrl,
-        scan_limit: scanLimit,
-        scan_count: 0,
-        expires_at: expiresAt,
-        status: "active" as const,
-        metadata: {
-          batchNumber,
-          companyRegNo,
-          description,
-          index: i + 1,
-          total: quantity,
-          ...metadata,
+      if (!userCheck || userCheck.api_credits < quantity) {
+        throw new Error("Insufficient credits - race condition detected");
+      }
+
+      // Create batch
+      const batch = await tx.batch.create({
+        data: {
+          user_id: dbUser.id,
+          name: `${productName} - ${batchNumber || new Date().toISOString().split("T")[0]}`,
+          product_type: normalizedProductType,
+          batch_number: batchNumber,
+          total_count: quantity,
+          generated_count: 0,
+          status: "processing",
+          metadata: {
+            companyRegNo,
+            description,
+            verification_domain: domainToUse,
+            original_product_type: productType,
+            ...metadata,
+          },
+          updated_at: new Date(),
         },
-        updated_at: new Date(),
       });
-    }
 
-    // Bulk insert QR codes
-    await prisma.qrCode.createMany({ data: qrCodes });
+      // Generate QR codes
+      const qrCodes = [];
+      for (let i = 0; i < quantity; i++) {
+        const tokenId = generateTokenId();
+        const verifyUrl = `${domainToUse}/verify/${tokenId}`;
 
-    // Update batch status and generated count
-    await prisma.batch.update({
-      where: { id: batch.id },
-      data: {
-        generated_count: quantity,
-        status: "completed",
-        updated_at: new Date(),
-      },
+        // Generate QR image as data URL
+        const qrImageDataUrl = await QRCode.toDataURL(verifyUrl, {
+          width: 512,
+          margin: 2,
+          color: { dark: "#000000", light: "#FFFFFF" },
+        });
+
+        qrCodes.push({
+          user_id: dbUser.id,
+          token_id: tokenId,
+          batch_id: batch.id,
+          product_type: normalizedProductType,
+          product_name: productName,
+          qr_data: verifyUrl,
+          qr_image_url: qrImageDataUrl,
+          scan_limit: scanLimit,
+          scan_count: 0,
+          expires_at: expiresAt,
+          status: "active" as const,
+          metadata: {
+            batchNumber,
+            companyRegNo,
+            description,
+            index: i + 1,
+            total: quantity,
+            verification_domain: domainToUse,
+            original_product_type: productType,
+            ...metadata,
+          },
+          updated_at: new Date(),
+        });
+      }
+
+      // Bulk insert QR codes
+      await tx.qrCode.createMany({ data: qrCodes });
+
+      // Update batch status and generated count
+      await tx.batch.update({
+        where: { id: batch.id },
+        data: {
+          generated_count: quantity,
+          status: "completed",
+          updated_at: new Date(),
+        },
+      });
+
+      // Deduct credits from user (atomic - will fail if insufficient credits)
+      const updatedUser = await tx.user.update({
+        where: { id: dbUser.id },
+        data: {
+          api_credits: { decrement: quantity },
+          updated_at: new Date(),
+        },
+      });
+
+      // Log the action
+      await tx.auditLog.create({
+        data: {
+          user_id: dbUser.id,
+          action: "generate_qr_batch",
+          resource_type: "Batch",
+          resource_id: batch.id,
+          metadata: { 
+            productName, 
+            productType: normalizedProductType, 
+            originalProductType: productType,
+            quantity, 
+            verification_domain: domainToUse 
+          },
+        },
+      });
+
+      return { batch, updatedUser };
     });
 
-    // Deduct credits from user
-    await prisma.user.update({
-      where: { id: dbUser.id },
-      data: {
-        api_credits: { decrement: quantity },
-        updated_at: new Date(),
-      },
-    });
-
-    // Log the action
-    await prisma.auditLog.create({
-      data: {
-        user_id: dbUser.id,
-        action: "generate_qr_batch",
-        resource_type: "Batch",
-        resource_id: batch.id,
-        metadata: { productName, productType, quantity },
-      },
-    });
+    const { batch } = result;
 
     const occurredAt = new Date().toISOString();
 
@@ -297,7 +354,7 @@ export async function POST(req: NextRequest) {
           batch_id: batch.id,
           qr_count: quantity,
           product_name: productName,
-          product_type: productType,
+          product_type: normalizedProductType,
           occurred_at: occurredAt,
         };
 
@@ -314,7 +371,7 @@ export async function POST(req: NextRequest) {
               batch_id: batch.id,
               qr_count: quantity,
               product_name: productName,
-              product_type: productType,
+              product_type: normalizedProductType,
               message: "QR batch generation completed.",
             },
           }),
@@ -333,7 +390,7 @@ export async function POST(req: NextRequest) {
               batch_id: batch.id,
               qr_count: quantity,
               product_name: productName,
-              product_type: productType,
+              product_type: normalizedProductType,
               include: ["qrcodes"],
             },
           }),
@@ -352,7 +409,7 @@ export async function POST(req: NextRequest) {
               batch_id: batch.id,
               qr_count: quantity,
               product_name: productName,
-              product_type: productType,
+              product_type: normalizedProductType,
               include: ["qrcodes"],
             },
           }),
@@ -367,11 +424,22 @@ export async function POST(req: NextRequest) {
       batchId: batch.id,
       quantity,
       productName,
-      productType,
+      productType: normalizedProductType,
       message: `Successfully generated ${quantity} QR codes`,
     });
   } catch (err: any) {
     console.error("QR generation error:", err);
+    
+    if (err.message?.includes("Insufficient credits - race condition detected")) {
+      return NextResponse.json(
+        {
+          error: "Insufficient credits - please refresh and try again",
+          code: "INSUFFICIENT_CREDITS",
+        },
+        { status: 402 },
+      );
+    }
+
     return NextResponse.json(
       { error: err?.message ?? "Failed to generate QR codes" },
       { status: 500 },

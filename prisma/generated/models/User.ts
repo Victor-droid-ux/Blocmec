@@ -45,6 +45,7 @@ export type UserMinAggregateOutputType = {
   department: string | null
   bio: string | null
   avatar_url: string | null
+  verification_domain: string | null
   role: $Enums.UserRole | null
   status: $Enums.UserStatus | null
   api_credits: number | null
@@ -68,6 +69,7 @@ export type UserMaxAggregateOutputType = {
   department: string | null
   bio: string | null
   avatar_url: string | null
+  verification_domain: string | null
   role: $Enums.UserRole | null
   status: $Enums.UserStatus | null
   api_credits: number | null
@@ -91,6 +93,8 @@ export type UserCountAggregateOutputType = {
   department: number
   bio: number
   avatar_url: number
+  verification_domain: number
+  allowed_categories: number
   role: number
   status: number
   api_credits: number
@@ -124,6 +128,7 @@ export type UserMinAggregateInputType = {
   department?: true
   bio?: true
   avatar_url?: true
+  verification_domain?: true
   role?: true
   status?: true
   api_credits?: true
@@ -147,6 +152,7 @@ export type UserMaxAggregateInputType = {
   department?: true
   bio?: true
   avatar_url?: true
+  verification_domain?: true
   role?: true
   status?: true
   api_credits?: true
@@ -170,6 +176,8 @@ export type UserCountAggregateInputType = {
   department?: true
   bio?: true
   avatar_url?: true
+  verification_domain?: true
+  allowed_categories?: true
   role?: true
   status?: true
   api_credits?: true
@@ -280,6 +288,8 @@ export type UserGroupByOutputType = {
   department: string | null
   bio: string | null
   avatar_url: string | null
+  verification_domain: string | null
+  allowed_categories: string[]
   role: $Enums.UserRole
   status: $Enums.UserStatus
   api_credits: number
@@ -326,6 +336,8 @@ export type UserWhereInput = {
   department?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   avatar_url?: Prisma.StringNullableFilter<"User"> | string | null
+  verification_domain?: Prisma.StringNullableFilter<"User"> | string | null
+  allowed_categories?: Prisma.StringNullableListFilter<"User">
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   api_credits?: Prisma.IntFilter<"User"> | number
@@ -358,6 +370,8 @@ export type UserOrderByWithRelationInput = {
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  verification_domain?: Prisma.SortOrderInput | Prisma.SortOrder
+  allowed_categories?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -383,16 +397,18 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
   supabase_id?: string
+  username?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
-  username?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   location?: Prisma.StringNullableFilter<"User"> | string | null
   department?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   avatar_url?: Prisma.StringNullableFilter<"User"> | string | null
+  verification_domain?: Prisma.StringNullableFilter<"User"> | string | null
+  allowed_categories?: Prisma.StringNullableListFilter<"User">
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   api_credits?: Prisma.IntFilter<"User"> | number
@@ -412,7 +428,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   webhook_payloads?: Prisma.WebhookEventPayloadListRelationFilter
   uploaded_files?: Prisma.UserFileListRelationFilter
   settings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
-}, "id" | "email" | "supabase_id">
+}, "id" | "email" | "supabase_id" | "username">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -425,6 +441,8 @@ export type UserOrderByWithAggregationInput = {
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  verification_domain?: Prisma.SortOrderInput | Prisma.SortOrder
+  allowed_categories?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -456,6 +474,8 @@ export type UserScalarWhereWithAggregatesInput = {
   department?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   avatar_url?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  verification_domain?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  allowed_categories?: Prisma.StringNullableListFilter<"User">
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   api_credits?: Prisma.IntWithAggregatesFilter<"User"> | number
@@ -479,6 +499,8 @@ export type UserCreateInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -511,6 +533,8 @@ export type UserUncheckedCreateInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -543,6 +567,8 @@ export type UserUpdateInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -575,6 +601,8 @@ export type UserUncheckedUpdateInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -607,6 +635,8 @@ export type UserCreateManyInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -630,6 +660,8 @@ export type UserUpdateManyMutationInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -653,6 +685,8 @@ export type UserUncheckedUpdateManyInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -686,6 +720,8 @@ export type UserCountOrderByAggregateInput = {
   department?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar_url?: Prisma.SortOrder
+  verification_domain?: Prisma.SortOrder
+  allowed_categories?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -713,6 +749,7 @@ export type UserMaxOrderByAggregateInput = {
   department?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar_url?: Prisma.SortOrder
+  verification_domain?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -736,6 +773,7 @@ export type UserMinOrderByAggregateInput = {
   department?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar_url?: Prisma.SortOrder
+  verification_domain?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   api_credits?: Prisma.SortOrder
@@ -854,6 +892,15 @@ export type UserUpdateOneRequiredWithoutSettingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSettingsInput, Prisma.UserUpdateWithoutSettingsInput>, Prisma.UserUncheckedUpdateWithoutSettingsInput>
 }
 
+export type UserCreateallowed_categoriesInput = {
+  set: string[]
+}
+
+export type UserUpdateallowed_categoriesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
@@ -901,6 +948,8 @@ export type UserCreateWithoutApi_keysInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -932,6 +981,8 @@ export type UserUncheckedCreateWithoutApi_keysInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -979,6 +1030,8 @@ export type UserUpdateWithoutApi_keysInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1010,6 +1063,8 @@ export type UserUncheckedUpdateWithoutApi_keysInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1041,6 +1096,8 @@ export type UserCreateWithoutAudit_logsInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1072,6 +1129,8 @@ export type UserUncheckedCreateWithoutAudit_logsInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1119,6 +1178,8 @@ export type UserUpdateWithoutAudit_logsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1150,6 +1211,8 @@ export type UserUncheckedUpdateWithoutAudit_logsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1181,6 +1244,8 @@ export type UserCreateWithoutBatchesInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1212,6 +1277,8 @@ export type UserUncheckedCreateWithoutBatchesInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1259,6 +1326,8 @@ export type UserUpdateWithoutBatchesInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1290,6 +1359,8 @@ export type UserUncheckedUpdateWithoutBatchesInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1321,6 +1392,8 @@ export type UserCreateWithoutQr_codesInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1352,6 +1425,8 @@ export type UserUncheckedCreateWithoutQr_codesInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1399,6 +1474,8 @@ export type UserUpdateWithoutQr_codesInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1430,6 +1507,8 @@ export type UserUncheckedUpdateWithoutQr_codesInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1461,6 +1540,8 @@ export type UserCreateWithoutTransactionsInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1492,6 +1573,8 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1539,6 +1622,8 @@ export type UserUpdateWithoutTransactionsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1570,6 +1655,8 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1601,6 +1688,8 @@ export type UserCreateWithoutUploaded_filesInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1632,6 +1721,8 @@ export type UserUncheckedCreateWithoutUploaded_filesInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1679,6 +1770,8 @@ export type UserUpdateWithoutUploaded_filesInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1710,6 +1803,8 @@ export type UserUncheckedUpdateWithoutUploaded_filesInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1741,6 +1836,8 @@ export type UserCreateWithoutSettingsInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1772,6 +1869,8 @@ export type UserUncheckedCreateWithoutSettingsInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1819,6 +1918,8 @@ export type UserUpdateWithoutSettingsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1850,6 +1951,8 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1881,6 +1984,8 @@ export type UserCreateWithoutWebhooksInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1912,6 +2017,8 @@ export type UserUncheckedCreateWithoutWebhooksInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -1959,6 +2066,8 @@ export type UserUpdateWithoutWebhooksInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1990,6 +2099,8 @@ export type UserUncheckedUpdateWithoutWebhooksInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2021,6 +2132,8 @@ export type UserCreateWithoutWebhook_payloadsInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -2052,6 +2165,8 @@ export type UserUncheckedCreateWithoutWebhook_payloadsInput = {
   department?: string | null
   bio?: string | null
   avatar_url?: string | null
+  verification_domain?: string | null
+  allowed_categories?: Prisma.UserCreateallowed_categoriesInput | string[]
   role?: $Enums.UserRole
   status?: $Enums.UserStatus
   api_credits?: number
@@ -2099,6 +2214,8 @@ export type UserUpdateWithoutWebhook_payloadsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2130,6 +2247,8 @@ export type UserUncheckedUpdateWithoutWebhook_payloadsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verification_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowed_categories?: Prisma.UserUpdateallowed_categoriesInput | string[]
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   api_credits?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2255,6 +2374,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   department?: boolean
   bio?: boolean
   avatar_url?: boolean
+  verification_domain?: boolean
+  allowed_categories?: boolean
   role?: boolean
   status?: boolean
   api_credits?: boolean
@@ -2288,6 +2409,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   department?: boolean
   bio?: boolean
   avatar_url?: boolean
+  verification_domain?: boolean
+  allowed_categories?: boolean
   role?: boolean
   status?: boolean
   api_credits?: boolean
@@ -2311,6 +2434,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   department?: boolean
   bio?: boolean
   avatar_url?: boolean
+  verification_domain?: boolean
+  allowed_categories?: boolean
   role?: boolean
   status?: boolean
   api_credits?: boolean
@@ -2334,6 +2459,8 @@ export type UserSelectScalar = {
   department?: boolean
   bio?: boolean
   avatar_url?: boolean
+  verification_domain?: boolean
+  allowed_categories?: boolean
   role?: boolean
   status?: boolean
   api_credits?: boolean
@@ -2346,7 +2473,7 @@ export type UserSelectScalar = {
   updated_at?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "supabase_id" | "name" | "username" | "phone" | "location" | "department" | "bio" | "avatar_url" | "role" | "status" | "api_credits" | "subscription_plan" | "email_verified" | "verification_token" | "reset_token" | "reset_token_expires" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "supabase_id" | "name" | "username" | "phone" | "location" | "department" | "bio" | "avatar_url" | "verification_domain" | "allowed_categories" | "role" | "status" | "api_credits" | "subscription_plan" | "email_verified" | "verification_token" | "reset_token" | "reset_token_expires" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   qr_codes?: boolean | Prisma.User$qr_codesArgs<ExtArgs>
   batches?: boolean | Prisma.User$batchesArgs<ExtArgs>
@@ -2386,6 +2513,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     department: string | null
     bio: string | null
     avatar_url: string | null
+    verification_domain: string | null
+    allowed_categories: string[]
     role: $Enums.UserRole
     status: $Enums.UserStatus
     api_credits: number
@@ -2838,6 +2967,8 @@ export interface UserFieldRefs {
   readonly department: Prisma.FieldRef<"User", 'String'>
   readonly bio: Prisma.FieldRef<"User", 'String'>
   readonly avatar_url: Prisma.FieldRef<"User", 'String'>
+  readonly verification_domain: Prisma.FieldRef<"User", 'String'>
+  readonly allowed_categories: Prisma.FieldRef<"User", 'String[]'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
   readonly api_credits: Prisma.FieldRef<"User", 'Int'>

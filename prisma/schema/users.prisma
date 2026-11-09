@@ -17,12 +17,14 @@ model User {
   email               String      @unique @db.VarChar(255)
   supabase_id         String?     @unique @db.Uuid
   name                String?     @db.VarChar(255)
-  username            String?     @db.VarChar(255)
+  username            String?     @unique @db.VarChar(255)
   phone               String?     @db.VarChar(50)
   location            String?     @db.VarChar(255)
   department          String?     @db.VarChar(255)
   bio                 String?
   avatar_url          String?     @db.VarChar(1024)
+  verification_domain String?     @db.VarChar(255)
+  allowed_categories  String[]    @default([])
   role                UserRole    @default(user)
   status              UserStatus  @default(active)
   api_credits         Int         @default(0)

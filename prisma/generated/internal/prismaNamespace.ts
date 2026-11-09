@@ -1489,6 +1489,8 @@ export const UserScalarFieldEnum = {
   department: 'department',
   bio: 'bio',
   avatar_url: 'avatar_url',
+  verification_domain: 'verification_domain',
+  allowed_categories: 'allowed_categories',
   role: 'role',
   status: 'status',
   api_credits: 'api_credits',

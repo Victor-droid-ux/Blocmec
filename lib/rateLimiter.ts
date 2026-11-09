@@ -6,8 +6,6 @@ import { Redis } from "@upstash/redis";
 let redisClient: Redis | null = null;
 let hasLoggedMissingRedisConfig = false;
 let hasLoggedDevBypass = false;
-let redisDisabledUntil = 0;
-let hasLoggedRedisBypassCooldown = false;
 
 function getRedisClient(): Redis | null {
   const isDev = process.env.NODE_ENV === "development";
@@ -32,10 +30,17 @@ function getRedisClient(): Redis | null {
 
   if (!url || !token) {
     if (!hasLoggedMissingRedisConfig) {
-      console.warn(
-        "[RateLimit] Upstash env vars are not set. Redis-backed rate limiting is disabled.",
+      console.error(
+        "[SECURITY] Upstash env vars are not set. Rate limiting is DISABLED. This is a security risk in production.",
       );
       hasLoggedMissingRedisConfig = true;
+    }
+    // SECURITY: In production, we MUST NOT silently disable rate limiting
+    // Only allow in development; in production throw error
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "CRITICAL: Rate limiting required in production but Redis credentials not found. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.",
+      );
     }
     return null;
   }
@@ -58,19 +63,6 @@ export async function rateLimit(
   config: RateLimitConfig = { maxRequests: 5, windowMs: 60000 },
   keyOptions: RateLimitKeyOptions = {},
 ) {
-  const now = Date.now();
-  if (now < redisDisabledUntil) {
-    if (!hasLoggedRedisBypassCooldown) {
-      console.warn(
-        "[RateLimit] Redis temporarily disabled after recent connectivity errors; bypassing rate limit.",
-      );
-      hasLoggedRedisBypassCooldown = true;
-    }
-    return null;
-  }
-
-  hasLoggedRedisBypassCooldown = false;
-
   const redis = getRedisClient();
   if (!redis) {
     return null;
@@ -79,27 +71,59 @@ export async function rateLimit(
   try {
     const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
     const key = keyOptions.keySuffix
-      ? `rate-limit:${keyOptions.keySuffix}`
+      ? `rate-limit:${keyOptions.keySuffix}:${ip}`
       : `rate-limit:${ip}`;
 
-    const current = (await redis.get<number>(key)) || 0;
+    // SECURITY: Use atomic INCR instead of GET + SET
+    // This prevents race conditions where concurrent requests
+    // can bypass the rate limit
+    const current = await redis.incr(key);
 
-    if (current >= config.maxRequests) {
-      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    // Set expiration only on first increment of the window
+    if (current === 1) {
+      // Set expiration in seconds
+      await redis.expire(key, Math.ceil(config.windowMs / 1000));
     }
 
-    await redis.set(key, current + 1, {
-      ex: config.windowMs / 1000,
-    });
+    if (current > config.maxRequests) {
+      // Return remaining time until reset
+      const ttl = await redis.ttl(key);
+      return NextResponse.json(
+        {
+          error: "Too many requests",
+          retryAfter: ttl > 0 ? ttl : 1,
+        },
+        { 
+          status: 429,
+          headers: {
+            "Retry-After": String(ttl > 0 ? ttl : 1),
+          },
+        }
+      );
+    }
+
     return null;
   } catch (error) {
-    // Fail open if the rate limiter backend is down, so auth endpoints remain available.
-    redisDisabledUntil = Date.now() + 60_000;
-    redisClient = null;
-    console.warn(
-      "[RateLimit] Redis request failed; bypassing rate limit.",
+    // SECURITY: In production, fail CLOSED (reject requests) not OPEN
+    // This prevents bypass of rate limiting due to Redis outage
+    const isProduction = process.env.NODE_ENV === "production";
+    
+    console.error(
+      isProduction
+        ? "[SECURITY] Rate limiter failed; REJECTING request to prevent bypass"
+        : "[RateLimit] Redis request failed; bypassing rate limit in dev mode",
       error,
     );
+
+    if (isProduction) {
+      // In production, reject the request rather than allow unlimited throughput
+      return NextResponse.json(
+        { error: "Service temporarily unavailable" },
+        { status: 503 },
+      );
+    }
+
+    // In dev, allow the request
     return null;
   }
 }

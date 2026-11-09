@@ -54,7 +54,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: flat }, { status: 400 });
     }
     const input = parsed.data as SignInInput;
-    const normalizedEmail = input.email.trim().toLowerCase();
+    
+    // Determine if input is email or username
+    const isEmail = input.email.includes("@");
+    const normalizedInput = input.email.trim().toLowerCase();
 
     // Development mode — only active when Supabase is not configured AND dev passwords are set
     if (
@@ -62,7 +65,7 @@ export async function POST(req: NextRequest) {
       process.env.NODE_ENV === "development" &&
       DEV_CREDENTIALS
     ) {
-      const devCreds = DEV_CREDENTIALS[normalizedEmail];
+      const devCreds = DEV_CREDENTIALS[normalizedInput];
       if (!devCreds) {
         return NextResponse.json(
           {
@@ -76,13 +79,13 @@ export async function POST(req: NextRequest) {
 
       if (devCreds.password === input.password) {
         let user = await prisma.user.findUnique({
-          where: { email: normalizedEmail },
+          where: { email: normalizedInput },
         });
         if (!user) {
           user = await prisma.user.create({
             data: {
-              email: normalizedEmail,
-              name: normalizedEmail.split("@")[0],
+              email: normalizedInput,
+              name: normalizedInput.split("@")[0],
               role: devCreds.role,
               supabase_id: generateDevUUID(),
               email_verified: true,
@@ -116,14 +119,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // If input is username, look it up to get email for Supabase auth
+    let emailForAuth = normalizedInput;
+    if (!isEmail) {
+      const userByUsername = await prisma.user.findUnique({
+        where: { username: normalizedInput },
+        select: { email: true },
+      });
+      
+      if (!userByUsername) {
+        return NextResponse.json(
+          {
+            error:
+              "No account was found for this username. Please check and try again.",
+            code: "user_not_found",
+          },
+          { status: 404 },
+        );
+      }
+      
+      emailForAuth = userByUsername.email;
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: normalizedEmail,
+      email: emailForAuth,
       password: input.password,
     });
 
     if (error || !data?.session) {
       const existingUser = await prisma.user.findUnique({
-        where: { email: normalizedEmail },
+        where: isEmail ? { email: normalizedInput } : { username: normalizedInput },
         select: { id: true },
       });
 
@@ -131,7 +156,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
           {
             error:
-              "No account was found for this email address. Please create an account and try again.",
+              "No account was found. Please check your email/username and try again.",
             code: "user_not_found",
           },
           { status: 404 },
@@ -158,15 +183,15 @@ export async function POST(req: NextRequest) {
     const emailVerified = Boolean(supabaseUser.email_confirmed_at);
 
     const user = await prisma.user.upsert({
-      where: { email: normalizedEmail },
+      where: { email: emailForAuth },
       update: {
         supabase_id: supabaseUser.id,
-        email: normalizedEmail,
+        email: emailForAuth,
         email_verified: emailVerified,
         updated_at: new Date(),
       },
       create: {
-        email: normalizedEmail,
+        email: emailForAuth,
         supabase_id: supabaseUser.id,
         role: UserRole.user,
         email_verified: emailVerified,
