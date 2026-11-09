@@ -6,6 +6,8 @@ This project uses Prisma migrations for schema history and `DIRECT_URL` for migr
 
 - The existing Supabase database was aligned to the Prisma schema and the migration `20260714_profile_fields_and_user_files` was marked as applied with `prisma migrate resolve`.
 - Future schema changes should now use normal Prisma migrations instead of `prisma db push`.
+- `20261109_qr_images_on_demand` preserves existing stored images; on-demand generation does not remove them.
+- `20261109_verification_domain_and_categories` retains optional unique usernames, allowing multiple NULL values.
 
 ### Environment rules
 
