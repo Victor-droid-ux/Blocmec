@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +14,7 @@ import {
   Package,
   RefreshCw,
 } from "lucide-react";
+import { getProductCategory } from "@/lib/product-categories";
 
 interface VerificationData {
   verified: boolean;
@@ -35,10 +36,12 @@ interface VerificationData {
 export default function VerifyPage() {
   const params = useParams();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const tokenId = params.tokenId as string;
   const [result, setResult] = useState<VerificationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
   const verify = async () => {
     try {
@@ -58,6 +61,14 @@ export default function VerifyPage() {
       }
 
       setResult(data);
+
+      if (data.data?.productType) {
+        const category = getProductCategory(data.data.productType);
+        setShouldRedirect(true);
+        setTimeout(() => {
+          router.push(`/verification-results/${category.resultSlug}?tokenId=${tokenId}`);
+        }, 100);
+      }
     } catch (err: any) {
       setError(err.message ?? "Verification failed");
     } finally {
@@ -69,7 +80,7 @@ export default function VerifyPage() {
     if (tokenId) verify();
   }, [tokenId]);
 
-  if (loading) {
+  if (loading || shouldRedirect) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card className="bg-slate-800/50 border-slate-700 p-8">
@@ -106,17 +117,18 @@ export default function VerifyPage() {
 
   const { verified, message, data } = result;
   const productType = data?.productType || "default";
+  const category = getProductCategory(productType);
 
   return (
-    <div className="min-h-screen p-4 py-12">
+    <div className="min-h-screen p-4 py-12" style={{ backgroundColor: category.accentSoft }}>
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <Card className="bg-white/5 backdrop-blur border-white/10 shadow-2xl">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="bg-gradient-to-br from-purple-500 to-blue-500 p-3 rounded-lg">
-                  <Shield className="h-8 w-8 text-white" />
+                <div className="p-3 rounded-lg border" style={{ backgroundColor: category.accent + "20", borderColor: category.accent + "40" }}>
+                  <Shield className="h-8 w-8" style={{ color: category.accent }} />
                 </div>
                 <div>
                   <CardTitle className="text-white text-2xl">
@@ -140,6 +152,19 @@ export default function VerifyPage() {
           </CardHeader>
         </Card>
 
+        {/* Brand Logo (if available) */}
+        {data && data.metadata?.brandLogo && (
+          <Card className="bg-white/5 backdrop-blur border-white/10 shadow-2xl">
+            <CardContent className="p-8 flex justify-center">
+              <img
+                src={data.metadata.brandLogo}
+                alt="Brand Logo"
+                className="max-h-32 w-auto"
+              />
+            </CardContent>
+          </Card>
+        )}
+
         {/* Result */}
         <Card className="bg-white/5 backdrop-blur border-white/10 shadow-2xl">
           <CardContent className="p-12 text-center">
@@ -158,6 +183,19 @@ export default function VerifyPage() {
             <p className="text-slate-200 text-lg">{message}</p>
           </CardContent>
         </Card>
+
+        {/* Product Image (if available) */}
+        {data && data.metadata?.productImage && (
+          <Card className="bg-white/5 backdrop-blur border-white/10 shadow-2xl">
+            <CardContent className="p-8 text-center">
+              <img
+                src={data.metadata.productImage}
+                alt={data.productName}
+                className="max-w-xs mx-auto h-auto rounded-lg shadow-lg"
+              />
+            </CardContent>
+          </Card>
+        )}
 
         {/* Product Details */}
         {data && (

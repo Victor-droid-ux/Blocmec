@@ -17,6 +17,7 @@
     "db:seed": "npx prisma db seed",
     "db:reset": "npx prisma migrate reset",
     "db:studio": "npx prisma studio",
+    "privacy:redact": "tsx scripts/privacy-redaction-worker.ts",
     "webhook:worker": "tsx scripts/webhook-dispatcher-worker.ts",
     "webhook:worker:once": "tsx scripts/webhook-dispatcher-worker.ts --once"
   },
@@ -55,10 +56,8 @@
     "jszip": "latest",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
-    "next-auth": "^4.24.13",
     "next-themes": "latest",
     "qrcode": "latest",
-    "rate-limiter-flexible": "^8.1.0",
     "react": "^19",
     "react-chartjs-2": "latest",
     "react-day-picker": "^9.4.2",

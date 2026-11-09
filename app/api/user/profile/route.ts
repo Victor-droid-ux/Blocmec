@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
       location: user.location ?? null,
       department: user.department ?? null,
       bio: user.bio ?? null,
+      verification_domain: user.verification_domain ?? null,
       subscription_plan: user.subscription_plan ?? null,
       api_credits: user.api_credits ?? 0,
       created_at: user.created_at.toISOString(),
@@ -101,6 +102,8 @@ export async function PUT(req: NextRequest) {
     if (typeof input.department !== "undefined")
       dataToUpdate.department = input.department;
     if (typeof input.bio !== "undefined") dataToUpdate.bio = input.bio;
+    if (typeof input.verification_domain !== "undefined")
+      dataToUpdate.verification_domain = input.verification_domain;
 
     const updated = await prisma.user.update({
       where: { id: user.id },
@@ -116,6 +119,7 @@ export async function PUT(req: NextRequest) {
       location: updated.location ?? null,
       department: updated.department ?? null,
       bio: updated.bio ?? null,
+      verification_domain: updated.verification_domain ?? null,
       subscription_plan: updated.subscription_plan ?? null,
       api_credits: updated.api_credits ?? 0,
       created_at: updated.created_at.toISOString(),

@@ -24,6 +24,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ImageUpload } from "@/components/image-upload";
+import { LogoUpload } from "@/components/logo-upload";
 import {
   Card,
   CardContent,
@@ -98,10 +99,12 @@ export default function CreateFilePage() {
     Record<string, string | null>
   >({});
   const [productImage, setProductImage] = useState<string | null>(null);
+  const [brandLogo, setBrandLogo] = useState<string | null>(null);
 
   useEffect(() => {
     setAdditionalFields({});
     setProductImage(null);
+    setBrandLogo(null);
   }, [dataType]);
 
   const handleAdditionalFieldChange = (field: string, value: string | null) => {
@@ -118,6 +121,11 @@ export default function CreateFilePage() {
   const handleImageChange = (base64Image: string | null) => {
     setProductImage(base64Image);
     handleAdditionalFieldChange("productImage", base64Image);
+  };
+
+  const handleLogoChange = (base64Logo: string | null) => {
+    setBrandLogo(base64Logo);
+    handleAdditionalFieldChange("brandLogo", base64Logo);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -200,6 +208,17 @@ export default function CreateFilePage() {
       </div>
     );
 
+    const logoUpload = (
+      <div className="col-span-1 md:col-span-2 mt-4 mb-2">
+        <LogoUpload
+          onLogoChange={handleLogoChange}
+          defaultLogo={brandLogo}
+          label="Brand Logo"
+          description="Upload your brand logo for QR code verification"
+        />
+      </div>
+    );
+
     const field = (
       id: string,
       label: string,
@@ -243,6 +262,7 @@ export default function CreateFilePage() {
         <h3 className="text-lg font-medium">{title}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {imageUpload}
+          {logoUpload}
           {children}
         </div>
       </div>

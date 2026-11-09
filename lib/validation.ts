@@ -67,6 +67,11 @@ export const updateProfileSchema = z.object({
     .max(2000, { message: "Bio is too long" })
     .nullable()
     .optional(),
+  verification_domain: z
+    .string()
+    .url({ message: "Verification domain must be a valid URL" })
+    .nullable()
+    .optional(),
 });
 
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
@@ -80,9 +85,10 @@ export const publicProfileSchema = z.object({
   location: z.string().nullable().optional(),
   department: z.string().nullable().optional(),
   bio: z.string().nullable().optional(),
+  verification_domain: z.string().nullable().optional(),
   subscription_plan: z.string().optional(),
   api_credits: z.number().int().optional(),
-  created_at: z.string().or(z.date()), // server may return ISO string
+  created_at: z.string().or(z.date()),
   updated_at: z.string().or(z.date()).optional(),
 });
 

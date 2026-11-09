@@ -262,18 +262,11 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // Generate QR codes
+      // Generate QR codes (images generated on-demand, not stored in DB)
       const qrCodes = [];
       for (let i = 0; i < quantity; i++) {
         const tokenId = generateTokenId();
         const verifyUrl = `${domainToUse}/verify/${tokenId}`;
-
-        // Generate QR image as data URL
-        const qrImageDataUrl = await QRCode.toDataURL(verifyUrl, {
-          width: 512,
-          margin: 2,
-          color: { dark: "#000000", light: "#FFFFFF" },
-        });
 
         qrCodes.push({
           user_id: dbUser.id,
@@ -282,7 +275,7 @@ export async function POST(req: NextRequest) {
           product_type: normalizedProductType,
           product_name: productName,
           qr_data: verifyUrl,
-          qr_image_url: qrImageDataUrl,
+          qr_image_url: null, // No longer storing base64 - generated on-demand
           scan_limit: scanLimit,
           scan_count: 0,
           expires_at: expiresAt,

@@ -1,74 +1,355 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=COMPANY_NAME,SHOPIFY_REVALIDATION_SECRET,SHOPIFY_STORE_DOMAIN,SHOPIFY_STOREFRONT_ACCESS_TOKEN,SITE_NAME,TWITTER_CREATOR,TWITTER_SITE)
+# Blockmec QR Code Platform
 
-# Next.js Commerce
+A secure, scalable QR code generation and verification platform built with Next.js, Prisma, and PostgreSQL.
 
-A high-performance, server-rendered Next.js App Router ecommerce application.
+## Features
 
-This template uses React Server Components, Server Actions, `Suspense`, `useOptimistic`, and more.
+- **QR Code Generation**: Create unlimited QR codes with customizable metadata
+- **Verification System**: Track and verify QR code scans with detailed analytics
+- **Multi-tenant API**: Secure API with rate limiting and credit-based usage
+- **Admin Dashboard**: Manage users, batches, and monitor system health
+- **Webhook Support**: Real-time event notifications for QR generation and verification
+- **Data Privacy**: IP/UA redaction policies with automatic retention management
+- **On-demand QR Images**: Generate images on-request to minimize database bloat
 
-<h3 id="v1-note"></h3>
+## Getting Started
 
-> Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1).
+### Prerequisites
 
-## Providers
+- Node.js 18+
+- PostgreSQL 15+
+- Supabase account (for auth)
+- Upstash Redis account (for caching/rate limiting)
 
-Vercel will only be actively maintaining a Shopify version [as outlined in our vision and strategy for Next.js Commerce](https://github.com/vercel/commerce/pull/966).
+### Installation
 
-Vercel is happy to partner and work with any commerce provider to help them get a similar template up and running and listed below. Alternative providers should be able to fork this repository and swap out the `lib/shopify` file with their own implementation while leaving the rest of the template mostly unchanged.
-
-- Shopify (this repository)
-- [BigCommerce](https://github.com/bigcommerce/nextjs-commerce) ([Demo](https://next-commerce-v2.vercel.app/))
-- [Ecwid by Lightspeed](https://github.com/Ecwid/ecwid-nextjs-commerce/) ([Demo](https://ecwid-nextjs-commerce.vercel.app/))
-- [Geins](https://github.com/geins-io/vercel-nextjs-commerce) ([Demo](https://geins-nextjs-commerce-starter.vercel.app/))
-- [Medusa](https://github.com/medusajs/vercel-commerce) ([Demo](https://medusa-nextjs-commerce.vercel.app/))
-- [Saleor](https://github.com/saleor/nextjs-commerce) ([Demo](https://saleor-commerce.vercel.app/))
-- [Shopware](https://github.com/shopwareLabs/vercel-commerce) ([Demo](https://shopware-vercel-commerce-react.vercel.app/))
-- [Swell](https://github.com/swellstores/verswell-commerce) ([Demo](https://verswell-commerce.vercel.app/))
-- [Umbraco](https://github.com/umbraco/Umbraco.VercelCommerce.Demo) ([Demo](https://vercel-commerce-demo.umbraco.com/))
-- [Wix](https://github.com/wix/nextjs-commerce) ([Demo](https://wix-nextjs-commerce.vercel.app/))
-- [Fourthwall](https://github.com/FourthwallHQ/vercel-commerce) ([Demo](https://vercel-storefront.fourthwall.app/))
-
-> Note: Providers, if you are looking to use similar products for your demo, you can [download these assets](https://drive.google.com/file/d/1q_bKerjrwZgHwCw0ovfUMW6He9VtepO_/view?usp=sharing).
-
-## Integrations
-
-Integrations enable upgraded or additional functionality for Next.js Commerce
-
-- [Orama](https://github.com/oramasearch/nextjs-commerce) ([Demo](https://vercel-commerce.oramasearch.com/))
-
-  - Upgrades search to include typeahead with dynamic re-rendering, vector-based similarity search, and JS-based configuration.
-  - Search runs entirely in the browser for smaller catalogs or on a CDN for larger.
-
-- [React Bricks](https://github.com/ReactBricks/nextjs-commerce-rb) ([Demo](https://nextjs-commerce.reactbricks.com/))
-  - Edit pages, product details, and footer content visually using [React Bricks](https://www.reactbricks.com) visual headless CMS.
-
-## Running locally
-
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Commerce. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables) for this, but a `.env` file is all that is necessary.
-
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control your Shopify store.
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
-
+1. Clone and install:
 ```bash
-pnpm install
-pnpm dev
+npm install
 ```
 
-Your app should now be running on [localhost:3000](http://localhost:3000/).
+2. Set up environment variables (see [Environment Variables](#environment-variables))
 
-<details>
-  <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>
+3. Set up database:
+```bash
+npm run db:push
+```
 
-1. Run `vc link`.
-1. Select the `Vercel Solutions` scope.
-1. Connect to the existing `commerce-shopify` project.
-1. Run `vc env pull` to get environment variables.
-1. Run `pnpm dev` to ensure everything is working correctly.
-</details>
+4. Start development server:
+```bash
+npm run dev
+```
 
-## Vercel, Next.js Commerce, and Shopify Integration Guide
+Visit `http://localhost:3000`
 
-You can use this comprehensive [integration guide](https://vercel.com/docs/integrations/ecommerce/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+### Environment Variables
+
+**Required:**
+```
+NEXT_PUBLIC_APP_URL=https://yourdomain.com
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=xxx
+
+DATABASE_URL=postgresql://user:pass@host/db
+DIRECT_URL=postgresql://user:pass@host/db
+
+UPSTASH_REDIS_REST_URL=https://xxx.upstash.io
+UPSTASH_REDIS_REST_TOKEN=xxx
+
+SUPABASE_JWT_SECRET=xxx
+```
+
+**Optional:**
+```
+NEXT_PUBLIC_BLOCKCHAIN_ENABLED=true
+NEXT_PUBLIC_VERIFY_PAGE_URL=https://verify.yourdomain.com
+```
+
+See `.env.example` for full list.
+
+## API Documentation
+
+### Base URL
+All API endpoints use the base URL: `https://yourdomain.com/api`
+
+### Authentication
+
+**Session-based** (for web dashboard):
+- Use Supabase auth session
+
+**API Key** (for programmatic access):
+- Pass `X-API-Key` header with your API key
+- Obtain keys in dashboard at `/api-keys`
+
+### Endpoints
+
+#### QR Code Generation
+
+**POST** `/generate-qr`
+
+Generate QR codes for a batch.
+
+```json
+{
+  "productName": "Warranty Certificate",
+  "productType": "warranty",
+  "quantity": 100,
+  "scanLimit": 5,
+  "expiryDays": 365,
+  "description": "2-year warranty",
+  "metadata": {
+    "sku": "PROD-123"
+  }
+}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "batchId": "550e8400-e29b-41d4-a716-446655440000",
+  "quantity": 100,
+  "productName": "Warranty Certificate",
+  "productType": "warranty"
+}
+```
+
+#### QR Code Verification
+
+**POST** `/verify-qr`
+
+Verify a QR code scan.
+
+```json
+{
+  "tokenId": "token-uuid-here"
+}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "productName": "Warranty Certificate",
+  "productType": "warranty",
+  "scanCount": 3,
+  "isValid": true,
+  "lastScanned": "2026-11-09T02:00:00Z"
+}
+```
+
+#### Get QR Image (On-demand)
+
+**GET** `/qr/image/[tokenId]`
+
+Get QR code image as PNG. Images are generated on-demand and cached for 24 hours.
+
+```bash
+curl https://yourdomain.com/api/qr/image/token-uuid-here -o qr.png
+```
+
+Response: PNG image with `Cache-Control: public, max-age=86400`
+
+#### User Credits
+
+**GET** `/user/credits`
+
+Get current credit balance.
+
+Response:
+```json
+{
+  "credits": 5000,
+  "used": 1250,
+  "plan": "professional"
+}
+```
+
+**POST** `/user/credits`
+
+Purchase additional credits.
+
+```json
+{
+  "quantity": 1000,
+  "paymentMethod": "flutterwave"
+}
+```
+
+#### User Batches
+
+**GET** `/user/batches`
+
+List all QR code batches for the user.
+
+Query parameters:
+- `limit` (default: 50)
+- `offset` (default: 0)
+- `status` (active, completed, archived)
+
+#### User Settings
+
+**GET** `/user/settings`
+
+**PUT** `/user/settings`
+
+Update verification domain, privacy settings, etc.
+
+```json
+{
+  "verification_domain": "https://verify.mycompany.com"
+}
+```
+
+### Rate Limiting
+
+Rate limits vary by plan:
+
+- **Free**: 10 requests/min, 100 QR codes/day
+- **Professional**: 100 requests/min, 10k QR codes/day
+- **Enterprise**: Custom limits
+
+When rate limited, API returns:
+```json
+{
+  "error": "Rate limit exceeded",
+  "retryAfter": 60
+}
+```
+Status code: `429`
+
+### Error Handling
+
+All errors return JSON with `error` and optional `code`:
+
+```json
+{
+  "error": "Insufficient API credits",
+  "code": "INSUFFICIENT_CREDITS"
+}
+```
+
+Common error codes:
+- `UNAUTHORIZED` - Missing or invalid auth
+- `INSUFFICIENT_CREDITS` - Not enough credits for operation
+- `CATEGORY_NOT_ALLOWED` - QR category not allowed for your account
+- `RATE_LIMITED` - Rate limit exceeded
+- `INVALID_VERIFICATION_DOMAIN` - Domain mismatch
+
+## Deployment
+
+### Environment Setup
+
+1. Create `.env.local` with all required variables (see Environment Variables section)
+2. For production, use environment secrets management (Vercel, AWS Secrets Manager, etc.)
+
+### Database Migrations
+
+Run migrations before deployment:
+
+```bash
+npm run db:deploy
+```
+
+### Build & Test
+
+```bash
+npm run build
+npm run lint
+```
+
+### Deployment Targets
+
+**Vercel** (recommended):
+```bash
+vercel deploy
+```
+
+**Docker**:
+```bash
+docker build -t blockmec-qr .
+docker run -e DATABASE_URL=... blockmec-qr
+```
+
+**Traditional Node Server**:
+```bash
+npm run build
+npm start
+```
+
+## Credential Rotation
+
+### API Keys
+
+1. Generate new API key in dashboard
+2. Update application configuration with new key
+3. Wait 24 hours, then delete old key
+
+### Database
+
+1. Create new Postgres user with same permissions
+2. Update `DATABASE_URL` and `DIRECT_URL` environment variables
+3. Test connection
+4. Delete old user
+
+### Supabase JWT
+
+1. Rotate signing key in Supabase dashboard
+2. Redeploy application with new `SUPABASE_JWT_SECRET`
+3. Sessions auto-expire, users will re-authenticate
+
+### Redis
+
+1. Create new Upstash database
+2. Update `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`
+3. Deploy update
+
+## Architecture
+
+### Tech Stack
+
+- **Frontend**: React 19, Next.js 15, Tailwind CSS
+- **Backend**: Next.js API routes, TypeScript
+- **Database**: PostgreSQL with Prisma ORM
+- **Cache**: Upstash Redis
+- **Auth**: Supabase
+- **QR Generation**: qrcode library (server-side)
+
+### Database Schema
+
+Key tables:
+- `User` - User accounts and subscription info
+- `QrCode` - Individual QR codes with metadata
+- `Batch` - Batch generation records
+- `Verification` - QR verification scan records
+- `WebhookEndpoint` - User webhook subscriptions
+- `WebhookEvent` - Event queue for webhook delivery
+- `ApiKey` - API credentials for programmatic access
+
+### Security Features
+
+- Rate limiting (per-user, per-plan)
+- API key hashing (SHA-256)
+- Credit deduction in atomic transactions
+- IP/UA redaction after 30 days
+- CORS protection
+- CSRF tokens on forms
+- Input validation with Zod
+
+## Monitoring
+
+Check dashboard at `/admin-panel` for:
+- Real-time verification analytics
+- Webhook delivery status
+- System health metrics
+- User activity logs
+
+## Support & Contributing
+
+For issues, please create a GitHub issue.
+
+For security vulnerabilities, please email security@blockmec.com
+
+## License
+
+MIT

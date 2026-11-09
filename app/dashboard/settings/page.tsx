@@ -73,6 +73,7 @@ export default function SettingsPage() {
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
   const [sessionTimeout, setSessionTimeout] = useState("30");
   const [apiAccessEnabled, setApiAccessEnabled] = useState(true);
+  const [verificationDomain, setVerificationDomain] = useState("");
   const [apiRateLimits, setApiRateLimits] = useState({
     perMinute: 60,
     perDay: 10_000,
@@ -122,6 +123,14 @@ export default function SettingsPage() {
       setSessionTimeout(settings.sessionTimeout);
       setApiAccessEnabled(settings.apiAccessEnabled);
       setApiRateLimits(settings.apiRateLimits);
+
+      const profileResponse = await get<any>("/api/user/profile", {
+        timeoutMs: 10_000,
+      });
+      if (profileResponse.ok && profileResponse.data?.user?.verification_domain) {
+        setVerificationDomain(profileResponse.data.user.verification_domain);
+      }
+
       setIsLoading(false);
     };
 
@@ -157,6 +166,9 @@ export default function SettingsPage() {
       api: {
         apiAccessEnabled,
       },
+      verification: {
+        verification_domain: verificationDomain || null,
+      },
     };
 
     const payload = payloadBySection[section];
@@ -165,6 +177,34 @@ export default function SettingsPage() {
     }
 
     setSavingSection(section);
+
+    if (section === "verification") {
+      const response = await put<any>(
+        "/api/user/profile",
+        payload,
+        { timeoutMs: 10_000 },
+      );
+      setSavingSection(null);
+
+      if (!response.ok) {
+        toast({
+          title: "Settings save failed",
+          description:
+            typeof response.error === "string"
+              ? response.error
+              : `Unable to save your ${section} settings.`,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Settings saved",
+        description: `Your ${section} settings have been updated successfully.`,
+      });
+      return;
+    }
+
     const response = await put<SettingsResponse>(
       API_ENDPOINTS.USER.SETTINGS,
       payload,
@@ -225,7 +265,7 @@ export default function SettingsPage() {
         </div>
 
         <Tabs defaultValue="general" className="w-full">
-          <TabsList className="grid w-full max-w-3xl grid-cols-5 mb-8">
+          <TabsList className="grid w-full max-w-3xl grid-cols-6 mb-8">
             <TabsTrigger
               value="general"
               className="data-[state=active]:bg-purple-600"
@@ -246,6 +286,13 @@ export default function SettingsPage() {
             >
               <Bell className="h-4 w-4 mr-2" />
               Notifications
+            </TabsTrigger>
+            <TabsTrigger
+              value="verification"
+              className="data-[state=active]:bg-purple-600"
+            >
+              <Globe className="h-4 w-4 mr-2" />
+              Verification
             </TabsTrigger>
             <TabsTrigger
               value="security"
@@ -552,6 +599,51 @@ export default function SettingsPage() {
                     {savingSection === "security"
                       ? "Saving..."
                       : "Save Changes"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="verification">
+            <Card className="bg-white border-slate-200 text-slate-900 dark:bg-[#231c35] dark:border-[#2a2139] dark:text-white">
+              <CardHeader>
+                <CardTitle>Verification Domain</CardTitle>
+                <CardDescription className="text-slate-500 dark:text-gray-400">
+                  Configure your custom domain for QR code verification pages.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="verification-domain">Verification Domain URL</Label>
+                  <Input
+                    id="verification-domain"
+                    type="url"
+                    placeholder="https://verify.yourdomain.com"
+                    value={verificationDomain}
+                    onChange={(e) => setVerificationDomain(e.target.value)}
+                    className="bg-slate-50 border border-slate-200 text-slate-900 dark:bg-[#1a1625] dark:border-0 dark:text-white focus-visible:ring-purple-500"
+                  />
+                  <p className="text-sm text-slate-500 dark:text-gray-400">
+                    Leave empty to use the default domain. Enter a valid HTTPS URL where customers will verify products.
+                  </p>
+                </div>
+
+                {verificationDomain && (
+                  <div className="p-4 bg-slate-50 dark:bg-[#1a1625] rounded-lg border border-slate-200 dark:border-0">
+                    <p className="text-sm text-slate-600 dark:text-gray-400">
+                      <strong>Current Domain:</strong> {verificationDomain}
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex justify-end">
+                  <Button
+                    className="bg-purple-600 hover:bg-purple-700"
+                    disabled={savingSection === "verification"}
+                    onClick={() => handleSaveSettings("verification")}
+                  >
+                    {savingSection === "verification" ? "Saving..." : "Save Domain"}
                   </Button>
                 </div>
               </CardContent>
