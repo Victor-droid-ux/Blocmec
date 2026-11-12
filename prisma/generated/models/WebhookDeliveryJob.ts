@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -281,9 +281,9 @@ export type WebhookDeliveryJobWhereInput = {
   AND?: Prisma.WebhookDeliveryJobWhereInput | Prisma.WebhookDeliveryJobWhereInput[]
   OR?: Prisma.WebhookDeliveryJobWhereInput[]
   NOT?: Prisma.WebhookDeliveryJobWhereInput | Prisma.WebhookDeliveryJobWhereInput[]
-  id?: Prisma.UuidFilter<"WebhookDeliveryJob"> | string
-  webhook_id?: Prisma.UuidFilter<"WebhookDeliveryJob"> | string
-  payload_id?: Prisma.UuidNullableFilter<"WebhookDeliveryJob"> | string | null
+  id?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
+  webhook_id?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
+  payload_id?: Prisma.StringNullableFilter<"WebhookDeliveryJob"> | string | null
   event_type?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
   payload?: Prisma.JsonFilter<"WebhookDeliveryJob">
   delivery_id?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
@@ -303,17 +303,17 @@ export type WebhookDeliveryJobWhereInput = {
 export type WebhookDeliveryJobOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   webhook_id?: Prisma.SortOrder
-  payload_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  payload_id?: Prisma.SortOrder
   event_type?: Prisma.SortOrder
   payload?: Prisma.SortOrder
   delivery_id?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   next_attempt_at?: Prisma.SortOrder
-  delivered_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  dead_lettered_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  response_status?: Prisma.SortOrderInput | Prisma.SortOrder
-  last_error?: Prisma.SortOrderInput | Prisma.SortOrder
+  delivered_at?: Prisma.SortOrder
+  dead_lettered_at?: Prisma.SortOrder
+  response_status?: Prisma.SortOrder
+  last_error?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   webhook?: Prisma.WebhookEndpointOrderByWithRelationInput
@@ -326,8 +326,8 @@ export type WebhookDeliveryJobWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.WebhookDeliveryJobWhereInput | Prisma.WebhookDeliveryJobWhereInput[]
   OR?: Prisma.WebhookDeliveryJobWhereInput[]
   NOT?: Prisma.WebhookDeliveryJobWhereInput | Prisma.WebhookDeliveryJobWhereInput[]
-  webhook_id?: Prisma.UuidFilter<"WebhookDeliveryJob"> | string
-  payload_id?: Prisma.UuidNullableFilter<"WebhookDeliveryJob"> | string | null
+  webhook_id?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
+  payload_id?: Prisma.StringNullableFilter<"WebhookDeliveryJob"> | string | null
   event_type?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
   payload?: Prisma.JsonFilter<"WebhookDeliveryJob">
   status?: Prisma.EnumWebhookDeliveryStatusFilter<"WebhookDeliveryJob"> | $Enums.WebhookDeliveryStatus
@@ -346,17 +346,17 @@ export type WebhookDeliveryJobWhereUniqueInput = Prisma.AtLeast<{
 export type WebhookDeliveryJobOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   webhook_id?: Prisma.SortOrder
-  payload_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  payload_id?: Prisma.SortOrder
   event_type?: Prisma.SortOrder
   payload?: Prisma.SortOrder
   delivery_id?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   next_attempt_at?: Prisma.SortOrder
-  delivered_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  dead_lettered_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  response_status?: Prisma.SortOrderInput | Prisma.SortOrder
-  last_error?: Prisma.SortOrderInput | Prisma.SortOrder
+  delivered_at?: Prisma.SortOrder
+  dead_lettered_at?: Prisma.SortOrder
+  response_status?: Prisma.SortOrder
+  last_error?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.WebhookDeliveryJobCountOrderByAggregateInput
@@ -370,9 +370,9 @@ export type WebhookDeliveryJobScalarWhereWithAggregatesInput = {
   AND?: Prisma.WebhookDeliveryJobScalarWhereWithAggregatesInput | Prisma.WebhookDeliveryJobScalarWhereWithAggregatesInput[]
   OR?: Prisma.WebhookDeliveryJobScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WebhookDeliveryJobScalarWhereWithAggregatesInput | Prisma.WebhookDeliveryJobScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"WebhookDeliveryJob"> | string
-  webhook_id?: Prisma.UuidWithAggregatesFilter<"WebhookDeliveryJob"> | string
-  payload_id?: Prisma.UuidNullableWithAggregatesFilter<"WebhookDeliveryJob"> | string | null
+  id?: Prisma.StringWithAggregatesFilter<"WebhookDeliveryJob"> | string
+  webhook_id?: Prisma.StringWithAggregatesFilter<"WebhookDeliveryJob"> | string
+  payload_id?: Prisma.StringNullableWithAggregatesFilter<"WebhookDeliveryJob"> | string | null
   event_type?: Prisma.StringWithAggregatesFilter<"WebhookDeliveryJob"> | string
   payload?: Prisma.JsonWithAggregatesFilter<"WebhookDeliveryJob">
   delivery_id?: Prisma.StringWithAggregatesFilter<"WebhookDeliveryJob"> | string
@@ -390,7 +390,7 @@ export type WebhookDeliveryJobScalarWhereWithAggregatesInput = {
 export type WebhookDeliveryJobCreateInput = {
   id?: string
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -410,7 +410,7 @@ export type WebhookDeliveryJobUncheckedCreateInput = {
   webhook_id: string
   payload_id?: string | null
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -424,9 +424,8 @@ export type WebhookDeliveryJobUncheckedCreateInput = {
 }
 
 export type WebhookDeliveryJobUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -442,11 +441,10 @@ export type WebhookDeliveryJobUpdateInput = {
 }
 
 export type WebhookDeliveryJobUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
   payload_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -464,7 +462,7 @@ export type WebhookDeliveryJobCreateManyInput = {
   webhook_id: string
   payload_id?: string | null
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -478,9 +476,8 @@ export type WebhookDeliveryJobCreateManyInput = {
 }
 
 export type WebhookDeliveryJobUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -494,11 +491,10 @@ export type WebhookDeliveryJobUpdateManyMutationInput = {
 }
 
 export type WebhookDeliveryJobUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
   payload_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -635,6 +631,7 @@ export type NullableIntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+  unset?: boolean
 }
 
 export type WebhookDeliveryJobCreateNestedManyWithoutPayload_recordInput = {
@@ -682,7 +679,7 @@ export type WebhookDeliveryJobUncheckedUpdateManyWithoutPayload_recordNestedInpu
 export type WebhookDeliveryJobCreateWithoutWebhookInput = {
   id?: string
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -700,7 +697,7 @@ export type WebhookDeliveryJobUncheckedCreateWithoutWebhookInput = {
   id?: string
   payload_id?: string | null
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -720,7 +717,6 @@ export type WebhookDeliveryJobCreateOrConnectWithoutWebhookInput = {
 
 export type WebhookDeliveryJobCreateManyWebhookInputEnvelope = {
   data: Prisma.WebhookDeliveryJobCreateManyWebhookInput | Prisma.WebhookDeliveryJobCreateManyWebhookInput[]
-  skipDuplicates?: boolean
 }
 
 export type WebhookDeliveryJobUpsertWithWhereUniqueWithoutWebhookInput = {
@@ -743,9 +739,9 @@ export type WebhookDeliveryJobScalarWhereInput = {
   AND?: Prisma.WebhookDeliveryJobScalarWhereInput | Prisma.WebhookDeliveryJobScalarWhereInput[]
   OR?: Prisma.WebhookDeliveryJobScalarWhereInput[]
   NOT?: Prisma.WebhookDeliveryJobScalarWhereInput | Prisma.WebhookDeliveryJobScalarWhereInput[]
-  id?: Prisma.UuidFilter<"WebhookDeliveryJob"> | string
-  webhook_id?: Prisma.UuidFilter<"WebhookDeliveryJob"> | string
-  payload_id?: Prisma.UuidNullableFilter<"WebhookDeliveryJob"> | string | null
+  id?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
+  webhook_id?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
+  payload_id?: Prisma.StringNullableFilter<"WebhookDeliveryJob"> | string | null
   event_type?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
   payload?: Prisma.JsonFilter<"WebhookDeliveryJob">
   delivery_id?: Prisma.StringFilter<"WebhookDeliveryJob"> | string
@@ -763,7 +759,7 @@ export type WebhookDeliveryJobScalarWhereInput = {
 export type WebhookDeliveryJobCreateWithoutPayload_recordInput = {
   id?: string
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -781,7 +777,7 @@ export type WebhookDeliveryJobUncheckedCreateWithoutPayload_recordInput = {
   id?: string
   webhook_id: string
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -801,7 +797,6 @@ export type WebhookDeliveryJobCreateOrConnectWithoutPayload_recordInput = {
 
 export type WebhookDeliveryJobCreateManyPayload_recordInputEnvelope = {
   data: Prisma.WebhookDeliveryJobCreateManyPayload_recordInput | Prisma.WebhookDeliveryJobCreateManyPayload_recordInput[]
-  skipDuplicates?: boolean
 }
 
 export type WebhookDeliveryJobUpsertWithWhereUniqueWithoutPayload_recordInput = {
@@ -824,7 +819,7 @@ export type WebhookDeliveryJobCreateManyWebhookInput = {
   id?: string
   payload_id?: string | null
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -838,9 +833,8 @@ export type WebhookDeliveryJobCreateManyWebhookInput = {
 }
 
 export type WebhookDeliveryJobUpdateWithoutWebhookInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -855,10 +849,9 @@ export type WebhookDeliveryJobUpdateWithoutWebhookInput = {
 }
 
 export type WebhookDeliveryJobUncheckedUpdateWithoutWebhookInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   payload_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -872,10 +865,9 @@ export type WebhookDeliveryJobUncheckedUpdateWithoutWebhookInput = {
 }
 
 export type WebhookDeliveryJobUncheckedUpdateManyWithoutWebhookInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   payload_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -892,7 +884,7 @@ export type WebhookDeliveryJobCreateManyPayload_recordInput = {
   id?: string
   webhook_id: string
   event_type: string
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   delivery_id: string
   status?: $Enums.WebhookDeliveryStatus
   attempts?: number
@@ -906,9 +898,8 @@ export type WebhookDeliveryJobCreateManyPayload_recordInput = {
 }
 
 export type WebhookDeliveryJobUpdateWithoutPayload_recordInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -923,10 +914,9 @@ export type WebhookDeliveryJobUpdateWithoutPayload_recordInput = {
 }
 
 export type WebhookDeliveryJobUncheckedUpdateWithoutPayload_recordInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -940,10 +930,9 @@ export type WebhookDeliveryJobUncheckedUpdateWithoutPayload_recordInput = {
 }
 
 export type WebhookDeliveryJobUncheckedUpdateManyWithoutPayload_recordInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   webhook_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   delivery_id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWebhookDeliveryStatusFieldUpdateOperationsInput | $Enums.WebhookDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -978,45 +967,7 @@ export type WebhookDeliveryJobSelect<ExtArgs extends runtime.Types.Extensions.In
   payload_record?: boolean | Prisma.WebhookDeliveryJob$payload_recordArgs<ExtArgs>
 }, ExtArgs["result"]["webhookDeliveryJob"]>
 
-export type WebhookDeliveryJobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  webhook_id?: boolean
-  payload_id?: boolean
-  event_type?: boolean
-  payload?: boolean
-  delivery_id?: boolean
-  status?: boolean
-  attempts?: boolean
-  next_attempt_at?: boolean
-  delivered_at?: boolean
-  dead_lettered_at?: boolean
-  response_status?: boolean
-  last_error?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  webhook?: boolean | Prisma.WebhookEndpointDefaultArgs<ExtArgs>
-  payload_record?: boolean | Prisma.WebhookDeliveryJob$payload_recordArgs<ExtArgs>
-}, ExtArgs["result"]["webhookDeliveryJob"]>
 
-export type WebhookDeliveryJobSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  webhook_id?: boolean
-  payload_id?: boolean
-  event_type?: boolean
-  payload?: boolean
-  delivery_id?: boolean
-  status?: boolean
-  attempts?: boolean
-  next_attempt_at?: boolean
-  delivered_at?: boolean
-  dead_lettered_at?: boolean
-  response_status?: boolean
-  last_error?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  webhook?: boolean | Prisma.WebhookEndpointDefaultArgs<ExtArgs>
-  payload_record?: boolean | Prisma.WebhookDeliveryJob$payload_recordArgs<ExtArgs>
-}, ExtArgs["result"]["webhookDeliveryJob"]>
 
 export type WebhookDeliveryJobSelectScalar = {
   id?: boolean
@@ -1038,14 +989,6 @@ export type WebhookDeliveryJobSelectScalar = {
 
 export type WebhookDeliveryJobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "webhook_id" | "payload_id" | "event_type" | "payload" | "delivery_id" | "status" | "attempts" | "next_attempt_at" | "delivered_at" | "dead_lettered_at" | "response_status" | "last_error" | "created_at" | "updated_at", ExtArgs["result"]["webhookDeliveryJob"]>
 export type WebhookDeliveryJobInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  webhook?: boolean | Prisma.WebhookEndpointDefaultArgs<ExtArgs>
-  payload_record?: boolean | Prisma.WebhookDeliveryJob$payload_recordArgs<ExtArgs>
-}
-export type WebhookDeliveryJobIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  webhook?: boolean | Prisma.WebhookEndpointDefaultArgs<ExtArgs>
-  payload_record?: boolean | Prisma.WebhookDeliveryJob$payload_recordArgs<ExtArgs>
-}
-export type WebhookDeliveryJobIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   webhook?: boolean | Prisma.WebhookEndpointDefaultArgs<ExtArgs>
   payload_record?: boolean | Prisma.WebhookDeliveryJob$payload_recordArgs<ExtArgs>
 }
@@ -1190,30 +1133,6 @@ export interface WebhookDeliveryJobDelegate<ExtArgs extends runtime.Types.Extens
   createMany<T extends WebhookDeliveryJobCreateManyArgs>(args?: Prisma.SelectSubset<T, WebhookDeliveryJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many WebhookDeliveryJobs and returns the data saved in the database.
-   * @param {WebhookDeliveryJobCreateManyAndReturnArgs} args - Arguments to create many WebhookDeliveryJobs.
-   * @example
-   * // Create many WebhookDeliveryJobs
-   * const webhookDeliveryJob = await prisma.webhookDeliveryJob.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many WebhookDeliveryJobs and only return the `id`
-   * const webhookDeliveryJobWithIdOnly = await prisma.webhookDeliveryJob.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends WebhookDeliveryJobCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, WebhookDeliveryJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookDeliveryJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a WebhookDeliveryJob.
    * @param {WebhookDeliveryJobDeleteArgs} args - Arguments to delete one WebhookDeliveryJob.
    * @example
@@ -1278,36 +1197,6 @@ export interface WebhookDeliveryJobDelegate<ExtArgs extends runtime.Types.Extens
   updateMany<T extends WebhookDeliveryJobUpdateManyArgs>(args: Prisma.SelectSubset<T, WebhookDeliveryJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more WebhookDeliveryJobs and returns the data updated in the database.
-   * @param {WebhookDeliveryJobUpdateManyAndReturnArgs} args - Arguments to update many WebhookDeliveryJobs.
-   * @example
-   * // Update many WebhookDeliveryJobs
-   * const webhookDeliveryJob = await prisma.webhookDeliveryJob.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more WebhookDeliveryJobs and only return the `id`
-   * const webhookDeliveryJobWithIdOnly = await prisma.webhookDeliveryJob.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends WebhookDeliveryJobUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, WebhookDeliveryJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookDeliveryJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one WebhookDeliveryJob.
    * @param {WebhookDeliveryJobUpsertArgs} args - Arguments to update or create a WebhookDeliveryJob.
    * @example
@@ -1325,6 +1214,29 @@ export interface WebhookDeliveryJobDelegate<ExtArgs extends runtime.Types.Extens
    * })
    */
   upsert<T extends WebhookDeliveryJobUpsertArgs>(args: Prisma.SelectSubset<T, WebhookDeliveryJobUpsertArgs<ExtArgs>>): Prisma.Prisma__WebhookDeliveryJobClient<runtime.Types.Result.GetResult<Prisma.$WebhookDeliveryJobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more WebhookDeliveryJobs that matches the filter.
+   * @param {WebhookDeliveryJobFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const webhookDeliveryJob = await prisma.webhookDeliveryJob.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.WebhookDeliveryJobFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a WebhookDeliveryJob.
+   * @param {WebhookDeliveryJobAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const webhookDeliveryJob = await prisma.webhookDeliveryJob.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.WebhookDeliveryJobAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1741,30 +1653,6 @@ export type WebhookDeliveryJobCreateManyArgs<ExtArgs extends runtime.Types.Exten
    * The data used to create many WebhookDeliveryJobs.
    */
   data: Prisma.WebhookDeliveryJobCreateManyInput | Prisma.WebhookDeliveryJobCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * WebhookDeliveryJob createManyAndReturn
- */
-export type WebhookDeliveryJobCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WebhookDeliveryJob
-   */
-  select?: Prisma.WebhookDeliveryJobSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the WebhookDeliveryJob
-   */
-  omit?: Prisma.WebhookDeliveryJobOmit<ExtArgs> | null
-  /**
-   * The data used to create many WebhookDeliveryJobs.
-   */
-  data: Prisma.WebhookDeliveryJobCreateManyInput | Prisma.WebhookDeliveryJobCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WebhookDeliveryJobIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1809,36 +1697,6 @@ export type WebhookDeliveryJobUpdateManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many WebhookDeliveryJobs to update.
    */
   limit?: number
-}
-
-/**
- * WebhookDeliveryJob updateManyAndReturn
- */
-export type WebhookDeliveryJobUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WebhookDeliveryJob
-   */
-  select?: Prisma.WebhookDeliveryJobSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the WebhookDeliveryJob
-   */
-  omit?: Prisma.WebhookDeliveryJobOmit<ExtArgs> | null
-  /**
-   * The data used to update WebhookDeliveryJobs.
-   */
-  data: Prisma.XOR<Prisma.WebhookDeliveryJobUpdateManyMutationInput, Prisma.WebhookDeliveryJobUncheckedUpdateManyInput>
-  /**
-   * Filter which WebhookDeliveryJobs to update
-   */
-  where?: Prisma.WebhookDeliveryJobWhereInput
-  /**
-   * Limit how many WebhookDeliveryJobs to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WebhookDeliveryJobIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1905,6 +1763,34 @@ export type WebhookDeliveryJobDeleteManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many WebhookDeliveryJobs to delete.
    */
   limit?: number
+}
+
+/**
+ * WebhookDeliveryJob findRaw
+ */
+export type WebhookDeliveryJobFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * WebhookDeliveryJob aggregateRaw
+ */
+export type WebhookDeliveryJobAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

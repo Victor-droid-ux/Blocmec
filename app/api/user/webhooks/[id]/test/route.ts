@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { decryptSigningSecret, signWebhookPayload } from "@/lib/webhooks";
 import {
   hasAnyPermission,
@@ -31,24 +31,6 @@ function isHostAllowed(host: string, allowedDomains: string[]) {
   return allowedDomains.some(
     (domain) => host === domain || host.endsWith(`.${domain}`),
   );
-}
-
-async function getAuthenticatedUser() {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) {
-    return null;
-  }
-
-  let user = await prisma.user.findUnique({
-    where: { supabase_id: data.user.id },
-  });
-
-  if (!user && data.user.email) {
-    user = await prisma.user.findUnique({ where: { email: data.user.email } });
-  }
-
-  return user;
 }
 
 export async function POST(

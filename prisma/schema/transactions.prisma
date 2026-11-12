@@ -13,15 +13,15 @@ enum TransactionStatus {
 }
 
 model Transaction {
-  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id               String?  @db.Uuid
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id               String?  @db.ObjectId
   type                  TransactionType
-  amount                Decimal  @db.Decimal(10,2)
-  currency              String   @default("USD") @db.VarChar(10)
+  amount                Float
+  currency              String   @default("USD")
   status                TransactionStatus
-  payment_method        String?  @db.VarChar(50)
-  payment_provider_id   String?  @db.VarChar(255)
-  transaction_reference String?  @unique @db.VarChar(255)
+  payment_method        String?
+  payment_provider_id   String?
+  transaction_reference String?  @unique
   credits_added         Int      @default(0)
   metadata              Json?
   created_at            DateTime @default(now())
@@ -30,5 +30,4 @@ model Transaction {
   user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
 
   @@index([user_id], name: "idx_transactions_user_id")
-  @@index([transaction_reference], name: "idx_transactions_reference")
 }

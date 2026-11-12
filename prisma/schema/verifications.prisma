@@ -13,15 +13,15 @@ enum VerificationMethod {
 }
 
 model Verification {
-  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  qr_code_id            String   @db.Uuid
-  token_id              String   @db.VarChar(255)
-  ip_address            String?  // stored as text; use Unsupported("inet") if you need native
-  user_agent            String?  @db.Text
-  location_country      String?  @db.VarChar(100)
-  location_city         String?  @db.VarChar(255)
-  location_coordinates  String?  // store as "POINT(lon lat)" or "lat,lng"; use Unsupported("point") for native
-  device_type           String?  @db.VarChar(50)
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  qr_code_id            String   @db.ObjectId
+  token_id              String
+  ip_address            String?
+  user_agent            String?
+  location_country      String?
+  location_city         String?
+  location_coordinates  String?
+  device_type           String?
   status                VerificationStatus
   verification_method   VerificationMethod?
   metadata              Json?

@@ -1,12 +1,12 @@
 // prisma/schema/audit_logs.prisma
 model AuditLog {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id      String?  @db.Uuid
-  action       String   @db.VarChar(100)
-  resource_type String? @db.VarChar(100)
-  resource_id  String?  @db.Uuid
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id      String?  @db.ObjectId
+  action       String
+  resource_type String?
+  resource_id  String?
   ip_address   String?
-  user_agent   String?  @db.Text
+  user_agent   String?
   metadata     Json?
   created_at   DateTime @default(now())
 

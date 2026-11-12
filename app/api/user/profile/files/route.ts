@@ -3,7 +3,7 @@ import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { rateLimit } from "@/lib/rateLimiter";
 
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
@@ -13,30 +13,9 @@ function sanitizeFilename(name: string) {
 }
 
 async function resolveCurrentUser() {
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { user: supUser },
-    error: supError,
-  } = await supabase.auth.getUser();
-
-  if (supError || !supUser?.id) {
-    return { error: "Unauthorized", status: 401 as const, user: null };
-  }
-
-  let user = await prisma.user.findUnique({
-    where: { supabase_id: supUser.id },
-    select: { id: true, email: true },
-  });
-
-  if (!user && supUser.email) {
-    user = await prisma.user.findUnique({
-      where: { email: supUser.email },
-      select: { id: true, email: true },
-    });
-  }
-
+  const user = await getAuthenticatedUser();
   if (!user) {
-    return { error: "User not found", status: 404 as const, user: null };
+    return { error: "Unauthorized", status: 401 as const, user: null };
   }
 
   return { error: null, status: 200 as const, user };

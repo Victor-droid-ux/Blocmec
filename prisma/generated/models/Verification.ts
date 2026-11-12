@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -229,8 +229,8 @@ export type VerificationWhereInput = {
   AND?: Prisma.VerificationWhereInput | Prisma.VerificationWhereInput[]
   OR?: Prisma.VerificationWhereInput[]
   NOT?: Prisma.VerificationWhereInput | Prisma.VerificationWhereInput[]
-  id?: Prisma.UuidFilter<"Verification"> | string
-  qr_code_id?: Prisma.UuidFilter<"Verification"> | string
+  id?: Prisma.StringFilter<"Verification"> | string
+  qr_code_id?: Prisma.StringFilter<"Verification"> | string
   token_id?: Prisma.StringFilter<"Verification"> | string
   ip_address?: Prisma.StringNullableFilter<"Verification"> | string | null
   user_agent?: Prisma.StringNullableFilter<"Verification"> | string | null
@@ -249,15 +249,15 @@ export type VerificationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   qr_code_id?: Prisma.SortOrder
   token_id?: Prisma.SortOrder
-  ip_address?: Prisma.SortOrderInput | Prisma.SortOrder
-  user_agent?: Prisma.SortOrderInput | Prisma.SortOrder
-  location_country?: Prisma.SortOrderInput | Prisma.SortOrder
-  location_city?: Prisma.SortOrderInput | Prisma.SortOrder
-  location_coordinates?: Prisma.SortOrderInput | Prisma.SortOrder
-  device_type?: Prisma.SortOrderInput | Prisma.SortOrder
+  ip_address?: Prisma.SortOrder
+  user_agent?: Prisma.SortOrder
+  location_country?: Prisma.SortOrder
+  location_city?: Prisma.SortOrder
+  location_coordinates?: Prisma.SortOrder
+  device_type?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  verification_method?: Prisma.SortOrderInput | Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  verification_method?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   qr_code?: Prisma.QrCodeOrderByWithRelationInput
 }
@@ -267,7 +267,7 @@ export type VerificationWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.VerificationWhereInput | Prisma.VerificationWhereInput[]
   OR?: Prisma.VerificationWhereInput[]
   NOT?: Prisma.VerificationWhereInput | Prisma.VerificationWhereInput[]
-  qr_code_id?: Prisma.UuidFilter<"Verification"> | string
+  qr_code_id?: Prisma.StringFilter<"Verification"> | string
   token_id?: Prisma.StringFilter<"Verification"> | string
   ip_address?: Prisma.StringNullableFilter<"Verification"> | string | null
   user_agent?: Prisma.StringNullableFilter<"Verification"> | string | null
@@ -286,15 +286,15 @@ export type VerificationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   qr_code_id?: Prisma.SortOrder
   token_id?: Prisma.SortOrder
-  ip_address?: Prisma.SortOrderInput | Prisma.SortOrder
-  user_agent?: Prisma.SortOrderInput | Prisma.SortOrder
-  location_country?: Prisma.SortOrderInput | Prisma.SortOrder
-  location_city?: Prisma.SortOrderInput | Prisma.SortOrder
-  location_coordinates?: Prisma.SortOrderInput | Prisma.SortOrder
-  device_type?: Prisma.SortOrderInput | Prisma.SortOrder
+  ip_address?: Prisma.SortOrder
+  user_agent?: Prisma.SortOrder
+  location_country?: Prisma.SortOrder
+  location_city?: Prisma.SortOrder
+  location_coordinates?: Prisma.SortOrder
+  device_type?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  verification_method?: Prisma.SortOrderInput | Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  verification_method?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   _count?: Prisma.VerificationCountOrderByAggregateInput
   _max?: Prisma.VerificationMaxOrderByAggregateInput
@@ -305,8 +305,8 @@ export type VerificationScalarWhereWithAggregatesInput = {
   AND?: Prisma.VerificationScalarWhereWithAggregatesInput | Prisma.VerificationScalarWhereWithAggregatesInput[]
   OR?: Prisma.VerificationScalarWhereWithAggregatesInput[]
   NOT?: Prisma.VerificationScalarWhereWithAggregatesInput | Prisma.VerificationScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"Verification"> | string
-  qr_code_id?: Prisma.UuidWithAggregatesFilter<"Verification"> | string
+  id?: Prisma.StringWithAggregatesFilter<"Verification"> | string
+  qr_code_id?: Prisma.StringWithAggregatesFilter<"Verification"> | string
   token_id?: Prisma.StringWithAggregatesFilter<"Verification"> | string
   ip_address?: Prisma.StringNullableWithAggregatesFilter<"Verification"> | string | null
   user_agent?: Prisma.StringNullableWithAggregatesFilter<"Verification"> | string | null
@@ -331,7 +331,7 @@ export type VerificationCreateInput = {
   device_type?: string | null
   status: $Enums.VerificationStatus
   verification_method?: $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   qr_code: Prisma.QrCodeCreateNestedOneWithoutVerificationsInput
 }
@@ -348,12 +348,11 @@ export type VerificationUncheckedCreateInput = {
   device_type?: string | null
   status: $Enums.VerificationStatus
   verification_method?: $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
 }
 
 export type VerificationUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -363,13 +362,12 @@ export type VerificationUpdateInput = {
   device_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   verification_method?: Prisma.NullableEnumVerificationMethodFieldUpdateOperationsInput | $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qr_code?: Prisma.QrCodeUpdateOneRequiredWithoutVerificationsNestedInput
 }
 
 export type VerificationUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   qr_code_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -380,7 +378,7 @@ export type VerificationUncheckedUpdateInput = {
   device_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   verification_method?: Prisma.NullableEnumVerificationMethodFieldUpdateOperationsInput | $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -396,12 +394,11 @@ export type VerificationCreateManyInput = {
   device_type?: string | null
   status: $Enums.VerificationStatus
   verification_method?: $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
 }
 
 export type VerificationUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -411,12 +408,11 @@ export type VerificationUpdateManyMutationInput = {
   device_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   verification_method?: Prisma.NullableEnumVerificationMethodFieldUpdateOperationsInput | $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerificationUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   qr_code_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -427,7 +423,7 @@ export type VerificationUncheckedUpdateManyInput = {
   device_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   verification_method?: Prisma.NullableEnumVerificationMethodFieldUpdateOperationsInput | $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -535,6 +531,7 @@ export type EnumVerificationStatusFieldUpdateOperationsInput = {
 
 export type NullableEnumVerificationMethodFieldUpdateOperationsInput = {
   set?: $Enums.VerificationMethod | null
+  unset?: boolean
 }
 
 export type VerificationCreateWithoutQr_codeInput = {
@@ -548,7 +545,7 @@ export type VerificationCreateWithoutQr_codeInput = {
   device_type?: string | null
   status: $Enums.VerificationStatus
   verification_method?: $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
 }
 
@@ -563,7 +560,7 @@ export type VerificationUncheckedCreateWithoutQr_codeInput = {
   device_type?: string | null
   status: $Enums.VerificationStatus
   verification_method?: $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
 }
 
@@ -574,7 +571,6 @@ export type VerificationCreateOrConnectWithoutQr_codeInput = {
 
 export type VerificationCreateManyQr_codeInputEnvelope = {
   data: Prisma.VerificationCreateManyQr_codeInput | Prisma.VerificationCreateManyQr_codeInput[]
-  skipDuplicates?: boolean
 }
 
 export type VerificationUpsertWithWhereUniqueWithoutQr_codeInput = {
@@ -597,8 +593,8 @@ export type VerificationScalarWhereInput = {
   AND?: Prisma.VerificationScalarWhereInput | Prisma.VerificationScalarWhereInput[]
   OR?: Prisma.VerificationScalarWhereInput[]
   NOT?: Prisma.VerificationScalarWhereInput | Prisma.VerificationScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Verification"> | string
-  qr_code_id?: Prisma.UuidFilter<"Verification"> | string
+  id?: Prisma.StringFilter<"Verification"> | string
+  qr_code_id?: Prisma.StringFilter<"Verification"> | string
   token_id?: Prisma.StringFilter<"Verification"> | string
   ip_address?: Prisma.StringNullableFilter<"Verification"> | string | null
   user_agent?: Prisma.StringNullableFilter<"Verification"> | string | null
@@ -623,12 +619,11 @@ export type VerificationCreateManyQr_codeInput = {
   device_type?: string | null
   status: $Enums.VerificationStatus
   verification_method?: $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
 }
 
 export type VerificationUpdateWithoutQr_codeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -638,12 +633,11 @@ export type VerificationUpdateWithoutQr_codeInput = {
   device_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   verification_method?: Prisma.NullableEnumVerificationMethodFieldUpdateOperationsInput | $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerificationUncheckedUpdateWithoutQr_codeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -653,12 +647,11 @@ export type VerificationUncheckedUpdateWithoutQr_codeInput = {
   device_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   verification_method?: Prisma.NullableEnumVerificationMethodFieldUpdateOperationsInput | $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerificationUncheckedUpdateManyWithoutQr_codeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -668,7 +661,7 @@ export type VerificationUncheckedUpdateManyWithoutQr_codeInput = {
   device_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   verification_method?: Prisma.NullableEnumVerificationMethodFieldUpdateOperationsInput | $Enums.VerificationMethod | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -691,39 +684,7 @@ export type VerificationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   qr_code?: boolean | Prisma.QrCodeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["verification"]>
 
-export type VerificationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  qr_code_id?: boolean
-  token_id?: boolean
-  ip_address?: boolean
-  user_agent?: boolean
-  location_country?: boolean
-  location_city?: boolean
-  location_coordinates?: boolean
-  device_type?: boolean
-  status?: boolean
-  verification_method?: boolean
-  metadata?: boolean
-  created_at?: boolean
-  qr_code?: boolean | Prisma.QrCodeDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["verification"]>
 
-export type VerificationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  qr_code_id?: boolean
-  token_id?: boolean
-  ip_address?: boolean
-  user_agent?: boolean
-  location_country?: boolean
-  location_city?: boolean
-  location_coordinates?: boolean
-  device_type?: boolean
-  status?: boolean
-  verification_method?: boolean
-  metadata?: boolean
-  created_at?: boolean
-  qr_code?: boolean | Prisma.QrCodeDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["verification"]>
 
 export type VerificationSelectScalar = {
   id?: boolean
@@ -743,12 +704,6 @@ export type VerificationSelectScalar = {
 
 export type VerificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "qr_code_id" | "token_id" | "ip_address" | "user_agent" | "location_country" | "location_city" | "location_coordinates" | "device_type" | "status" | "verification_method" | "metadata" | "created_at", ExtArgs["result"]["verification"]>
 export type VerificationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  qr_code?: boolean | Prisma.QrCodeDefaultArgs<ExtArgs>
-}
-export type VerificationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  qr_code?: boolean | Prisma.QrCodeDefaultArgs<ExtArgs>
-}
-export type VerificationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   qr_code?: boolean | Prisma.QrCodeDefaultArgs<ExtArgs>
 }
 
@@ -889,30 +844,6 @@ export interface VerificationDelegate<ExtArgs extends runtime.Types.Extensions.I
   createMany<T extends VerificationCreateManyArgs>(args?: Prisma.SelectSubset<T, VerificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many Verifications and returns the data saved in the database.
-   * @param {VerificationCreateManyAndReturnArgs} args - Arguments to create many Verifications.
-   * @example
-   * // Create many Verifications
-   * const verification = await prisma.verification.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many Verifications and only return the `id`
-   * const verificationWithIdOnly = await prisma.verification.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends VerificationCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, VerificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a Verification.
    * @param {VerificationDeleteArgs} args - Arguments to delete one Verification.
    * @example
@@ -977,36 +908,6 @@ export interface VerificationDelegate<ExtArgs extends runtime.Types.Extensions.I
   updateMany<T extends VerificationUpdateManyArgs>(args: Prisma.SelectSubset<T, VerificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more Verifications and returns the data updated in the database.
-   * @param {VerificationUpdateManyAndReturnArgs} args - Arguments to update many Verifications.
-   * @example
-   * // Update many Verifications
-   * const verification = await prisma.verification.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more Verifications and only return the `id`
-   * const verificationWithIdOnly = await prisma.verification.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends VerificationUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, VerificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one Verification.
    * @param {VerificationUpsertArgs} args - Arguments to update or create a Verification.
    * @example
@@ -1024,6 +925,29 @@ export interface VerificationDelegate<ExtArgs extends runtime.Types.Extensions.I
    * })
    */
   upsert<T extends VerificationUpsertArgs>(args: Prisma.SelectSubset<T, VerificationUpsertArgs<ExtArgs>>): Prisma.Prisma__VerificationClient<runtime.Types.Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more Verifications that matches the filter.
+   * @param {VerificationFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const verification = await prisma.verification.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.VerificationFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a Verification.
+   * @param {VerificationAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const verification = await prisma.verification.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.VerificationAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1437,30 +1361,6 @@ export type VerificationCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * The data used to create many Verifications.
    */
   data: Prisma.VerificationCreateManyInput | Prisma.VerificationCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * Verification createManyAndReturn
- */
-export type VerificationCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Verification
-   */
-  select?: Prisma.VerificationSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the Verification
-   */
-  omit?: Prisma.VerificationOmit<ExtArgs> | null
-  /**
-   * The data used to create many Verifications.
-   */
-  data: Prisma.VerificationCreateManyInput | Prisma.VerificationCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.VerificationIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1505,36 +1405,6 @@ export type VerificationUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Verifications to update.
    */
   limit?: number
-}
-
-/**
- * Verification updateManyAndReturn
- */
-export type VerificationUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Verification
-   */
-  select?: Prisma.VerificationSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the Verification
-   */
-  omit?: Prisma.VerificationOmit<ExtArgs> | null
-  /**
-   * The data used to update Verifications.
-   */
-  data: Prisma.XOR<Prisma.VerificationUpdateManyMutationInput, Prisma.VerificationUncheckedUpdateManyInput>
-  /**
-   * Filter which Verifications to update
-   */
-  where?: Prisma.VerificationWhereInput
-  /**
-   * Limit how many Verifications to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.VerificationIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1601,6 +1471,34 @@ export type VerificationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Verifications to delete.
    */
   limit?: number
+}
+
+/**
+ * Verification findRaw
+ */
+export type VerificationFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * Verification aggregateRaw
+ */
+export type VerificationAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

@@ -4,9 +4,6 @@ export const API_ENDPOINTS = {
   AUTH: {
     SIGN_IN: "/api/auth/signin",
     SIGN_UP: "/api/auth/signup",
-    RESEND_VERIFICATION: "/api/auth/resend-verification",
-    EXCHANGE_CODE: "/api/auth/exchange-code",
-    SYNC_USER: "/api/auth/sync-user",
     SIGN_OUT: "/api/auth/signout",
     ADMIN: "/api/auth/admin",
     ME: "/api/auth/me",

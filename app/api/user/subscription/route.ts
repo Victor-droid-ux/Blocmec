@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 
 const VALID_PLANS = ["business", "conglomerate", "conglomerate-pro"] as const;
 type PlanSlug = (typeof VALID_PLANS)[number];
@@ -16,22 +16,6 @@ const PLAN_PRICING: Record<
   conglomerate: { ngn: 40000, usd: 25, credits: 25000 },
   "conglomerate-pro": { ngn: 100000, usd: 60, credits: 75000 },
 };
-
-async function getAuthenticatedUser() {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) return null;
-
-  let user = await prisma.user.findUnique({
-    where: { supabase_id: data.user.id },
-  });
-
-  if (!user && data.user.email) {
-    user = await prisma.user.findUnique({ where: { email: data.user.email } });
-  }
-
-  return user;
-}
 
 // GET — return available plans and pricing
 export async function GET() {

@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -291,9 +291,9 @@ export type WebhookEndpointWhereInput = {
   AND?: Prisma.WebhookEndpointWhereInput | Prisma.WebhookEndpointWhereInput[]
   OR?: Prisma.WebhookEndpointWhereInput[]
   NOT?: Prisma.WebhookEndpointWhereInput | Prisma.WebhookEndpointWhereInput[]
-  id?: Prisma.UuidFilter<"WebhookEndpoint"> | string
-  user_id?: Prisma.UuidFilter<"WebhookEndpoint"> | string
-  api_key_id?: Prisma.UuidNullableFilter<"WebhookEndpoint"> | string | null
+  id?: Prisma.StringFilter<"WebhookEndpoint"> | string
+  user_id?: Prisma.StringFilter<"WebhookEndpoint"> | string
+  api_key_id?: Prisma.StringNullableFilter<"WebhookEndpoint"> | string | null
   name?: Prisma.StringNullableFilter<"WebhookEndpoint"> | string | null
   endpoint_url?: Prisma.StringFilter<"WebhookEndpoint"> | string
   allowed_domains?: Prisma.StringNullableListFilter<"WebhookEndpoint">
@@ -316,8 +316,8 @@ export type WebhookEndpointWhereInput = {
 export type WebhookEndpointOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  api_key_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
+  api_key_id?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   endpoint_url?: Prisma.SortOrder
   allowed_domains?: Prisma.SortOrder
   events?: Prisma.SortOrder
@@ -326,9 +326,9 @@ export type WebhookEndpointOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   timeout_ms?: Prisma.SortOrder
   max_retries?: Prisma.SortOrder
-  last_delivery_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  last_delivery_status?: Prisma.SortOrderInput | Prisma.SortOrder
-  last_error?: Prisma.SortOrderInput | Prisma.SortOrder
+  last_delivery_at?: Prisma.SortOrder
+  last_delivery_status?: Prisma.SortOrder
+  last_error?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -341,8 +341,8 @@ export type WebhookEndpointWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.WebhookEndpointWhereInput | Prisma.WebhookEndpointWhereInput[]
   OR?: Prisma.WebhookEndpointWhereInput[]
   NOT?: Prisma.WebhookEndpointWhereInput | Prisma.WebhookEndpointWhereInput[]
-  user_id?: Prisma.UuidFilter<"WebhookEndpoint"> | string
-  api_key_id?: Prisma.UuidNullableFilter<"WebhookEndpoint"> | string | null
+  user_id?: Prisma.StringFilter<"WebhookEndpoint"> | string
+  api_key_id?: Prisma.StringNullableFilter<"WebhookEndpoint"> | string | null
   name?: Prisma.StringNullableFilter<"WebhookEndpoint"> | string | null
   endpoint_url?: Prisma.StringFilter<"WebhookEndpoint"> | string
   allowed_domains?: Prisma.StringNullableListFilter<"WebhookEndpoint">
@@ -365,8 +365,8 @@ export type WebhookEndpointWhereUniqueInput = Prisma.AtLeast<{
 export type WebhookEndpointOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  api_key_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
+  api_key_id?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   endpoint_url?: Prisma.SortOrder
   allowed_domains?: Prisma.SortOrder
   events?: Prisma.SortOrder
@@ -375,9 +375,9 @@ export type WebhookEndpointOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   timeout_ms?: Prisma.SortOrder
   max_retries?: Prisma.SortOrder
-  last_delivery_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  last_delivery_status?: Prisma.SortOrderInput | Prisma.SortOrder
-  last_error?: Prisma.SortOrderInput | Prisma.SortOrder
+  last_delivery_at?: Prisma.SortOrder
+  last_delivery_status?: Prisma.SortOrder
+  last_error?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.WebhookEndpointCountOrderByAggregateInput
@@ -391,9 +391,9 @@ export type WebhookEndpointScalarWhereWithAggregatesInput = {
   AND?: Prisma.WebhookEndpointScalarWhereWithAggregatesInput | Prisma.WebhookEndpointScalarWhereWithAggregatesInput[]
   OR?: Prisma.WebhookEndpointScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WebhookEndpointScalarWhereWithAggregatesInput | Prisma.WebhookEndpointScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"WebhookEndpoint"> | string
-  user_id?: Prisma.UuidWithAggregatesFilter<"WebhookEndpoint"> | string
-  api_key_id?: Prisma.UuidNullableWithAggregatesFilter<"WebhookEndpoint"> | string | null
+  id?: Prisma.StringWithAggregatesFilter<"WebhookEndpoint"> | string
+  user_id?: Prisma.StringWithAggregatesFilter<"WebhookEndpoint"> | string
+  api_key_id?: Prisma.StringNullableWithAggregatesFilter<"WebhookEndpoint"> | string | null
   name?: Prisma.StringNullableWithAggregatesFilter<"WebhookEndpoint"> | string | null
   endpoint_url?: Prisma.StringWithAggregatesFilter<"WebhookEndpoint"> | string
   allowed_domains?: Prisma.StringNullableListFilter<"WebhookEndpoint">
@@ -453,7 +453,6 @@ export type WebhookEndpointUncheckedCreateInput = {
 }
 
 export type WebhookEndpointUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
   allowed_domains?: Prisma.WebhookEndpointUpdateallowed_domainsInput | string[]
@@ -474,7 +473,6 @@ export type WebhookEndpointUpdateInput = {
 }
 
 export type WebhookEndpointUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   api_key_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -515,7 +513,6 @@ export type WebhookEndpointCreateManyInput = {
 }
 
 export type WebhookEndpointUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
   allowed_domains?: Prisma.WebhookEndpointUpdateallowed_domainsInput | string[]
@@ -533,7 +530,6 @@ export type WebhookEndpointUpdateManyMutationInput = {
 }
 
 export type WebhookEndpointUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   api_key_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -800,7 +796,6 @@ export type WebhookEndpointCreateOrConnectWithoutApi_keyInput = {
 
 export type WebhookEndpointCreateManyApi_keyInputEnvelope = {
   data: Prisma.WebhookEndpointCreateManyApi_keyInput | Prisma.WebhookEndpointCreateManyApi_keyInput[]
-  skipDuplicates?: boolean
 }
 
 export type WebhookEndpointUpsertWithWhereUniqueWithoutApi_keyInput = {
@@ -823,9 +818,9 @@ export type WebhookEndpointScalarWhereInput = {
   AND?: Prisma.WebhookEndpointScalarWhereInput | Prisma.WebhookEndpointScalarWhereInput[]
   OR?: Prisma.WebhookEndpointScalarWhereInput[]
   NOT?: Prisma.WebhookEndpointScalarWhereInput | Prisma.WebhookEndpointScalarWhereInput[]
-  id?: Prisma.UuidFilter<"WebhookEndpoint"> | string
-  user_id?: Prisma.UuidFilter<"WebhookEndpoint"> | string
-  api_key_id?: Prisma.UuidNullableFilter<"WebhookEndpoint"> | string | null
+  id?: Prisma.StringFilter<"WebhookEndpoint"> | string
+  user_id?: Prisma.StringFilter<"WebhookEndpoint"> | string
+  api_key_id?: Prisma.StringNullableFilter<"WebhookEndpoint"> | string | null
   name?: Prisma.StringNullableFilter<"WebhookEndpoint"> | string | null
   endpoint_url?: Prisma.StringFilter<"WebhookEndpoint"> | string
   allowed_domains?: Prisma.StringNullableListFilter<"WebhookEndpoint">
@@ -889,7 +884,6 @@ export type WebhookEndpointCreateOrConnectWithoutUserInput = {
 
 export type WebhookEndpointCreateManyUserInputEnvelope = {
   data: Prisma.WebhookEndpointCreateManyUserInput | Prisma.WebhookEndpointCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type WebhookEndpointUpsertWithWhereUniqueWithoutUserInput = {
@@ -965,7 +959,6 @@ export type WebhookEndpointUpdateToOneWithWhereWithoutDelivery_eventsInput = {
 }
 
 export type WebhookEndpointUpdateWithoutDelivery_eventsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
   allowed_domains?: Prisma.WebhookEndpointUpdateallowed_domainsInput | string[]
@@ -985,7 +978,6 @@ export type WebhookEndpointUpdateWithoutDelivery_eventsInput = {
 }
 
 export type WebhookEndpointUncheckedUpdateWithoutDelivery_eventsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   api_key_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1024,7 +1016,6 @@ export type WebhookEndpointCreateManyApi_keyInput = {
 }
 
 export type WebhookEndpointUpdateWithoutApi_keyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
   allowed_domains?: Prisma.WebhookEndpointUpdateallowed_domainsInput | string[]
@@ -1044,7 +1035,6 @@ export type WebhookEndpointUpdateWithoutApi_keyInput = {
 }
 
 export type WebhookEndpointUncheckedUpdateWithoutApi_keyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1064,7 +1054,6 @@ export type WebhookEndpointUncheckedUpdateWithoutApi_keyInput = {
 }
 
 export type WebhookEndpointUncheckedUpdateManyWithoutApi_keyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1102,7 +1091,6 @@ export type WebhookEndpointCreateManyUserInput = {
 }
 
 export type WebhookEndpointUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
   allowed_domains?: Prisma.WebhookEndpointUpdateallowed_domainsInput | string[]
@@ -1122,7 +1110,6 @@ export type WebhookEndpointUpdateWithoutUserInput = {
 }
 
 export type WebhookEndpointUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   api_key_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1142,7 +1129,6 @@ export type WebhookEndpointUncheckedUpdateWithoutUserInput = {
 }
 
 export type WebhookEndpointUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   api_key_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endpoint_url?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1215,49 +1201,7 @@ export type WebhookEndpointSelect<ExtArgs extends runtime.Types.Extensions.Inter
   _count?: boolean | Prisma.WebhookEndpointCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["webhookEndpoint"]>
 
-export type WebhookEndpointSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  api_key_id?: boolean
-  name?: boolean
-  endpoint_url?: boolean
-  allowed_domains?: boolean
-  events?: boolean
-  signing_secret_hash?: boolean
-  signing_secret_encrypted?: boolean
-  status?: boolean
-  timeout_ms?: boolean
-  max_retries?: boolean
-  last_delivery_at?: boolean
-  last_delivery_status?: boolean
-  last_error?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  api_key?: boolean | Prisma.WebhookEndpoint$api_keyArgs<ExtArgs>
-}, ExtArgs["result"]["webhookEndpoint"]>
 
-export type WebhookEndpointSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  api_key_id?: boolean
-  name?: boolean
-  endpoint_url?: boolean
-  allowed_domains?: boolean
-  events?: boolean
-  signing_secret_hash?: boolean
-  signing_secret_encrypted?: boolean
-  status?: boolean
-  timeout_ms?: boolean
-  max_retries?: boolean
-  last_delivery_at?: boolean
-  last_delivery_status?: boolean
-  last_error?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  api_key?: boolean | Prisma.WebhookEndpoint$api_keyArgs<ExtArgs>
-}, ExtArgs["result"]["webhookEndpoint"]>
 
 export type WebhookEndpointSelectScalar = {
   id?: boolean
@@ -1285,14 +1229,6 @@ export type WebhookEndpointInclude<ExtArgs extends runtime.Types.Extensions.Inte
   api_key?: boolean | Prisma.WebhookEndpoint$api_keyArgs<ExtArgs>
   delivery_events?: boolean | Prisma.WebhookEndpoint$delivery_eventsArgs<ExtArgs>
   _count?: boolean | Prisma.WebhookEndpointCountOutputTypeDefaultArgs<ExtArgs>
-}
-export type WebhookEndpointIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  api_key?: boolean | Prisma.WebhookEndpoint$api_keyArgs<ExtArgs>
-}
-export type WebhookEndpointIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  api_key?: boolean | Prisma.WebhookEndpoint$api_keyArgs<ExtArgs>
 }
 
 export type $WebhookEndpointPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1438,30 +1374,6 @@ export interface WebhookEndpointDelegate<ExtArgs extends runtime.Types.Extension
   createMany<T extends WebhookEndpointCreateManyArgs>(args?: Prisma.SelectSubset<T, WebhookEndpointCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many WebhookEndpoints and returns the data saved in the database.
-   * @param {WebhookEndpointCreateManyAndReturnArgs} args - Arguments to create many WebhookEndpoints.
-   * @example
-   * // Create many WebhookEndpoints
-   * const webhookEndpoint = await prisma.webhookEndpoint.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many WebhookEndpoints and only return the `id`
-   * const webhookEndpointWithIdOnly = await prisma.webhookEndpoint.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends WebhookEndpointCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, WebhookEndpointCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookEndpointPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a WebhookEndpoint.
    * @param {WebhookEndpointDeleteArgs} args - Arguments to delete one WebhookEndpoint.
    * @example
@@ -1526,36 +1438,6 @@ export interface WebhookEndpointDelegate<ExtArgs extends runtime.Types.Extension
   updateMany<T extends WebhookEndpointUpdateManyArgs>(args: Prisma.SelectSubset<T, WebhookEndpointUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more WebhookEndpoints and returns the data updated in the database.
-   * @param {WebhookEndpointUpdateManyAndReturnArgs} args - Arguments to update many WebhookEndpoints.
-   * @example
-   * // Update many WebhookEndpoints
-   * const webhookEndpoint = await prisma.webhookEndpoint.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more WebhookEndpoints and only return the `id`
-   * const webhookEndpointWithIdOnly = await prisma.webhookEndpoint.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends WebhookEndpointUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, WebhookEndpointUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookEndpointPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one WebhookEndpoint.
    * @param {WebhookEndpointUpsertArgs} args - Arguments to update or create a WebhookEndpoint.
    * @example
@@ -1573,6 +1455,29 @@ export interface WebhookEndpointDelegate<ExtArgs extends runtime.Types.Extension
    * })
    */
   upsert<T extends WebhookEndpointUpsertArgs>(args: Prisma.SelectSubset<T, WebhookEndpointUpsertArgs<ExtArgs>>): Prisma.Prisma__WebhookEndpointClient<runtime.Types.Result.GetResult<Prisma.$WebhookEndpointPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more WebhookEndpoints that matches the filter.
+   * @param {WebhookEndpointFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const webhookEndpoint = await prisma.webhookEndpoint.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.WebhookEndpointFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a WebhookEndpoint.
+   * @param {WebhookEndpointAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const webhookEndpoint = await prisma.webhookEndpoint.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.WebhookEndpointAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1992,30 +1897,6 @@ export type WebhookEndpointCreateManyArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many WebhookEndpoints.
    */
   data: Prisma.WebhookEndpointCreateManyInput | Prisma.WebhookEndpointCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * WebhookEndpoint createManyAndReturn
- */
-export type WebhookEndpointCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WebhookEndpoint
-   */
-  select?: Prisma.WebhookEndpointSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the WebhookEndpoint
-   */
-  omit?: Prisma.WebhookEndpointOmit<ExtArgs> | null
-  /**
-   * The data used to create many WebhookEndpoints.
-   */
-  data: Prisma.WebhookEndpointCreateManyInput | Prisma.WebhookEndpointCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WebhookEndpointIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2060,36 +1941,6 @@ export type WebhookEndpointUpdateManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many WebhookEndpoints to update.
    */
   limit?: number
-}
-
-/**
- * WebhookEndpoint updateManyAndReturn
- */
-export type WebhookEndpointUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WebhookEndpoint
-   */
-  select?: Prisma.WebhookEndpointSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the WebhookEndpoint
-   */
-  omit?: Prisma.WebhookEndpointOmit<ExtArgs> | null
-  /**
-   * The data used to update WebhookEndpoints.
-   */
-  data: Prisma.XOR<Prisma.WebhookEndpointUpdateManyMutationInput, Prisma.WebhookEndpointUncheckedUpdateManyInput>
-  /**
-   * Filter which WebhookEndpoints to update
-   */
-  where?: Prisma.WebhookEndpointWhereInput
-  /**
-   * Limit how many WebhookEndpoints to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WebhookEndpointIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2156,6 +2007,34 @@ export type WebhookEndpointDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many WebhookEndpoints to delete.
    */
   limit?: number
+}
+
+/**
+ * WebhookEndpoint findRaw
+ */
+export type WebhookEndpointFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * WebhookEndpoint aggregateRaw
+ */
+export type WebhookEndpointAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

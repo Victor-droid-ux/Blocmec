@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -253,8 +253,8 @@ export type BatchWhereInput = {
   AND?: Prisma.BatchWhereInput | Prisma.BatchWhereInput[]
   OR?: Prisma.BatchWhereInput[]
   NOT?: Prisma.BatchWhereInput | Prisma.BatchWhereInput[]
-  id?: Prisma.UuidFilter<"Batch"> | string
-  user_id?: Prisma.UuidFilter<"Batch"> | string
+  id?: Prisma.StringFilter<"Batch"> | string
+  user_id?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   product_type?: Prisma.StringFilter<"Batch"> | string
   batch_number?: Prisma.StringNullableFilter<"Batch"> | string | null
@@ -274,11 +274,11 @@ export type BatchOrderByWithRelationInput = {
   user_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   product_type?: Prisma.SortOrder
-  batch_number?: Prisma.SortOrderInput | Prisma.SortOrder
+  batch_number?: Prisma.SortOrder
   total_count?: Prisma.SortOrder
   generated_count?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -291,7 +291,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BatchWhereInput | Prisma.BatchWhereInput[]
   OR?: Prisma.BatchWhereInput[]
   NOT?: Prisma.BatchWhereInput | Prisma.BatchWhereInput[]
-  user_id?: Prisma.UuidFilter<"Batch"> | string
+  user_id?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   product_type?: Prisma.StringFilter<"Batch"> | string
   batch_number?: Prisma.StringNullableFilter<"Batch"> | string | null
@@ -311,11 +311,11 @@ export type BatchOrderByWithAggregationInput = {
   user_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   product_type?: Prisma.SortOrder
-  batch_number?: Prisma.SortOrderInput | Prisma.SortOrder
+  batch_number?: Prisma.SortOrder
   total_count?: Prisma.SortOrder
   generated_count?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.BatchCountOrderByAggregateInput
@@ -329,8 +329,8 @@ export type BatchScalarWhereWithAggregatesInput = {
   AND?: Prisma.BatchScalarWhereWithAggregatesInput | Prisma.BatchScalarWhereWithAggregatesInput[]
   OR?: Prisma.BatchScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BatchScalarWhereWithAggregatesInput | Prisma.BatchScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"Batch"> | string
-  user_id?: Prisma.UuidWithAggregatesFilter<"Batch"> | string
+  id?: Prisma.StringWithAggregatesFilter<"Batch"> | string
+  user_id?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   name?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   product_type?: Prisma.StringWithAggregatesFilter<"Batch"> | string
   batch_number?: Prisma.StringNullableWithAggregatesFilter<"Batch"> | string | null
@@ -350,7 +350,7 @@ export type BatchCreateInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutBatchesInput
@@ -367,7 +367,7 @@ export type BatchUncheckedCreateInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   qr_codes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutBatchInput
@@ -375,14 +375,13 @@ export type BatchUncheckedCreateInput = {
 }
 
 export type BatchUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   batch_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutBatchesNestedInput
@@ -391,7 +390,6 @@ export type BatchUpdateInput = {
 }
 
 export type BatchUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -399,7 +397,7 @@ export type BatchUncheckedUpdateInput = {
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qr_codes?: Prisma.QrCodeUncheckedUpdateManyWithoutBatchNestedInput
@@ -415,26 +413,24 @@ export type BatchCreateManyInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
 }
 
 export type BatchUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   batch_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BatchUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -442,7 +438,7 @@ export type BatchUncheckedUpdateManyInput = {
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -534,7 +530,7 @@ export type BatchUpdateOneWithoutQr_codesNestedInput = {
   create?: Prisma.XOR<Prisma.BatchCreateWithoutQr_codesInput, Prisma.BatchUncheckedCreateWithoutQr_codesInput>
   connectOrCreate?: Prisma.BatchCreateOrConnectWithoutQr_codesInput
   upsert?: Prisma.BatchUpsertWithoutQr_codesInput
-  disconnect?: Prisma.BatchWhereInput | boolean
+  disconnect?: boolean
   delete?: Prisma.BatchWhereInput | boolean
   connect?: Prisma.BatchWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutQr_codesInput, Prisma.BatchUpdateWithoutQr_codesInput>, Prisma.BatchUncheckedUpdateWithoutQr_codesInput>
@@ -592,7 +588,7 @@ export type BatchUpdateOneWithoutWebhook_payloadsNestedInput = {
   create?: Prisma.XOR<Prisma.BatchCreateWithoutWebhook_payloadsInput, Prisma.BatchUncheckedCreateWithoutWebhook_payloadsInput>
   connectOrCreate?: Prisma.BatchCreateOrConnectWithoutWebhook_payloadsInput
   upsert?: Prisma.BatchUpsertWithoutWebhook_payloadsInput
-  disconnect?: Prisma.BatchWhereInput | boolean
+  disconnect?: boolean
   delete?: Prisma.BatchWhereInput | boolean
   connect?: Prisma.BatchWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutWebhook_payloadsInput, Prisma.BatchUpdateWithoutWebhook_payloadsInput>, Prisma.BatchUncheckedUpdateWithoutWebhook_payloadsInput>
@@ -606,7 +602,7 @@ export type BatchCreateWithoutQr_codesInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutBatchesInput
@@ -622,7 +618,7 @@ export type BatchUncheckedCreateWithoutQr_codesInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedCreateNestedManyWithoutBatchInput
@@ -645,14 +641,13 @@ export type BatchUpdateToOneWithWhereWithoutQr_codesInput = {
 }
 
 export type BatchUpdateWithoutQr_codesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   batch_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutBatchesNestedInput
@@ -660,7 +655,6 @@ export type BatchUpdateWithoutQr_codesInput = {
 }
 
 export type BatchUncheckedUpdateWithoutQr_codesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -668,7 +662,7 @@ export type BatchUncheckedUpdateWithoutQr_codesInput = {
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   webhook_payloads?: Prisma.WebhookEventPayloadUncheckedUpdateManyWithoutBatchNestedInput
@@ -682,7 +676,7 @@ export type BatchCreateWithoutUserInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   qr_codes?: Prisma.QrCodeCreateNestedManyWithoutBatchInput
@@ -697,7 +691,7 @@ export type BatchUncheckedCreateWithoutUserInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   qr_codes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutBatchInput
@@ -711,7 +705,6 @@ export type BatchCreateOrConnectWithoutUserInput = {
 
 export type BatchCreateManyUserInputEnvelope = {
   data: Prisma.BatchCreateManyUserInput | Prisma.BatchCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type BatchUpsertWithWhereUniqueWithoutUserInput = {
@@ -734,8 +727,8 @@ export type BatchScalarWhereInput = {
   AND?: Prisma.BatchScalarWhereInput | Prisma.BatchScalarWhereInput[]
   OR?: Prisma.BatchScalarWhereInput[]
   NOT?: Prisma.BatchScalarWhereInput | Prisma.BatchScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Batch"> | string
-  user_id?: Prisma.UuidFilter<"Batch"> | string
+  id?: Prisma.StringFilter<"Batch"> | string
+  user_id?: Prisma.StringFilter<"Batch"> | string
   name?: Prisma.StringFilter<"Batch"> | string
   product_type?: Prisma.StringFilter<"Batch"> | string
   batch_number?: Prisma.StringNullableFilter<"Batch"> | string | null
@@ -755,7 +748,7 @@ export type BatchCreateWithoutWebhook_payloadsInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutBatchesInput
@@ -771,7 +764,7 @@ export type BatchUncheckedCreateWithoutWebhook_payloadsInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   qr_codes?: Prisma.QrCodeUncheckedCreateNestedManyWithoutBatchInput
@@ -794,14 +787,13 @@ export type BatchUpdateToOneWithWhereWithoutWebhook_payloadsInput = {
 }
 
 export type BatchUpdateWithoutWebhook_payloadsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   batch_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutBatchesNestedInput
@@ -809,7 +801,6 @@ export type BatchUpdateWithoutWebhook_payloadsInput = {
 }
 
 export type BatchUncheckedUpdateWithoutWebhook_payloadsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -817,7 +808,7 @@ export type BatchUncheckedUpdateWithoutWebhook_payloadsInput = {
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qr_codes?: Prisma.QrCodeUncheckedUpdateManyWithoutBatchNestedInput
@@ -831,20 +822,19 @@ export type BatchCreateManyUserInput = {
   total_count: number
   generated_count?: number
   status?: $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
 }
 
 export type BatchUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   batch_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qr_codes?: Prisma.QrCodeUpdateManyWithoutBatchNestedInput
@@ -852,14 +842,13 @@ export type BatchUpdateWithoutUserInput = {
 }
 
 export type BatchUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   batch_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   qr_codes?: Prisma.QrCodeUncheckedUpdateManyWithoutBatchNestedInput
@@ -867,14 +856,13 @@ export type BatchUncheckedUpdateWithoutUserInput = {
 }
 
 export type BatchUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   batch_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_count?: Prisma.IntFieldUpdateOperationsInput | number
   generated_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -937,35 +925,7 @@ export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batch"]>
 
-export type BatchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  name?: boolean
-  product_type?: boolean
-  batch_number?: boolean
-  total_count?: boolean
-  generated_count?: boolean
-  status?: boolean
-  metadata?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["batch"]>
 
-export type BatchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  name?: boolean
-  product_type?: boolean
-  batch_number?: boolean
-  total_count?: boolean
-  generated_count?: boolean
-  status?: boolean
-  metadata?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["batch"]>
 
 export type BatchSelectScalar = {
   id?: boolean
@@ -987,12 +947,6 @@ export type BatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   qr_codes?: boolean | Prisma.Batch$qr_codesArgs<ExtArgs>
   webhook_payloads?: boolean | Prisma.Batch$webhook_payloadsArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
-}
-export type BatchIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
-export type BatchIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $BatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1132,30 +1086,6 @@ export interface BatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
   createMany<T extends BatchCreateManyArgs>(args?: Prisma.SelectSubset<T, BatchCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many Batches and returns the data saved in the database.
-   * @param {BatchCreateManyAndReturnArgs} args - Arguments to create many Batches.
-   * @example
-   * // Create many Batches
-   * const batch = await prisma.batch.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many Batches and only return the `id`
-   * const batchWithIdOnly = await prisma.batch.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends BatchCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, BatchCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a Batch.
    * @param {BatchDeleteArgs} args - Arguments to delete one Batch.
    * @example
@@ -1220,36 +1150,6 @@ export interface BatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
   updateMany<T extends BatchUpdateManyArgs>(args: Prisma.SelectSubset<T, BatchUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more Batches and returns the data updated in the database.
-   * @param {BatchUpdateManyAndReturnArgs} args - Arguments to update many Batches.
-   * @example
-   * // Update many Batches
-   * const batch = await prisma.batch.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more Batches and only return the `id`
-   * const batchWithIdOnly = await prisma.batch.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends BatchUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, BatchUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one Batch.
    * @param {BatchUpsertArgs} args - Arguments to update or create a Batch.
    * @example
@@ -1267,6 +1167,29 @@ export interface BatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * })
    */
   upsert<T extends BatchUpsertArgs>(args: Prisma.SelectSubset<T, BatchUpsertArgs<ExtArgs>>): Prisma.Prisma__BatchClient<runtime.Types.Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more Batches that matches the filter.
+   * @param {BatchFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const batch = await prisma.batch.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.BatchFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a Batch.
+   * @param {BatchAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const batch = await prisma.batch.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.BatchAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1680,30 +1603,6 @@ export type BatchCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * The data used to create many Batches.
    */
   data: Prisma.BatchCreateManyInput | Prisma.BatchCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * Batch createManyAndReturn
- */
-export type BatchCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Batch
-   */
-  select?: Prisma.BatchSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the Batch
-   */
-  omit?: Prisma.BatchOmit<ExtArgs> | null
-  /**
-   * The data used to create many Batches.
-   */
-  data: Prisma.BatchCreateManyInput | Prisma.BatchCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BatchIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1748,36 +1647,6 @@ export type BatchUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Batches to update.
    */
   limit?: number
-}
-
-/**
- * Batch updateManyAndReturn
- */
-export type BatchUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Batch
-   */
-  select?: Prisma.BatchSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the Batch
-   */
-  omit?: Prisma.BatchOmit<ExtArgs> | null
-  /**
-   * The data used to update Batches.
-   */
-  data: Prisma.XOR<Prisma.BatchUpdateManyMutationInput, Prisma.BatchUncheckedUpdateManyInput>
-  /**
-   * Filter which Batches to update
-   */
-  where?: Prisma.BatchWhereInput
-  /**
-   * Limit how many Batches to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BatchIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1844,6 +1713,34 @@ export type BatchDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Batches to delete.
    */
   limit?: number
+}
+
+/**
+ * Batch findRaw
+ */
+export type BatchFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * Batch aggregateRaw
+ */
+export type BatchAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

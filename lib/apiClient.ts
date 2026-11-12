@@ -37,7 +37,9 @@ function buildHeaders(init?: HeadersInit, asFormData?: boolean) {
 function getCookie(name: string): string | undefined {
   if (typeof window === "undefined") return undefined;
   const match = document.cookie.match(
-    new RegExp("(^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, "\\$1") + "=([^;]*)"),
+    new RegExp(
+      "(^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, "\\$1") + "=([^;]*)",
+    ),
   );
   return match ? decodeURIComponent(match[2]) : undefined;
 }
@@ -94,7 +96,7 @@ export async function request<T = any>(
     ...init,
     body,
     headers,
-    credentials: "same-origin", // CRITICAL for Supabase refresh cookies
+    credentials: "same-origin", // CRITICAL for the session cookie to be sent/refreshed
     signal: controller.signal,
   };
 
@@ -108,7 +110,8 @@ export async function request<T = any>(
 
     const parsed = await safeJsonParse(res);
     if (!res.ok) {
-      const err = parsed?.error || parsed?.message || parsed || `HTTP ${res.status}`;
+      const err =
+        parsed?.error || parsed?.message || parsed || `HTTP ${res.status}`;
       return {
         ok: false,
         status: res.status,
@@ -132,7 +135,9 @@ export const get = <T = any>(
   if (opts?.params) {
     const u = new URL(
       url,
-      typeof window !== "undefined" ? window.location.origin : "http://localhost",
+      typeof window !== "undefined"
+        ? window.location.origin
+        : "http://localhost",
     );
     Object.entries(opts.params).forEach(([k, v]) => {
       if (v === undefined || v === null) return;
@@ -152,5 +157,13 @@ export const put = <T = any>(url: string, body?: any, opts?: RequestOpts) =>
 export const del = <T = any>(url: string, body?: any, opts?: RequestOpts) =>
   request<T>(url, { method: "DELETE", body }, opts);
 
-export const upload = <T = any>(url: string, form: FormData, opts?: RequestOpts) =>
-  request<T>(url, { method: "POST", body: form }, { ...(opts || {}), asFormData: true });
+export const upload = <T = any>(
+  url: string,
+  form: FormData,
+  opts?: RequestOpts,
+) =>
+  request<T>(
+    url,
+    { method: "POST", body: form },
+    { ...(opts || {}), asFormData: true },
+  );

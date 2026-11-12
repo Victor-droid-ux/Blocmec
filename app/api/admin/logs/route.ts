@@ -1,15 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { UserRole } from "@/prisma/generated/enums";
 
 async function requireAdmin() {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) return null;
-  const user = await prisma.user.findUnique({
-    where: { supabase_id: data.user.id },
-  });
+  const user = await getAuthenticatedUser();
   if (!user || user.role !== UserRole.admin) return null;
   return user;
 }

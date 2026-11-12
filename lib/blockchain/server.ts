@@ -2,8 +2,7 @@ import crypto from "crypto";
 import QRCode from "qrcode";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
-import prisma from "@/lib/prisma";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { rateLimit } from "@/lib/rateLimiter";
 
 const BLOCKCHAIN_READ_LIMIT = {
@@ -16,26 +15,7 @@ const BLOCKCHAIN_WRITE_LIMIT = {
   windowMs: 60_000,
 } as const;
 
-export async function getAuthenticatedUser() {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data.user) {
-    return null;
-  }
-
-  let user = await prisma.user.findUnique({
-    where: { supabase_id: data.user.id },
-  });
-
-  if (!user && data.user.email) {
-    user = await prisma.user.findUnique({
-      where: { email: data.user.email },
-    });
-  }
-
-  return user;
-}
+export { getAuthenticatedUser };
 
 export async function applyBlockchainReadRateLimit(request: NextRequest) {
   return rateLimit(request, BLOCKCHAIN_READ_LIMIT);

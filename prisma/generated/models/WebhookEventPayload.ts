@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -190,9 +190,9 @@ export type WebhookEventPayloadWhereInput = {
   AND?: Prisma.WebhookEventPayloadWhereInput | Prisma.WebhookEventPayloadWhereInput[]
   OR?: Prisma.WebhookEventPayloadWhereInput[]
   NOT?: Prisma.WebhookEventPayloadWhereInput | Prisma.WebhookEventPayloadWhereInput[]
-  id?: Prisma.UuidFilter<"WebhookEventPayload"> | string
-  user_id?: Prisma.UuidFilter<"WebhookEventPayload"> | string
-  batch_id?: Prisma.UuidNullableFilter<"WebhookEventPayload"> | string | null
+  id?: Prisma.StringFilter<"WebhookEventPayload"> | string
+  user_id?: Prisma.StringFilter<"WebhookEventPayload"> | string
+  batch_id?: Prisma.StringNullableFilter<"WebhookEventPayload"> | string | null
   event_type?: Prisma.StringFilter<"WebhookEventPayload"> | string
   summary?: Prisma.JsonFilter<"WebhookEventPayload">
   payload?: Prisma.JsonFilter<"WebhookEventPayload">
@@ -206,12 +206,12 @@ export type WebhookEventPayloadWhereInput = {
 export type WebhookEventPayloadOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  batch_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  batch_id?: Prisma.SortOrder
   event_type?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   payload?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  expires_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   batch?: Prisma.BatchOrderByWithRelationInput
   webhook_jobs?: Prisma.WebhookDeliveryJobOrderByRelationAggregateInput
@@ -222,8 +222,8 @@ export type WebhookEventPayloadWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.WebhookEventPayloadWhereInput | Prisma.WebhookEventPayloadWhereInput[]
   OR?: Prisma.WebhookEventPayloadWhereInput[]
   NOT?: Prisma.WebhookEventPayloadWhereInput | Prisma.WebhookEventPayloadWhereInput[]
-  user_id?: Prisma.UuidFilter<"WebhookEventPayload"> | string
-  batch_id?: Prisma.UuidNullableFilter<"WebhookEventPayload"> | string | null
+  user_id?: Prisma.StringFilter<"WebhookEventPayload"> | string
+  batch_id?: Prisma.StringNullableFilter<"WebhookEventPayload"> | string | null
   event_type?: Prisma.StringFilter<"WebhookEventPayload"> | string
   summary?: Prisma.JsonFilter<"WebhookEventPayload">
   payload?: Prisma.JsonFilter<"WebhookEventPayload">
@@ -237,12 +237,12 @@ export type WebhookEventPayloadWhereUniqueInput = Prisma.AtLeast<{
 export type WebhookEventPayloadOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  batch_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  batch_id?: Prisma.SortOrder
   event_type?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   payload?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  expires_at?: Prisma.SortOrder
   _count?: Prisma.WebhookEventPayloadCountOrderByAggregateInput
   _max?: Prisma.WebhookEventPayloadMaxOrderByAggregateInput
   _min?: Prisma.WebhookEventPayloadMinOrderByAggregateInput
@@ -252,9 +252,9 @@ export type WebhookEventPayloadScalarWhereWithAggregatesInput = {
   AND?: Prisma.WebhookEventPayloadScalarWhereWithAggregatesInput | Prisma.WebhookEventPayloadScalarWhereWithAggregatesInput[]
   OR?: Prisma.WebhookEventPayloadScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WebhookEventPayloadScalarWhereWithAggregatesInput | Prisma.WebhookEventPayloadScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"WebhookEventPayload"> | string
-  user_id?: Prisma.UuidWithAggregatesFilter<"WebhookEventPayload"> | string
-  batch_id?: Prisma.UuidNullableWithAggregatesFilter<"WebhookEventPayload"> | string | null
+  id?: Prisma.StringWithAggregatesFilter<"WebhookEventPayload"> | string
+  user_id?: Prisma.StringWithAggregatesFilter<"WebhookEventPayload"> | string
+  batch_id?: Prisma.StringNullableWithAggregatesFilter<"WebhookEventPayload"> | string | null
   event_type?: Prisma.StringWithAggregatesFilter<"WebhookEventPayload"> | string
   summary?: Prisma.JsonWithAggregatesFilter<"WebhookEventPayload">
   payload?: Prisma.JsonWithAggregatesFilter<"WebhookEventPayload">
@@ -265,8 +265,8 @@ export type WebhookEventPayloadScalarWhereWithAggregatesInput = {
 export type WebhookEventPayloadCreateInput = {
   id?: string
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutWebhook_payloadsInput
@@ -279,18 +279,17 @@ export type WebhookEventPayloadUncheckedCreateInput = {
   user_id: string
   batch_id?: string | null
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
   webhook_jobs?: Prisma.WebhookDeliveryJobUncheckedCreateNestedManyWithoutPayload_recordInput
 }
 
 export type WebhookEventPayloadUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutWebhook_payloadsNestedInput
@@ -299,12 +298,11 @@ export type WebhookEventPayloadUpdateInput = {
 }
 
 export type WebhookEventPayloadUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   webhook_jobs?: Prisma.WebhookDeliveryJobUncheckedUpdateManyWithoutPayload_recordNestedInput
@@ -315,28 +313,26 @@ export type WebhookEventPayloadCreateManyInput = {
   user_id: string
   batch_id?: string | null
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
 }
 
 export type WebhookEventPayloadUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WebhookEventPayloadUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -479,7 +475,7 @@ export type WebhookEventPayloadUpdateOneWithoutWebhook_jobsNestedInput = {
   create?: Prisma.XOR<Prisma.WebhookEventPayloadCreateWithoutWebhook_jobsInput, Prisma.WebhookEventPayloadUncheckedCreateWithoutWebhook_jobsInput>
   connectOrCreate?: Prisma.WebhookEventPayloadCreateOrConnectWithoutWebhook_jobsInput
   upsert?: Prisma.WebhookEventPayloadUpsertWithoutWebhook_jobsInput
-  disconnect?: Prisma.WebhookEventPayloadWhereInput | boolean
+  disconnect?: boolean
   delete?: Prisma.WebhookEventPayloadWhereInput | boolean
   connect?: Prisma.WebhookEventPayloadWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.WebhookEventPayloadUpdateToOneWithWhereWithoutWebhook_jobsInput, Prisma.WebhookEventPayloadUpdateWithoutWebhook_jobsInput>, Prisma.WebhookEventPayloadUncheckedUpdateWithoutWebhook_jobsInput>
@@ -488,8 +484,8 @@ export type WebhookEventPayloadUpdateOneWithoutWebhook_jobsNestedInput = {
 export type WebhookEventPayloadCreateWithoutBatchInput = {
   id?: string
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutWebhook_payloadsInput
@@ -500,8 +496,8 @@ export type WebhookEventPayloadUncheckedCreateWithoutBatchInput = {
   id?: string
   user_id: string
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
   webhook_jobs?: Prisma.WebhookDeliveryJobUncheckedCreateNestedManyWithoutPayload_recordInput
@@ -514,7 +510,6 @@ export type WebhookEventPayloadCreateOrConnectWithoutBatchInput = {
 
 export type WebhookEventPayloadCreateManyBatchInputEnvelope = {
   data: Prisma.WebhookEventPayloadCreateManyBatchInput | Prisma.WebhookEventPayloadCreateManyBatchInput[]
-  skipDuplicates?: boolean
 }
 
 export type WebhookEventPayloadUpsertWithWhereUniqueWithoutBatchInput = {
@@ -537,9 +532,9 @@ export type WebhookEventPayloadScalarWhereInput = {
   AND?: Prisma.WebhookEventPayloadScalarWhereInput | Prisma.WebhookEventPayloadScalarWhereInput[]
   OR?: Prisma.WebhookEventPayloadScalarWhereInput[]
   NOT?: Prisma.WebhookEventPayloadScalarWhereInput | Prisma.WebhookEventPayloadScalarWhereInput[]
-  id?: Prisma.UuidFilter<"WebhookEventPayload"> | string
-  user_id?: Prisma.UuidFilter<"WebhookEventPayload"> | string
-  batch_id?: Prisma.UuidNullableFilter<"WebhookEventPayload"> | string | null
+  id?: Prisma.StringFilter<"WebhookEventPayload"> | string
+  user_id?: Prisma.StringFilter<"WebhookEventPayload"> | string
+  batch_id?: Prisma.StringNullableFilter<"WebhookEventPayload"> | string | null
   event_type?: Prisma.StringFilter<"WebhookEventPayload"> | string
   summary?: Prisma.JsonFilter<"WebhookEventPayload">
   payload?: Prisma.JsonFilter<"WebhookEventPayload">
@@ -550,8 +545,8 @@ export type WebhookEventPayloadScalarWhereInput = {
 export type WebhookEventPayloadCreateWithoutUserInput = {
   id?: string
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
   batch?: Prisma.BatchCreateNestedOneWithoutWebhook_payloadsInput
@@ -562,8 +557,8 @@ export type WebhookEventPayloadUncheckedCreateWithoutUserInput = {
   id?: string
   batch_id?: string | null
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
   webhook_jobs?: Prisma.WebhookDeliveryJobUncheckedCreateNestedManyWithoutPayload_recordInput
@@ -576,7 +571,6 @@ export type WebhookEventPayloadCreateOrConnectWithoutUserInput = {
 
 export type WebhookEventPayloadCreateManyUserInputEnvelope = {
   data: Prisma.WebhookEventPayloadCreateManyUserInput | Prisma.WebhookEventPayloadCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type WebhookEventPayloadUpsertWithWhereUniqueWithoutUserInput = {
@@ -598,8 +592,8 @@ export type WebhookEventPayloadUpdateManyWithWhereWithoutUserInput = {
 export type WebhookEventPayloadCreateWithoutWebhook_jobsInput = {
   id?: string
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutWebhook_payloadsInput
@@ -611,8 +605,8 @@ export type WebhookEventPayloadUncheckedCreateWithoutWebhook_jobsInput = {
   user_id: string
   batch_id?: string | null
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
 }
@@ -634,10 +628,9 @@ export type WebhookEventPayloadUpdateToOneWithWhereWithoutWebhook_jobsInput = {
 }
 
 export type WebhookEventPayloadUpdateWithoutWebhook_jobsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutWebhook_payloadsNestedInput
@@ -645,12 +638,11 @@ export type WebhookEventPayloadUpdateWithoutWebhook_jobsInput = {
 }
 
 export type WebhookEventPayloadUncheckedUpdateWithoutWebhook_jobsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -659,17 +651,16 @@ export type WebhookEventPayloadCreateManyBatchInput = {
   id?: string
   user_id: string
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
 }
 
 export type WebhookEventPayloadUpdateWithoutBatchInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutWebhook_payloadsNestedInput
@@ -677,22 +668,20 @@ export type WebhookEventPayloadUpdateWithoutBatchInput = {
 }
 
 export type WebhookEventPayloadUncheckedUpdateWithoutBatchInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   webhook_jobs?: Prisma.WebhookDeliveryJobUncheckedUpdateManyWithoutPayload_recordNestedInput
 }
 
 export type WebhookEventPayloadUncheckedUpdateManyWithoutBatchInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -701,17 +690,16 @@ export type WebhookEventPayloadCreateManyUserInput = {
   id?: string
   batch_id?: string | null
   event_type: string
-  summary: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary: runtime.InputJsonValue
+  payload: runtime.InputJsonValue
   created_at?: Date | string
   expires_at?: Date | string | null
 }
 
 export type WebhookEventPayloadUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   batch?: Prisma.BatchUpdateOneWithoutWebhook_payloadsNestedInput
@@ -719,22 +707,20 @@ export type WebhookEventPayloadUpdateWithoutUserInput = {
 }
 
 export type WebhookEventPayloadUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   webhook_jobs?: Prisma.WebhookDeliveryJobUncheckedUpdateManyWithoutPayload_recordNestedInput
 }
 
 export type WebhookEventPayloadUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   event_type?: Prisma.StringFieldUpdateOperationsInput | string
-  summary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  summary?: runtime.InputJsonValue | runtime.InputJsonValue
+  payload?: runtime.InputJsonValue | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -785,31 +771,7 @@ export type WebhookEventPayloadSelect<ExtArgs extends runtime.Types.Extensions.I
   _count?: boolean | Prisma.WebhookEventPayloadCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["webhookEventPayload"]>
 
-export type WebhookEventPayloadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  batch_id?: boolean
-  event_type?: boolean
-  summary?: boolean
-  payload?: boolean
-  created_at?: boolean
-  expires_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  batch?: boolean | Prisma.WebhookEventPayload$batchArgs<ExtArgs>
-}, ExtArgs["result"]["webhookEventPayload"]>
 
-export type WebhookEventPayloadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  batch_id?: boolean
-  event_type?: boolean
-  summary?: boolean
-  payload?: boolean
-  created_at?: boolean
-  expires_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  batch?: boolean | Prisma.WebhookEventPayload$batchArgs<ExtArgs>
-}, ExtArgs["result"]["webhookEventPayload"]>
 
 export type WebhookEventPayloadSelectScalar = {
   id?: boolean
@@ -828,14 +790,6 @@ export type WebhookEventPayloadInclude<ExtArgs extends runtime.Types.Extensions.
   batch?: boolean | Prisma.WebhookEventPayload$batchArgs<ExtArgs>
   webhook_jobs?: boolean | Prisma.WebhookEventPayload$webhook_jobsArgs<ExtArgs>
   _count?: boolean | Prisma.WebhookEventPayloadCountOutputTypeDefaultArgs<ExtArgs>
-}
-export type WebhookEventPayloadIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  batch?: boolean | Prisma.WebhookEventPayload$batchArgs<ExtArgs>
-}
-export type WebhookEventPayloadIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  batch?: boolean | Prisma.WebhookEventPayload$batchArgs<ExtArgs>
 }
 
 export type $WebhookEventPayloadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -972,30 +926,6 @@ export interface WebhookEventPayloadDelegate<ExtArgs extends runtime.Types.Exten
   createMany<T extends WebhookEventPayloadCreateManyArgs>(args?: Prisma.SelectSubset<T, WebhookEventPayloadCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many WebhookEventPayloads and returns the data saved in the database.
-   * @param {WebhookEventPayloadCreateManyAndReturnArgs} args - Arguments to create many WebhookEventPayloads.
-   * @example
-   * // Create many WebhookEventPayloads
-   * const webhookEventPayload = await prisma.webhookEventPayload.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many WebhookEventPayloads and only return the `id`
-   * const webhookEventPayloadWithIdOnly = await prisma.webhookEventPayload.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends WebhookEventPayloadCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, WebhookEventPayloadCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookEventPayloadPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a WebhookEventPayload.
    * @param {WebhookEventPayloadDeleteArgs} args - Arguments to delete one WebhookEventPayload.
    * @example
@@ -1060,36 +990,6 @@ export interface WebhookEventPayloadDelegate<ExtArgs extends runtime.Types.Exten
   updateMany<T extends WebhookEventPayloadUpdateManyArgs>(args: Prisma.SelectSubset<T, WebhookEventPayloadUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more WebhookEventPayloads and returns the data updated in the database.
-   * @param {WebhookEventPayloadUpdateManyAndReturnArgs} args - Arguments to update many WebhookEventPayloads.
-   * @example
-   * // Update many WebhookEventPayloads
-   * const webhookEventPayload = await prisma.webhookEventPayload.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more WebhookEventPayloads and only return the `id`
-   * const webhookEventPayloadWithIdOnly = await prisma.webhookEventPayload.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends WebhookEventPayloadUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, WebhookEventPayloadUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookEventPayloadPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one WebhookEventPayload.
    * @param {WebhookEventPayloadUpsertArgs} args - Arguments to update or create a WebhookEventPayload.
    * @example
@@ -1107,6 +1007,29 @@ export interface WebhookEventPayloadDelegate<ExtArgs extends runtime.Types.Exten
    * })
    */
   upsert<T extends WebhookEventPayloadUpsertArgs>(args: Prisma.SelectSubset<T, WebhookEventPayloadUpsertArgs<ExtArgs>>): Prisma.Prisma__WebhookEventPayloadClient<runtime.Types.Result.GetResult<Prisma.$WebhookEventPayloadPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more WebhookEventPayloads that matches the filter.
+   * @param {WebhookEventPayloadFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const webhookEventPayload = await prisma.webhookEventPayload.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.WebhookEventPayloadFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a WebhookEventPayload.
+   * @param {WebhookEventPayloadAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const webhookEventPayload = await prisma.webhookEventPayload.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.WebhookEventPayloadAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1517,30 +1440,6 @@ export type WebhookEventPayloadCreateManyArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many WebhookEventPayloads.
    */
   data: Prisma.WebhookEventPayloadCreateManyInput | Prisma.WebhookEventPayloadCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * WebhookEventPayload createManyAndReturn
- */
-export type WebhookEventPayloadCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WebhookEventPayload
-   */
-  select?: Prisma.WebhookEventPayloadSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the WebhookEventPayload
-   */
-  omit?: Prisma.WebhookEventPayloadOmit<ExtArgs> | null
-  /**
-   * The data used to create many WebhookEventPayloads.
-   */
-  data: Prisma.WebhookEventPayloadCreateManyInput | Prisma.WebhookEventPayloadCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WebhookEventPayloadIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1585,36 +1484,6 @@ export type WebhookEventPayloadUpdateManyArgs<ExtArgs extends runtime.Types.Exte
    * Limit how many WebhookEventPayloads to update.
    */
   limit?: number
-}
-
-/**
- * WebhookEventPayload updateManyAndReturn
- */
-export type WebhookEventPayloadUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WebhookEventPayload
-   */
-  select?: Prisma.WebhookEventPayloadSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the WebhookEventPayload
-   */
-  omit?: Prisma.WebhookEventPayloadOmit<ExtArgs> | null
-  /**
-   * The data used to update WebhookEventPayloads.
-   */
-  data: Prisma.XOR<Prisma.WebhookEventPayloadUpdateManyMutationInput, Prisma.WebhookEventPayloadUncheckedUpdateManyInput>
-  /**
-   * Filter which WebhookEventPayloads to update
-   */
-  where?: Prisma.WebhookEventPayloadWhereInput
-  /**
-   * Limit how many WebhookEventPayloads to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WebhookEventPayloadIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1681,6 +1550,34 @@ export type WebhookEventPayloadDeleteManyArgs<ExtArgs extends runtime.Types.Exte
    * Limit how many WebhookEventPayloads to delete.
    */
   limit?: number
+}
+
+/**
+ * WebhookEventPayload findRaw
+ */
+export type WebhookEventPayloadFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * WebhookEventPayload aggregateRaw
+ */
+export type WebhookEventPayloadAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

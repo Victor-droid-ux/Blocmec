@@ -14,21 +14,21 @@ enum WebhookDeliveryStatus {
 }
 
 model WebhookEndpoint {
-  id                     String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id                String        @db.Uuid
-  api_key_id             String?       @db.Uuid
-  name                   String?       @db.VarChar(255)
-  endpoint_url           String        @db.Text
+  id                     String        @id @default(auto()) @map("_id") @db.ObjectId
+  user_id                String        @db.ObjectId
+  api_key_id             String?       @db.ObjectId
+  name                   String?
+  endpoint_url           String
   allowed_domains        String[]      @default([])
   events                 String[]
-  signing_secret_hash    String        @db.VarChar(255)
-  signing_secret_encrypted String      @db.Text
+  signing_secret_hash    String
+  signing_secret_encrypted String
   status                 WebhookStatus @default(active)
   timeout_ms             Int           @default(10000)
   max_retries            Int           @default(6)
   last_delivery_at       DateTime?
-  last_delivery_status   String?       @db.VarChar(50)
-  last_error             String?       @db.Text
+  last_delivery_status   String?
+  last_error             String?
   created_at             DateTime      @default(now())
   updated_at             DateTime      @updatedAt
 
@@ -42,19 +42,19 @@ model WebhookEndpoint {
 }
 
 model WebhookDeliveryJob {
-  id               String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  webhook_id       String                @db.Uuid
-  payload_id       String?               @db.Uuid
-  event_type       String                @db.VarChar(100)
+  id               String                @id @default(auto()) @map("_id") @db.ObjectId
+  webhook_id       String                @db.ObjectId
+  payload_id       String?               @db.ObjectId
+  event_type       String
   payload          Json
-  delivery_id      String                @unique @db.VarChar(255)
+  delivery_id      String                @unique
   status           WebhookDeliveryStatus @default(queued)
   attempts         Int                   @default(0)
   next_attempt_at  DateTime              @default(now())
   delivered_at     DateTime?
   dead_lettered_at DateTime?
   response_status  Int?
-  last_error       String?               @db.Text
+  last_error       String?
   created_at       DateTime              @default(now())
   updated_at       DateTime              @updatedAt
 
@@ -67,10 +67,10 @@ model WebhookDeliveryJob {
 }
 
 model WebhookEventPayload {
-  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id         String   @db.Uuid
-  batch_id        String?  @db.Uuid
-  event_type      String   @db.VarChar(100)
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id         String   @db.ObjectId
+  batch_id        String?  @db.ObjectId
+  event_type      String
   summary         Json
   payload         Json
   created_at      DateTime @default(now())

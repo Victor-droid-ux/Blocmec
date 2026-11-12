@@ -5,9 +5,8 @@ import { redirect } from "next/navigation";
 import { AdminLoginForm } from "@/components/admin/admin-login-form";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { createOptionalServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { ROUTES } from "@/config/routes";
-import prisma from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Admin Login - Blockmec",
@@ -15,24 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminLoginPage() {
-  const supabase = await createOptionalServerSupabaseClient();
-  const session = supabase
-    ? (await supabase.auth.getSession()).data.session
-    : null;
+  const user = await getAuthenticatedUser();
 
-  // Redirect admins to the admin panel
-  if (session?.user?.id) {
-    try {
-      const user = await prisma.user.findUnique({
-        where: { supabase_id: session.user.id },
-      });
-
-      if (user?.role === "admin") {
-        redirect(ROUTES.ADMIN.ROOT);
-      }
-    } catch (err) {
-      console.error("AdminLoginPage prisma lookup error:", err);
-    }
+  if (user?.role === "admin") {
+    redirect(ROUTES.ADMIN.ROOT);
   }
 
   return (

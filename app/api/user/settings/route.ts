@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { rateLimit } from "@/lib/rateLimiter";
 import { UserRole } from "@/prisma/generated/enums";
 import { updateUserSettingsSchema } from "@/lib/validation";
@@ -13,44 +13,7 @@ function normalizeOptionalString(value: string | undefined) {
 }
 
 async function resolveAuthenticatedUser() {
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { user: supUser },
-    error: supError,
-  } = await supabase.auth.getUser();
-
-  if (supError || !supUser?.id) {
-    return null;
-  }
-
-  let user = await prisma.user.findUnique({
-    where: { supabase_id: supUser.id },
-  });
-
-  const normalizedEmail = supUser.email?.trim().toLowerCase();
-  if (!user && normalizedEmail) {
-    user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
-  }
-
-  if (!user && normalizedEmail) {
-    user = await prisma.user.upsert({
-      where: { email: normalizedEmail },
-      update: {
-        supabase_id: supUser.id,
-        email_verified: Boolean(supUser.email_confirmed_at),
-        updated_at: new Date(),
-      },
-      create: {
-        email: normalizedEmail,
-        supabase_id: supUser.id,
-        name: supUser.user_metadata?.full_name ?? null,
-        role: UserRole.user,
-        email_verified: Boolean(supUser.email_confirmed_at),
-      },
-    });
-  }
-
-  return user;
+  return getAuthenticatedUser();
 }
 
 function buildSettingsResponse(

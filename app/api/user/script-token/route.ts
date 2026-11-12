@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { createScriptToken, normalizeBoundDomain } from "@/lib/script-token";
 import { hasAnyPermission } from "@/lib/developer-policy";
 
@@ -11,24 +11,6 @@ const schema = z.object({
   apiKeyId: z.string().uuid(),
   domain: z.string().trim().min(1),
 });
-
-async function getAuthenticatedUser() {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) {
-    return null;
-  }
-
-  let user = await prisma.user.findUnique({
-    where: { supabase_id: data.user.id },
-  });
-
-  if (!user && data.user.email) {
-    user = await prisma.user.findUnique({ where: { email: data.user.email } });
-  }
-
-  return user;
-}
 
 export async function POST(req: NextRequest) {
   try {

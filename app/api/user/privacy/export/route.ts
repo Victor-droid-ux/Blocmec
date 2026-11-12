@@ -3,20 +3,19 @@
 // Returns user's personal data in JSON format
 
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data: authData, error: authError } = await supabase.auth.getUser();
+    const authUser = await getAuthenticatedUser();
 
-    if (authError || !authData.user) {
+    if (!authUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const dbUser = await prisma.user.findUnique({
-      where: { supabase_id: authData.user.id },
+      where: { id: authUser.id },
       select: {
         id: true,
         email: true,
@@ -139,7 +138,7 @@ export async function GET(req: NextRequest) {
     console.error("[Privacy Export] Error:", error);
     return NextResponse.json(
       { error: "Failed to export user data" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

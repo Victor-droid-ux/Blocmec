@@ -3,31 +3,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { updateProfileSchema, publicProfileSchema } from "@/lib/validation";
 import { rateLimit } from "@/lib/rateLimiter";
 
 export async function GET(req: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const {
-      data: { user: supUser },
-      error: supError,
-    } = await supabase.auth.getUser();
+    const user = await getAuthenticatedUser();
 
-    if (supError || !supUser?.id) {
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    let user = await prisma.user.findUnique({
-      where: { supabase_id: supUser.id },
-    });
-    if (!user && supUser.email) {
-      user = await prisma.user.findUnique({ where: { email: supUser.email } });
-    }
-
-    if (!user)
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
 
     const publicUser = {
       id: user.id,
@@ -75,24 +61,11 @@ export async function PUT(req: NextRequest) {
     }
     const input = parsed.data;
 
-    const supabase = await createServerSupabaseClient();
-    const {
-      data: { user: supUser },
-      error: supError,
-    } = await supabase.auth.getUser();
+    const user = await getAuthenticatedUser();
 
-    if (supError || !supUser?.id) {
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    let user = await prisma.user.findUnique({
-      where: { supabase_id: supUser.id },
-    });
-    if (!user && supUser.email) {
-      user = await prisma.user.findUnique({ where: { email: supUser.email } });
-    }
-    if (!user)
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
 
     const dataToUpdate: Record<string, any> = {};
     if (typeof input.name !== "undefined") dataToUpdate.name = input.name;

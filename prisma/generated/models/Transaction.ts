@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -27,12 +27,12 @@ export type AggregateTransaction = {
 }
 
 export type TransactionAvgAggregateOutputType = {
-  amount: runtime.Decimal | null
+  amount: number | null
   credits_added: number | null
 }
 
 export type TransactionSumAggregateOutputType = {
-  amount: runtime.Decimal | null
+  amount: number | null
   credits_added: number | null
 }
 
@@ -40,7 +40,7 @@ export type TransactionMinAggregateOutputType = {
   id: string | null
   user_id: string | null
   type: $Enums.TransactionType | null
-  amount: runtime.Decimal | null
+  amount: number | null
   currency: string | null
   status: $Enums.TransactionStatus | null
   payment_method: string | null
@@ -55,7 +55,7 @@ export type TransactionMaxAggregateOutputType = {
   id: string | null
   user_id: string | null
   type: $Enums.TransactionType | null
-  amount: runtime.Decimal | null
+  amount: number | null
   currency: string | null
   status: $Enums.TransactionStatus | null
   payment_method: string | null
@@ -231,7 +231,7 @@ export type TransactionGroupByOutputType = {
   id: string
   user_id: string | null
   type: $Enums.TransactionType
-  amount: runtime.Decimal
+  amount: number
   currency: string
   status: $Enums.TransactionStatus
   payment_method: string | null
@@ -267,10 +267,10 @@ export type TransactionWhereInput = {
   AND?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
   OR?: Prisma.TransactionWhereInput[]
   NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
-  id?: Prisma.UuidFilter<"Transaction"> | string
-  user_id?: Prisma.UuidNullableFilter<"Transaction"> | string | null
+  id?: Prisma.StringFilter<"Transaction"> | string
+  user_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   type?: Prisma.EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
-  amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFilter<"Transaction"> | number
   currency?: Prisma.StringFilter<"Transaction"> | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
   payment_method?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -285,16 +285,16 @@ export type TransactionWhereInput = {
 
 export type TransactionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  user_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  payment_method?: Prisma.SortOrderInput | Prisma.SortOrder
-  payment_provider_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  transaction_reference?: Prisma.SortOrderInput | Prisma.SortOrder
+  payment_method?: Prisma.SortOrder
+  payment_provider_id?: Prisma.SortOrder
+  transaction_reference?: Prisma.SortOrder
   credits_added?: Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -306,9 +306,9 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
   OR?: Prisma.TransactionWhereInput[]
   NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
-  user_id?: Prisma.UuidNullableFilter<"Transaction"> | string | null
+  user_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   type?: Prisma.EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
-  amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFilter<"Transaction"> | number
   currency?: Prisma.StringFilter<"Transaction"> | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
   payment_method?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -322,16 +322,16 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
 
 export type TransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  user_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  payment_method?: Prisma.SortOrderInput | Prisma.SortOrder
-  payment_provider_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  transaction_reference?: Prisma.SortOrderInput | Prisma.SortOrder
+  payment_method?: Prisma.SortOrder
+  payment_provider_id?: Prisma.SortOrder
+  transaction_reference?: Prisma.SortOrder
   credits_added?: Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.TransactionCountOrderByAggregateInput
@@ -345,10 +345,10 @@ export type TransactionScalarWhereWithAggregatesInput = {
   AND?: Prisma.TransactionScalarWhereWithAggregatesInput | Prisma.TransactionScalarWhereWithAggregatesInput[]
   OR?: Prisma.TransactionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TransactionScalarWhereWithAggregatesInput | Prisma.TransactionScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"Transaction"> | string
-  user_id?: Prisma.UuidNullableWithAggregatesFilter<"Transaction"> | string | null
+  id?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
+  user_id?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
   type?: Prisma.EnumTransactionTypeWithAggregatesFilter<"Transaction"> | $Enums.TransactionType
-  amount?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatWithAggregatesFilter<"Transaction"> | number
   currency?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   status?: Prisma.EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
   payment_method?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
@@ -363,14 +363,14 @@ export type TransactionScalarWhereWithAggregatesInput = {
 export type TransactionCreateInput = {
   id?: string
   type: $Enums.TransactionType
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount: number
   currency?: string
   status: $Enums.TransactionStatus
   payment_method?: string | null
   payment_provider_id?: string | null
   transaction_reference?: string | null
   credits_added?: number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutTransactionsInput
@@ -380,46 +380,44 @@ export type TransactionUncheckedCreateInput = {
   id?: string
   user_id?: string | null
   type: $Enums.TransactionType
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount: number
   currency?: string
   status: $Enums.TransactionStatus
   payment_method?: string | null
   payment_provider_id?: string | null
   transaction_reference?: string | null
   credits_added?: number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
 }
 
 export type TransactionUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   payment_method?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_provider_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits_added?: Prisma.IntFieldUpdateOperationsInput | number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   payment_method?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_provider_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits_added?: Prisma.IntFieldUpdateOperationsInput | number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -428,45 +426,43 @@ export type TransactionCreateManyInput = {
   id?: string
   user_id?: string | null
   type: $Enums.TransactionType
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount: number
   currency?: string
   status: $Enums.TransactionStatus
   payment_method?: string | null
   payment_provider_id?: string | null
   transaction_reference?: string | null
   credits_added?: number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
 }
 
 export type TransactionUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   payment_method?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_provider_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits_added?: Prisma.IntFieldUpdateOperationsInput | number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TransactionUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   payment_method?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_provider_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits_added?: Prisma.IntFieldUpdateOperationsInput | number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -541,12 +537,12 @@ export type EnumTransactionTypeFieldUpdateOperationsInput = {
   set?: $Enums.TransactionType
 }
 
-export type DecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type EnumTransactionStatusFieldUpdateOperationsInput = {
@@ -598,14 +594,14 @@ export type TransactionUncheckedUpdateManyWithoutUserNestedInput = {
 export type TransactionCreateWithoutUserInput = {
   id?: string
   type: $Enums.TransactionType
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount: number
   currency?: string
   status: $Enums.TransactionStatus
   payment_method?: string | null
   payment_provider_id?: string | null
   transaction_reference?: string | null
   credits_added?: number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -613,14 +609,14 @@ export type TransactionCreateWithoutUserInput = {
 export type TransactionUncheckedCreateWithoutUserInput = {
   id?: string
   type: $Enums.TransactionType
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount: number
   currency?: string
   status: $Enums.TransactionStatus
   payment_method?: string | null
   payment_provider_id?: string | null
   transaction_reference?: string | null
   credits_added?: number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -632,7 +628,6 @@ export type TransactionCreateOrConnectWithoutUserInput = {
 
 export type TransactionCreateManyUserInputEnvelope = {
   data: Prisma.TransactionCreateManyUserInput | Prisma.TransactionCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
@@ -655,10 +650,10 @@ export type TransactionScalarWhereInput = {
   AND?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
   OR?: Prisma.TransactionScalarWhereInput[]
   NOT?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Transaction"> | string
-  user_id?: Prisma.UuidNullableFilter<"Transaction"> | string | null
+  id?: Prisma.StringFilter<"Transaction"> | string
+  user_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   type?: Prisma.EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
-  amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFilter<"Transaction"> | number
   currency?: Prisma.StringFilter<"Transaction"> | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
   payment_method?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -673,59 +668,56 @@ export type TransactionScalarWhereInput = {
 export type TransactionCreateManyUserInput = {
   id?: string
   type: $Enums.TransactionType
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount: number
   currency?: string
   status: $Enums.TransactionStatus
   payment_method?: string | null
   payment_provider_id?: string | null
   transaction_reference?: string | null
   credits_added?: number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   created_at?: Date | string
   updated_at?: Date | string
 }
 
 export type TransactionUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   payment_method?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_provider_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits_added?: Prisma.IntFieldUpdateOperationsInput | number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TransactionUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   payment_method?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_provider_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits_added?: Prisma.IntFieldUpdateOperationsInput | number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TransactionUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   payment_method?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payment_provider_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits_added?: Prisma.IntFieldUpdateOperationsInput | number
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -749,39 +741,7 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   user?: boolean | Prisma.Transaction$userArgs<ExtArgs>
 }, ExtArgs["result"]["transaction"]>
 
-export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  type?: boolean
-  amount?: boolean
-  currency?: boolean
-  status?: boolean
-  payment_method?: boolean
-  payment_provider_id?: boolean
-  transaction_reference?: boolean
-  credits_added?: boolean
-  metadata?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.Transaction$userArgs<ExtArgs>
-}, ExtArgs["result"]["transaction"]>
 
-export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  type?: boolean
-  amount?: boolean
-  currency?: boolean
-  status?: boolean
-  payment_method?: boolean
-  payment_provider_id?: boolean
-  transaction_reference?: boolean
-  credits_added?: boolean
-  metadata?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.Transaction$userArgs<ExtArgs>
-}, ExtArgs["result"]["transaction"]>
 
 export type TransactionSelectScalar = {
   id?: boolean
@@ -803,12 +763,6 @@ export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Transaction$userArgs<ExtArgs>
 }
-export type TransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.Transaction$userArgs<ExtArgs>
-}
-export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.Transaction$userArgs<ExtArgs>
-}
 
 export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Transaction"
@@ -819,7 +773,7 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: string
     user_id: string | null
     type: $Enums.TransactionType
-    amount: runtime.Decimal
+    amount: number
     currency: string
     status: $Enums.TransactionStatus
     payment_method: string | null
@@ -947,30 +901,6 @@ export interface TransactionDelegate<ExtArgs extends runtime.Types.Extensions.In
   createMany<T extends TransactionCreateManyArgs>(args?: Prisma.SelectSubset<T, TransactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many Transactions and returns the data saved in the database.
-   * @param {TransactionCreateManyAndReturnArgs} args - Arguments to create many Transactions.
-   * @example
-   * // Create many Transactions
-   * const transaction = await prisma.transaction.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many Transactions and only return the `id`
-   * const transactionWithIdOnly = await prisma.transaction.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends TransactionCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, TransactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a Transaction.
    * @param {TransactionDeleteArgs} args - Arguments to delete one Transaction.
    * @example
@@ -1035,36 +965,6 @@ export interface TransactionDelegate<ExtArgs extends runtime.Types.Extensions.In
   updateMany<T extends TransactionUpdateManyArgs>(args: Prisma.SelectSubset<T, TransactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more Transactions and returns the data updated in the database.
-   * @param {TransactionUpdateManyAndReturnArgs} args - Arguments to update many Transactions.
-   * @example
-   * // Update many Transactions
-   * const transaction = await prisma.transaction.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more Transactions and only return the `id`
-   * const transactionWithIdOnly = await prisma.transaction.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends TransactionUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, TransactionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one Transaction.
    * @param {TransactionUpsertArgs} args - Arguments to update or create a Transaction.
    * @example
@@ -1082,6 +982,29 @@ export interface TransactionDelegate<ExtArgs extends runtime.Types.Extensions.In
    * })
    */
   upsert<T extends TransactionUpsertArgs>(args: Prisma.SelectSubset<T, TransactionUpsertArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more Transactions that matches the filter.
+   * @param {TransactionFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const transaction = await prisma.transaction.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.TransactionFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a Transaction.
+   * @param {TransactionAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const transaction = await prisma.transaction.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.TransactionAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1256,7 +1179,7 @@ export interface TransactionFieldRefs {
   readonly id: Prisma.FieldRef<"Transaction", 'String'>
   readonly user_id: Prisma.FieldRef<"Transaction", 'String'>
   readonly type: Prisma.FieldRef<"Transaction", 'TransactionType'>
-  readonly amount: Prisma.FieldRef<"Transaction", 'Decimal'>
+  readonly amount: Prisma.FieldRef<"Transaction", 'Float'>
   readonly currency: Prisma.FieldRef<"Transaction", 'String'>
   readonly status: Prisma.FieldRef<"Transaction", 'TransactionStatus'>
   readonly payment_method: Prisma.FieldRef<"Transaction", 'String'>
@@ -1495,30 +1418,6 @@ export type TransactionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data used to create many Transactions.
    */
   data: Prisma.TransactionCreateManyInput | Prisma.TransactionCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * Transaction createManyAndReturn
- */
-export type TransactionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Transaction
-   */
-  select?: Prisma.TransactionSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the Transaction
-   */
-  omit?: Prisma.TransactionOmit<ExtArgs> | null
-  /**
-   * The data used to create many Transactions.
-   */
-  data: Prisma.TransactionCreateManyInput | Prisma.TransactionCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TransactionIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1563,36 +1462,6 @@ export type TransactionUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many Transactions to update.
    */
   limit?: number
-}
-
-/**
- * Transaction updateManyAndReturn
- */
-export type TransactionUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Transaction
-   */
-  select?: Prisma.TransactionSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the Transaction
-   */
-  omit?: Prisma.TransactionOmit<ExtArgs> | null
-  /**
-   * The data used to update Transactions.
-   */
-  data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyInput>
-  /**
-   * Filter which Transactions to update
-   */
-  where?: Prisma.TransactionWhereInput
-  /**
-   * Limit how many Transactions to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TransactionIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1659,6 +1528,34 @@ export type TransactionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many Transactions to delete.
    */
   limit?: number
+}
+
+/**
+ * Transaction findRaw
+ */
+export type TransactionFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * Transaction aggregateRaw
+ */
+export type TransactionAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

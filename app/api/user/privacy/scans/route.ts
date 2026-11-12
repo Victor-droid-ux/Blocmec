@@ -2,20 +2,19 @@
 // Allows users to view and manage their verification scan history
 
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data: authData, error: authError } = await supabase.auth.getUser();
+    const authUser = await getAuthenticatedUser();
 
-    if (authError || !authData.user) {
+    if (!authUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const dbUser = await prisma.user.findUnique({
-      where: { supabase_id: authData.user.id },
+      where: { id: authUser.id },
       select: { id: true },
     });
 
@@ -76,22 +75,21 @@ export async function GET(req: NextRequest) {
     console.error("[Privacy] Scan history error:", error);
     return NextResponse.json(
       { error: "Failed to retrieve scan history" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(req: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data: authData, error: authError } = await supabase.auth.getUser();
+    const authUser = await getAuthenticatedUser();
 
-    if (authError || !authData.user) {
+    if (!authUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const dbUser = await prisma.user.findUnique({
-      where: { supabase_id: authData.user.id },
+      where: { id: authUser.id },
       select: { id: true },
     });
 
@@ -139,7 +137,7 @@ export async function DELETE(req: NextRequest) {
     console.error("[Privacy] Scan deletion error:", error);
     return NextResponse.json(
       { error: "Failed to delete scan records" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

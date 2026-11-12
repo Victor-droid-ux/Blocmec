@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -295,8 +295,8 @@ export type UserSettingsWhereInput = {
   AND?: Prisma.UserSettingsWhereInput | Prisma.UserSettingsWhereInput[]
   OR?: Prisma.UserSettingsWhereInput[]
   NOT?: Prisma.UserSettingsWhereInput | Prisma.UserSettingsWhereInput[]
-  id?: Prisma.UuidFilter<"UserSettings"> | string
-  user_id?: Prisma.UuidFilter<"UserSettings"> | string
+  id?: Prisma.StringFilter<"UserSettings"> | string
+  user_id?: Prisma.StringFilter<"UserSettings"> | string
   company_name?: Prisma.StringNullableFilter<"UserSettings"> | string | null
   company_email?: Prisma.StringNullableFilter<"UserSettings"> | string | null
   company_website?: Prisma.StringNullableFilter<"UserSettings"> | string | null
@@ -318,10 +318,10 @@ export type UserSettingsWhereInput = {
 export type UserSettingsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  company_name?: Prisma.SortOrderInput | Prisma.SortOrder
-  company_email?: Prisma.SortOrderInput | Prisma.SortOrder
-  company_website?: Prisma.SortOrderInput | Prisma.SortOrder
-  company_address?: Prisma.SortOrderInput | Prisma.SortOrder
+  company_name?: Prisma.SortOrder
+  company_email?: Prisma.SortOrder
+  company_website?: Prisma.SortOrder
+  company_address?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   language?: Prisma.SortOrder
   date_format?: Prisma.SortOrder
@@ -363,10 +363,10 @@ export type UserSettingsWhereUniqueInput = Prisma.AtLeast<{
 export type UserSettingsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  company_name?: Prisma.SortOrderInput | Prisma.SortOrder
-  company_email?: Prisma.SortOrderInput | Prisma.SortOrder
-  company_website?: Prisma.SortOrderInput | Prisma.SortOrder
-  company_address?: Prisma.SortOrderInput | Prisma.SortOrder
+  company_name?: Prisma.SortOrder
+  company_email?: Prisma.SortOrder
+  company_website?: Prisma.SortOrder
+  company_address?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   language?: Prisma.SortOrder
   date_format?: Prisma.SortOrder
@@ -389,8 +389,8 @@ export type UserSettingsScalarWhereWithAggregatesInput = {
   AND?: Prisma.UserSettingsScalarWhereWithAggregatesInput | Prisma.UserSettingsScalarWhereWithAggregatesInput[]
   OR?: Prisma.UserSettingsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserSettingsScalarWhereWithAggregatesInput | Prisma.UserSettingsScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"UserSettings"> | string
-  user_id?: Prisma.UuidWithAggregatesFilter<"UserSettings"> | string
+  id?: Prisma.StringWithAggregatesFilter<"UserSettings"> | string
+  user_id?: Prisma.StringWithAggregatesFilter<"UserSettings"> | string
   company_name?: Prisma.StringNullableWithAggregatesFilter<"UserSettings"> | string | null
   company_email?: Prisma.StringNullableWithAggregatesFilter<"UserSettings"> | string | null
   company_website?: Prisma.StringNullableWithAggregatesFilter<"UserSettings"> | string | null
@@ -449,7 +449,6 @@ export type UserSettingsUncheckedCreateInput = {
 }
 
 export type UserSettingsUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -469,7 +468,6 @@ export type UserSettingsUpdateInput = {
 }
 
 export type UserSettingsUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -509,7 +507,6 @@ export type UserSettingsCreateManyInput = {
 }
 
 export type UserSettingsUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -528,7 +525,6 @@ export type UserSettingsUpdateManyMutationInput = {
 }
 
 export type UserSettingsUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -711,7 +707,6 @@ export type UserSettingsUpdateToOneWithWhereWithoutUserInput = {
 }
 
 export type UserSettingsUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -730,7 +725,6 @@ export type UserSettingsUpdateWithoutUserInput = {
 }
 
 export type UserSettingsUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -771,47 +765,7 @@ export type UserSettingsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSettings"]>
 
-export type UserSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  company_name?: boolean
-  company_email?: boolean
-  company_website?: boolean
-  company_address?: boolean
-  timezone?: boolean
-  language?: boolean
-  date_format?: boolean
-  email_notifications?: boolean
-  sms_notifications?: boolean
-  push_notifications?: boolean
-  two_factor_auth?: boolean
-  session_timeout_minutes?: boolean
-  api_access_enabled?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["userSettings"]>
 
-export type UserSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  company_name?: boolean
-  company_email?: boolean
-  company_website?: boolean
-  company_address?: boolean
-  timezone?: boolean
-  language?: boolean
-  date_format?: boolean
-  email_notifications?: boolean
-  sms_notifications?: boolean
-  push_notifications?: boolean
-  two_factor_auth?: boolean
-  session_timeout_minutes?: boolean
-  api_access_enabled?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["userSettings"]>
 
 export type UserSettingsSelectScalar = {
   id?: boolean
@@ -835,12 +789,6 @@ export type UserSettingsSelectScalar = {
 
 export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "company_name" | "company_email" | "company_website" | "company_address" | "timezone" | "language" | "date_format" | "email_notifications" | "sms_notifications" | "push_notifications" | "two_factor_auth" | "session_timeout_minutes" | "api_access_enabled" | "created_at" | "updated_at", ExtArgs["result"]["userSettings"]>
 export type UserSettingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
-export type UserSettingsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
-export type UserSettingsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -985,30 +933,6 @@ export interface UserSettingsDelegate<ExtArgs extends runtime.Types.Extensions.I
   createMany<T extends UserSettingsCreateManyArgs>(args?: Prisma.SelectSubset<T, UserSettingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many UserSettings and returns the data saved in the database.
-   * @param {UserSettingsCreateManyAndReturnArgs} args - Arguments to create many UserSettings.
-   * @example
-   * // Create many UserSettings
-   * const userSettings = await prisma.userSettings.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many UserSettings and only return the `id`
-   * const userSettingsWithIdOnly = await prisma.userSettings.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends UserSettingsCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, UserSettingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a UserSettings.
    * @param {UserSettingsDeleteArgs} args - Arguments to delete one UserSettings.
    * @example
@@ -1073,36 +997,6 @@ export interface UserSettingsDelegate<ExtArgs extends runtime.Types.Extensions.I
   updateMany<T extends UserSettingsUpdateManyArgs>(args: Prisma.SelectSubset<T, UserSettingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more UserSettings and returns the data updated in the database.
-   * @param {UserSettingsUpdateManyAndReturnArgs} args - Arguments to update many UserSettings.
-   * @example
-   * // Update many UserSettings
-   * const userSettings = await prisma.userSettings.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more UserSettings and only return the `id`
-   * const userSettingsWithIdOnly = await prisma.userSettings.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends UserSettingsUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, UserSettingsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one UserSettings.
    * @param {UserSettingsUpsertArgs} args - Arguments to update or create a UserSettings.
    * @example
@@ -1120,6 +1014,29 @@ export interface UserSettingsDelegate<ExtArgs extends runtime.Types.Extensions.I
    * })
    */
   upsert<T extends UserSettingsUpsertArgs>(args: Prisma.SelectSubset<T, UserSettingsUpsertArgs<ExtArgs>>): Prisma.Prisma__UserSettingsClient<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more UserSettings that matches the filter.
+   * @param {UserSettingsFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const userSettings = await prisma.userSettings.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.UserSettingsFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a UserSettings.
+   * @param {UserSettingsAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const userSettings = await prisma.userSettings.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.UserSettingsAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1537,30 +1454,6 @@ export type UserSettingsCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * The data used to create many UserSettings.
    */
   data: Prisma.UserSettingsCreateManyInput | Prisma.UserSettingsCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * UserSettings createManyAndReturn
- */
-export type UserSettingsCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UserSettings
-   */
-  select?: Prisma.UserSettingsSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the UserSettings
-   */
-  omit?: Prisma.UserSettingsOmit<ExtArgs> | null
-  /**
-   * The data used to create many UserSettings.
-   */
-  data: Prisma.UserSettingsCreateManyInput | Prisma.UserSettingsCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserSettingsIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1605,36 +1498,6 @@ export type UserSettingsUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many UserSettings to update.
    */
   limit?: number
-}
-
-/**
- * UserSettings updateManyAndReturn
- */
-export type UserSettingsUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UserSettings
-   */
-  select?: Prisma.UserSettingsSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the UserSettings
-   */
-  omit?: Prisma.UserSettingsOmit<ExtArgs> | null
-  /**
-   * The data used to update UserSettings.
-   */
-  data: Prisma.XOR<Prisma.UserSettingsUpdateManyMutationInput, Prisma.UserSettingsUncheckedUpdateManyInput>
-  /**
-   * Filter which UserSettings to update
-   */
-  where?: Prisma.UserSettingsWhereInput
-  /**
-   * Limit how many UserSettings to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserSettingsIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1701,6 +1564,34 @@ export type UserSettingsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many UserSettings to delete.
    */
   limit?: number
+}
+
+/**
+ * UserSettings findRaw
+ */
+export type UserSettingsFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * UserSettings aggregateRaw
+ */
+export type UserSettingsAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

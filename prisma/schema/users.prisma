@@ -13,25 +13,25 @@ enum UserStatus {
 }
 
 model User {
-  id                  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email               String      @unique @db.VarChar(255)
-  supabase_id         String?     @unique @db.Uuid
-  name                String?     @db.VarChar(255)
-  username            String?     @unique @db.VarChar(255)
-  phone               String?     @db.VarChar(50)
-  location            String?     @db.VarChar(255)
-  department          String?     @db.VarChar(255)
+  id                  String      @id @default(auto()) @map("_id") @db.ObjectId
+  email               String      @unique
+  password_hash       String?
+  name                String?
+  username            String?     @unique
+  phone               String?
+  location            String?
+  department          String?
   bio                 String?
-  avatar_url          String?     @db.VarChar(1024)
-  verification_domain String?     @db.VarChar(255)
+  avatar_url          String?
+  verification_domain String?
   allowed_categories  String[]    @default([])
   role                UserRole    @default(user)
   status              UserStatus  @default(active)
   api_credits         Int         @default(0)
-  subscription_plan   String      @default("free") @db.VarChar(100)
+  subscription_plan   String      @default("free")
   email_verified      Boolean     @default(false)
-  verification_token  String?     @db.VarChar(255)
-  reset_token         String?     @db.VarChar(255)
+  verification_token  String?
+  reset_token         String?
   reset_token_expires DateTime?
   created_at          DateTime    @default(now())
   updated_at          DateTime    @updatedAt

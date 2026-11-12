@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -239,8 +239,8 @@ export type UserFileWhereInput = {
   AND?: Prisma.UserFileWhereInput | Prisma.UserFileWhereInput[]
   OR?: Prisma.UserFileWhereInput[]
   NOT?: Prisma.UserFileWhereInput | Prisma.UserFileWhereInput[]
-  id?: Prisma.UuidFilter<"UserFile"> | string
-  user_id?: Prisma.UuidFilter<"UserFile"> | string
+  id?: Prisma.StringFilter<"UserFile"> | string
+  user_id?: Prisma.StringFilter<"UserFile"> | string
   original_name?: Prisma.StringFilter<"UserFile"> | string
   stored_name?: Prisma.StringFilter<"UserFile"> | string
   mime_type?: Prisma.StringFilter<"UserFile"> | string
@@ -269,7 +269,7 @@ export type UserFileWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserFileWhereInput | Prisma.UserFileWhereInput[]
   OR?: Prisma.UserFileWhereInput[]
   NOT?: Prisma.UserFileWhereInput | Prisma.UserFileWhereInput[]
-  user_id?: Prisma.UuidFilter<"UserFile"> | string
+  user_id?: Prisma.StringFilter<"UserFile"> | string
   original_name?: Prisma.StringFilter<"UserFile"> | string
   stored_name?: Prisma.StringFilter<"UserFile"> | string
   mime_type?: Prisma.StringFilter<"UserFile"> | string
@@ -301,8 +301,8 @@ export type UserFileScalarWhereWithAggregatesInput = {
   AND?: Prisma.UserFileScalarWhereWithAggregatesInput | Prisma.UserFileScalarWhereWithAggregatesInput[]
   OR?: Prisma.UserFileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserFileScalarWhereWithAggregatesInput | Prisma.UserFileScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"UserFile"> | string
-  user_id?: Prisma.UuidWithAggregatesFilter<"UserFile"> | string
+  id?: Prisma.StringWithAggregatesFilter<"UserFile"> | string
+  user_id?: Prisma.StringWithAggregatesFilter<"UserFile"> | string
   original_name?: Prisma.StringWithAggregatesFilter<"UserFile"> | string
   stored_name?: Prisma.StringWithAggregatesFilter<"UserFile"> | string
   mime_type?: Prisma.StringWithAggregatesFilter<"UserFile"> | string
@@ -337,7 +337,6 @@ export type UserFileUncheckedCreateInput = {
 }
 
 export type UserFileUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   original_name?: Prisma.StringFieldUpdateOperationsInput | string
   stored_name?: Prisma.StringFieldUpdateOperationsInput | string
   mime_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -349,7 +348,6 @@ export type UserFileUpdateInput = {
 }
 
 export type UserFileUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   original_name?: Prisma.StringFieldUpdateOperationsInput | string
   stored_name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -373,7 +371,6 @@ export type UserFileCreateManyInput = {
 }
 
 export type UserFileUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   original_name?: Prisma.StringFieldUpdateOperationsInput | string
   stored_name?: Prisma.StringFieldUpdateOperationsInput | string
   mime_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -384,7 +381,6 @@ export type UserFileUpdateManyMutationInput = {
 }
 
 export type UserFileUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   original_name?: Prisma.StringFieldUpdateOperationsInput | string
   stored_name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -520,7 +516,6 @@ export type UserFileCreateOrConnectWithoutUserInput = {
 
 export type UserFileCreateManyUserInputEnvelope = {
   data: Prisma.UserFileCreateManyUserInput | Prisma.UserFileCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type UserFileUpsertWithWhereUniqueWithoutUserInput = {
@@ -543,8 +538,8 @@ export type UserFileScalarWhereInput = {
   AND?: Prisma.UserFileScalarWhereInput | Prisma.UserFileScalarWhereInput[]
   OR?: Prisma.UserFileScalarWhereInput[]
   NOT?: Prisma.UserFileScalarWhereInput | Prisma.UserFileScalarWhereInput[]
-  id?: Prisma.UuidFilter<"UserFile"> | string
-  user_id?: Prisma.UuidFilter<"UserFile"> | string
+  id?: Prisma.StringFilter<"UserFile"> | string
+  user_id?: Prisma.StringFilter<"UserFile"> | string
   original_name?: Prisma.StringFilter<"UserFile"> | string
   stored_name?: Prisma.StringFilter<"UserFile"> | string
   mime_type?: Prisma.StringFilter<"UserFile"> | string
@@ -566,7 +561,6 @@ export type UserFileCreateManyUserInput = {
 }
 
 export type UserFileUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   original_name?: Prisma.StringFieldUpdateOperationsInput | string
   stored_name?: Prisma.StringFieldUpdateOperationsInput | string
   mime_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -577,7 +571,6 @@ export type UserFileUpdateWithoutUserInput = {
 }
 
 export type UserFileUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   original_name?: Prisma.StringFieldUpdateOperationsInput | string
   stored_name?: Prisma.StringFieldUpdateOperationsInput | string
   mime_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -588,7 +581,6 @@ export type UserFileUncheckedUpdateWithoutUserInput = {
 }
 
 export type UserFileUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   original_name?: Prisma.StringFieldUpdateOperationsInput | string
   stored_name?: Prisma.StringFieldUpdateOperationsInput | string
   mime_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -613,31 +605,7 @@ export type UserFileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userFile"]>
 
-export type UserFileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  original_name?: boolean
-  stored_name?: boolean
-  mime_type?: boolean
-  size_bytes?: boolean
-  storage_path?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["userFile"]>
 
-export type UserFileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  original_name?: boolean
-  stored_name?: boolean
-  mime_type?: boolean
-  size_bytes?: boolean
-  storage_path?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["userFile"]>
 
 export type UserFileSelectScalar = {
   id?: boolean
@@ -653,12 +621,6 @@ export type UserFileSelectScalar = {
 
 export type UserFileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "original_name" | "stored_name" | "mime_type" | "size_bytes" | "storage_path" | "created_at" | "updated_at", ExtArgs["result"]["userFile"]>
 export type UserFileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
-export type UserFileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
-export type UserFileIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -795,30 +757,6 @@ export interface UserFileDelegate<ExtArgs extends runtime.Types.Extensions.Inter
   createMany<T extends UserFileCreateManyArgs>(args?: Prisma.SelectSubset<T, UserFileCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many UserFiles and returns the data saved in the database.
-   * @param {UserFileCreateManyAndReturnArgs} args - Arguments to create many UserFiles.
-   * @example
-   * // Create many UserFiles
-   * const userFile = await prisma.userFile.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many UserFiles and only return the `id`
-   * const userFileWithIdOnly = await prisma.userFile.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends UserFileCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, UserFileCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserFilePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a UserFile.
    * @param {UserFileDeleteArgs} args - Arguments to delete one UserFile.
    * @example
@@ -883,36 +821,6 @@ export interface UserFileDelegate<ExtArgs extends runtime.Types.Extensions.Inter
   updateMany<T extends UserFileUpdateManyArgs>(args: Prisma.SelectSubset<T, UserFileUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more UserFiles and returns the data updated in the database.
-   * @param {UserFileUpdateManyAndReturnArgs} args - Arguments to update many UserFiles.
-   * @example
-   * // Update many UserFiles
-   * const userFile = await prisma.userFile.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more UserFiles and only return the `id`
-   * const userFileWithIdOnly = await prisma.userFile.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends UserFileUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, UserFileUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserFilePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one UserFile.
    * @param {UserFileUpsertArgs} args - Arguments to update or create a UserFile.
    * @example
@@ -930,6 +838,29 @@ export interface UserFileDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * })
    */
   upsert<T extends UserFileUpsertArgs>(args: Prisma.SelectSubset<T, UserFileUpsertArgs<ExtArgs>>): Prisma.Prisma__UserFileClient<runtime.Types.Result.GetResult<Prisma.$UserFilePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more UserFiles that matches the filter.
+   * @param {UserFileFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const userFile = await prisma.userFile.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.UserFileFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a UserFile.
+   * @param {UserFileAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const userFile = await prisma.userFile.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.UserFileAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1339,30 +1270,6 @@ export type UserFileCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data used to create many UserFiles.
    */
   data: Prisma.UserFileCreateManyInput | Prisma.UserFileCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * UserFile createManyAndReturn
- */
-export type UserFileCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UserFile
-   */
-  select?: Prisma.UserFileSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the UserFile
-   */
-  omit?: Prisma.UserFileOmit<ExtArgs> | null
-  /**
-   * The data used to create many UserFiles.
-   */
-  data: Prisma.UserFileCreateManyInput | Prisma.UserFileCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserFileIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1407,36 +1314,6 @@ export type UserFileUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many UserFiles to update.
    */
   limit?: number
-}
-
-/**
- * UserFile updateManyAndReturn
- */
-export type UserFileUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UserFile
-   */
-  select?: Prisma.UserFileSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the UserFile
-   */
-  omit?: Prisma.UserFileOmit<ExtArgs> | null
-  /**
-   * The data used to update UserFiles.
-   */
-  data: Prisma.XOR<Prisma.UserFileUpdateManyMutationInput, Prisma.UserFileUncheckedUpdateManyInput>
-  /**
-   * Filter which UserFiles to update
-   */
-  where?: Prisma.UserFileWhereInput
-  /**
-   * Limit how many UserFiles to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserFileIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1503,6 +1380,34 @@ export type UserFileDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many UserFiles to delete.
    */
   limit?: number
+}
+
+/**
+ * UserFile findRaw
+ */
+export type UserFileFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * UserFile aggregateRaw
+ */
+export type UserFileAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

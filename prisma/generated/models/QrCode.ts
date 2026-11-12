@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -295,10 +295,10 @@ export type QrCodeWhereInput = {
   AND?: Prisma.QrCodeWhereInput | Prisma.QrCodeWhereInput[]
   OR?: Prisma.QrCodeWhereInput[]
   NOT?: Prisma.QrCodeWhereInput | Prisma.QrCodeWhereInput[]
-  id?: Prisma.UuidFilter<"QrCode"> | string
-  user_id?: Prisma.UuidFilter<"QrCode"> | string
+  id?: Prisma.StringFilter<"QrCode"> | string
+  user_id?: Prisma.StringFilter<"QrCode"> | string
   token_id?: Prisma.StringFilter<"QrCode"> | string
-  batch_id?: Prisma.UuidNullableFilter<"QrCode"> | string | null
+  batch_id?: Prisma.StringNullableFilter<"QrCode"> | string | null
   product_type?: Prisma.StringFilter<"QrCode"> | string
   product_name?: Prisma.StringNullableFilter<"QrCode"> | string | null
   qr_data?: Prisma.StringFilter<"QrCode"> | string
@@ -321,18 +321,18 @@ export type QrCodeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   token_id?: Prisma.SortOrder
-  batch_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  batch_id?: Prisma.SortOrder
   product_type?: Prisma.SortOrder
-  product_name?: Prisma.SortOrderInput | Prisma.SortOrder
+  product_name?: Prisma.SortOrder
   qr_data?: Prisma.SortOrder
-  qr_image_url?: Prisma.SortOrderInput | Prisma.SortOrder
-  blockchain_tx_hash?: Prisma.SortOrderInput | Prisma.SortOrder
-  blockchain_token_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  qr_image_url?: Prisma.SortOrder
+  blockchain_tx_hash?: Prisma.SortOrder
+  blockchain_token_id?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   status?: Prisma.SortOrder
   scan_limit?: Prisma.SortOrder
   scan_count?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  expires_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -346,8 +346,8 @@ export type QrCodeWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.QrCodeWhereInput | Prisma.QrCodeWhereInput[]
   OR?: Prisma.QrCodeWhereInput[]
   NOT?: Prisma.QrCodeWhereInput | Prisma.QrCodeWhereInput[]
-  user_id?: Prisma.UuidFilter<"QrCode"> | string
-  batch_id?: Prisma.UuidNullableFilter<"QrCode"> | string | null
+  user_id?: Prisma.StringFilter<"QrCode"> | string
+  batch_id?: Prisma.StringNullableFilter<"QrCode"> | string | null
   product_type?: Prisma.StringFilter<"QrCode"> | string
   product_name?: Prisma.StringNullableFilter<"QrCode"> | string | null
   qr_data?: Prisma.StringFilter<"QrCode"> | string
@@ -370,18 +370,18 @@ export type QrCodeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   token_id?: Prisma.SortOrder
-  batch_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  batch_id?: Prisma.SortOrder
   product_type?: Prisma.SortOrder
-  product_name?: Prisma.SortOrderInput | Prisma.SortOrder
+  product_name?: Prisma.SortOrder
   qr_data?: Prisma.SortOrder
-  qr_image_url?: Prisma.SortOrderInput | Prisma.SortOrder
-  blockchain_tx_hash?: Prisma.SortOrderInput | Prisma.SortOrder
-  blockchain_token_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  qr_image_url?: Prisma.SortOrder
+  blockchain_tx_hash?: Prisma.SortOrder
+  blockchain_token_id?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   status?: Prisma.SortOrder
   scan_limit?: Prisma.SortOrder
   scan_count?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  expires_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.QrCodeCountOrderByAggregateInput
@@ -395,10 +395,10 @@ export type QrCodeScalarWhereWithAggregatesInput = {
   AND?: Prisma.QrCodeScalarWhereWithAggregatesInput | Prisma.QrCodeScalarWhereWithAggregatesInput[]
   OR?: Prisma.QrCodeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.QrCodeScalarWhereWithAggregatesInput | Prisma.QrCodeScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"QrCode"> | string
-  user_id?: Prisma.UuidWithAggregatesFilter<"QrCode"> | string
+  id?: Prisma.StringWithAggregatesFilter<"QrCode"> | string
+  user_id?: Prisma.StringWithAggregatesFilter<"QrCode"> | string
   token_id?: Prisma.StringWithAggregatesFilter<"QrCode"> | string
-  batch_id?: Prisma.UuidNullableWithAggregatesFilter<"QrCode"> | string | null
+  batch_id?: Prisma.StringNullableWithAggregatesFilter<"QrCode"> | string | null
   product_type?: Prisma.StringWithAggregatesFilter<"QrCode"> | string
   product_name?: Prisma.StringNullableWithAggregatesFilter<"QrCode"> | string | null
   qr_data?: Prisma.StringWithAggregatesFilter<"QrCode"> | string
@@ -423,7 +423,7 @@ export type QrCodeCreateInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -446,7 +446,7 @@ export type QrCodeUncheckedCreateInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -457,7 +457,6 @@ export type QrCodeUncheckedCreateInput = {
 }
 
 export type QrCodeUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   product_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -465,7 +464,7 @@ export type QrCodeUpdateInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -478,7 +477,6 @@ export type QrCodeUpdateInput = {
 }
 
 export type QrCodeUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -488,7 +486,7 @@ export type QrCodeUncheckedUpdateInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -509,7 +507,7 @@ export type QrCodeCreateManyInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -519,7 +517,6 @@ export type QrCodeCreateManyInput = {
 }
 
 export type QrCodeUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   product_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -527,7 +524,7 @@ export type QrCodeUpdateManyMutationInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -537,7 +534,6 @@ export type QrCodeUpdateManyMutationInput = {
 }
 
 export type QrCodeUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -547,7 +543,7 @@ export type QrCodeUncheckedUpdateManyInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -750,7 +746,7 @@ export type QrCodeCreateWithoutBatchInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -771,7 +767,7 @@ export type QrCodeUncheckedCreateWithoutBatchInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -788,7 +784,6 @@ export type QrCodeCreateOrConnectWithoutBatchInput = {
 
 export type QrCodeCreateManyBatchInputEnvelope = {
   data: Prisma.QrCodeCreateManyBatchInput | Prisma.QrCodeCreateManyBatchInput[]
-  skipDuplicates?: boolean
 }
 
 export type QrCodeUpsertWithWhereUniqueWithoutBatchInput = {
@@ -811,10 +806,10 @@ export type QrCodeScalarWhereInput = {
   AND?: Prisma.QrCodeScalarWhereInput | Prisma.QrCodeScalarWhereInput[]
   OR?: Prisma.QrCodeScalarWhereInput[]
   NOT?: Prisma.QrCodeScalarWhereInput | Prisma.QrCodeScalarWhereInput[]
-  id?: Prisma.UuidFilter<"QrCode"> | string
-  user_id?: Prisma.UuidFilter<"QrCode"> | string
+  id?: Prisma.StringFilter<"QrCode"> | string
+  user_id?: Prisma.StringFilter<"QrCode"> | string
   token_id?: Prisma.StringFilter<"QrCode"> | string
-  batch_id?: Prisma.UuidNullableFilter<"QrCode"> | string | null
+  batch_id?: Prisma.StringNullableFilter<"QrCode"> | string | null
   product_type?: Prisma.StringFilter<"QrCode"> | string
   product_name?: Prisma.StringNullableFilter<"QrCode"> | string | null
   qr_data?: Prisma.StringFilter<"QrCode"> | string
@@ -839,7 +834,7 @@ export type QrCodeCreateWithoutUserInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -860,7 +855,7 @@ export type QrCodeUncheckedCreateWithoutUserInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -877,7 +872,6 @@ export type QrCodeCreateOrConnectWithoutUserInput = {
 
 export type QrCodeCreateManyUserInputEnvelope = {
   data: Prisma.QrCodeCreateManyUserInput | Prisma.QrCodeCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type QrCodeUpsertWithWhereUniqueWithoutUserInput = {
@@ -905,7 +899,7 @@ export type QrCodeCreateWithoutVerificationsInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -927,7 +921,7 @@ export type QrCodeUncheckedCreateWithoutVerificationsInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -953,7 +947,6 @@ export type QrCodeUpdateToOneWithWhereWithoutVerificationsInput = {
 }
 
 export type QrCodeUpdateWithoutVerificationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   product_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -961,7 +954,7 @@ export type QrCodeUpdateWithoutVerificationsInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -973,7 +966,6 @@ export type QrCodeUpdateWithoutVerificationsInput = {
 }
 
 export type QrCodeUncheckedUpdateWithoutVerificationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -983,7 +975,7 @@ export type QrCodeUncheckedUpdateWithoutVerificationsInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1002,7 +994,7 @@ export type QrCodeCreateManyBatchInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -1012,7 +1004,6 @@ export type QrCodeCreateManyBatchInput = {
 }
 
 export type QrCodeUpdateWithoutBatchInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   product_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1020,7 +1011,7 @@ export type QrCodeUpdateWithoutBatchInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1032,7 +1023,6 @@ export type QrCodeUpdateWithoutBatchInput = {
 }
 
 export type QrCodeUncheckedUpdateWithoutBatchInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1041,7 +1031,7 @@ export type QrCodeUncheckedUpdateWithoutBatchInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1052,7 +1042,6 @@ export type QrCodeUncheckedUpdateWithoutBatchInput = {
 }
 
 export type QrCodeUncheckedUpdateManyWithoutBatchInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1061,7 +1050,7 @@ export type QrCodeUncheckedUpdateManyWithoutBatchInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1080,7 +1069,7 @@ export type QrCodeCreateManyUserInput = {
   qr_image_url?: string | null
   blockchain_tx_hash?: string | null
   blockchain_token_id?: string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | null
   status?: $Enums.QrStatus
   scan_limit?: number
   scan_count?: number
@@ -1090,7 +1079,6 @@ export type QrCodeCreateManyUserInput = {
 }
 
 export type QrCodeUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
   product_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1098,7 +1086,7 @@ export type QrCodeUpdateWithoutUserInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1110,7 +1098,6 @@ export type QrCodeUpdateWithoutUserInput = {
 }
 
 export type QrCodeUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1119,7 +1106,7 @@ export type QrCodeUncheckedUpdateWithoutUserInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1130,7 +1117,6 @@ export type QrCodeUncheckedUpdateWithoutUserInput = {
 }
 
 export type QrCodeUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   token_id?: Prisma.StringFieldUpdateOperationsInput | string
   batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1139,7 +1125,7 @@ export type QrCodeUncheckedUpdateManyWithoutUserInput = {
   qr_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockchain_token_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: runtime.InputJsonValue | runtime.InputJsonValue | null
   status?: Prisma.EnumQrStatusFieldUpdateOperationsInput | $Enums.QrStatus
   scan_limit?: Prisma.IntFieldUpdateOperationsInput | number
   scan_count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1203,49 +1189,7 @@ export type QrCodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   _count?: boolean | Prisma.QrCodeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["qrCode"]>
 
-export type QrCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  token_id?: boolean
-  batch_id?: boolean
-  product_type?: boolean
-  product_name?: boolean
-  qr_data?: boolean
-  qr_image_url?: boolean
-  blockchain_tx_hash?: boolean
-  blockchain_token_id?: boolean
-  metadata?: boolean
-  status?: boolean
-  scan_limit?: boolean
-  scan_count?: boolean
-  expires_at?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  batch?: boolean | Prisma.QrCode$batchArgs<ExtArgs>
-}, ExtArgs["result"]["qrCode"]>
 
-export type QrCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  token_id?: boolean
-  batch_id?: boolean
-  product_type?: boolean
-  product_name?: boolean
-  qr_data?: boolean
-  qr_image_url?: boolean
-  blockchain_tx_hash?: boolean
-  blockchain_token_id?: boolean
-  metadata?: boolean
-  status?: boolean
-  scan_limit?: boolean
-  scan_count?: boolean
-  expires_at?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  batch?: boolean | Prisma.QrCode$batchArgs<ExtArgs>
-}, ExtArgs["result"]["qrCode"]>
 
 export type QrCodeSelectScalar = {
   id?: boolean
@@ -1273,14 +1217,6 @@ export type QrCodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   batch?: boolean | Prisma.QrCode$batchArgs<ExtArgs>
   verifications?: boolean | Prisma.QrCode$verificationsArgs<ExtArgs>
   _count?: boolean | Prisma.QrCodeCountOutputTypeDefaultArgs<ExtArgs>
-}
-export type QrCodeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  batch?: boolean | Prisma.QrCode$batchArgs<ExtArgs>
-}
-export type QrCodeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  batch?: boolean | Prisma.QrCode$batchArgs<ExtArgs>
 }
 
 export type $QrCodePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1426,30 +1362,6 @@ export interface QrCodeDelegate<ExtArgs extends runtime.Types.Extensions.Interna
   createMany<T extends QrCodeCreateManyArgs>(args?: Prisma.SelectSubset<T, QrCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many QrCodes and returns the data saved in the database.
-   * @param {QrCodeCreateManyAndReturnArgs} args - Arguments to create many QrCodes.
-   * @example
-   * // Create many QrCodes
-   * const qrCode = await prisma.qrCode.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many QrCodes and only return the `id`
-   * const qrCodeWithIdOnly = await prisma.qrCode.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends QrCodeCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, QrCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QrCodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a QrCode.
    * @param {QrCodeDeleteArgs} args - Arguments to delete one QrCode.
    * @example
@@ -1514,36 +1426,6 @@ export interface QrCodeDelegate<ExtArgs extends runtime.Types.Extensions.Interna
   updateMany<T extends QrCodeUpdateManyArgs>(args: Prisma.SelectSubset<T, QrCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more QrCodes and returns the data updated in the database.
-   * @param {QrCodeUpdateManyAndReturnArgs} args - Arguments to update many QrCodes.
-   * @example
-   * // Update many QrCodes
-   * const qrCode = await prisma.qrCode.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more QrCodes and only return the `id`
-   * const qrCodeWithIdOnly = await prisma.qrCode.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends QrCodeUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, QrCodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QrCodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one QrCode.
    * @param {QrCodeUpsertArgs} args - Arguments to update or create a QrCode.
    * @example
@@ -1561,6 +1443,29 @@ export interface QrCodeDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    * })
    */
   upsert<T extends QrCodeUpsertArgs>(args: Prisma.SelectSubset<T, QrCodeUpsertArgs<ExtArgs>>): Prisma.Prisma__QrCodeClient<runtime.Types.Result.GetResult<Prisma.$QrCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more QrCodes that matches the filter.
+   * @param {QrCodeFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const qrCode = await prisma.qrCode.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.QrCodeFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a QrCode.
+   * @param {QrCodeAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const qrCode = await prisma.qrCode.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.QrCodeAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1980,30 +1885,6 @@ export type QrCodeCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data used to create many QrCodes.
    */
   data: Prisma.QrCodeCreateManyInput | Prisma.QrCodeCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * QrCode createManyAndReturn
- */
-export type QrCodeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the QrCode
-   */
-  select?: Prisma.QrCodeSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the QrCode
-   */
-  omit?: Prisma.QrCodeOmit<ExtArgs> | null
-  /**
-   * The data used to create many QrCodes.
-   */
-  data: Prisma.QrCodeCreateManyInput | Prisma.QrCodeCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.QrCodeIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2048,36 +1929,6 @@ export type QrCodeUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many QrCodes to update.
    */
   limit?: number
-}
-
-/**
- * QrCode updateManyAndReturn
- */
-export type QrCodeUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the QrCode
-   */
-  select?: Prisma.QrCodeSelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the QrCode
-   */
-  omit?: Prisma.QrCodeOmit<ExtArgs> | null
-  /**
-   * The data used to update QrCodes.
-   */
-  data: Prisma.XOR<Prisma.QrCodeUpdateManyMutationInput, Prisma.QrCodeUncheckedUpdateManyInput>
-  /**
-   * Filter which QrCodes to update
-   */
-  where?: Prisma.QrCodeWhereInput
-  /**
-   * Limit how many QrCodes to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.QrCodeIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2144,6 +1995,34 @@ export type QrCodeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many QrCodes to delete.
    */
   limit?: number
+}
+
+/**
+ * QrCode findRaw
+ */
+export type QrCodeFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * QrCode aggregateRaw
+ */
+export type QrCodeAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

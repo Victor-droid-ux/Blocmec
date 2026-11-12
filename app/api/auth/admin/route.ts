@@ -1,29 +1,12 @@
-import { NextResponse } from "next/server";
-import {
-  createOptionalServerSupabaseClient,
-  hasSupabaseEnv,
-} from "@/lib/supabase/server";
-import z from "zod";
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { signInSchema, type SignInInput } from "@/lib/validation";
 import { rateLimit } from "@/lib/rateLimiter";
-import { NextRequest } from "next/server";
+import { verifyPassword } from "@/lib/auth/password";
+import { setSessionCookie } from "@/lib/auth/cookies";
 import { User } from "@/types/store/user";
 import { UserRole } from "@/prisma/generated/enums";
-
-function generateDevUUID() {
-  return `00000000-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, "0")}`;
-}
-
-// Dev admin credential loaded from environment variable only — no plaintext password in code
-const DEV_ADMIN_CREDENTIAL =
-  process.env.NODE_ENV === "development" && process.env.DEV_ADMIN_PASSWORD
-    ? {
-        email: "info@blockmec.org",
-        password: process.env.DEV_ADMIN_PASSWORD,
-        role: UserRole.admin,
-      }
-    : null;
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,97 +26,9 @@ export async function POST(req: NextRequest) {
     const input = parsed.data as SignInInput;
     const normalizedEmail = input.email.trim().toLowerCase();
 
-    // Development mode authentication (when Supabase is not configured)
-    if (
-      !hasSupabaseEnv() &&
-      process.env.NODE_ENV === "development" &&
-      DEV_ADMIN_CREDENTIAL
-    ) {
-      if (
-        normalizedEmail === DEV_ADMIN_CREDENTIAL.email &&
-        input.password === DEV_ADMIN_CREDENTIAL.password
-      ) {
-        let user = await prisma.user.findUnique({
-          where: { email: normalizedEmail },
-        });
-
-        if (!user) {
-          user = await prisma.user.create({
-            data: {
-              email: normalizedEmail,
-              name: normalizedEmail.split("@")[0],
-              role: UserRole.admin,
-              supabase_id: generateDevUUID(),
-              email_verified: true,
-            },
-          });
-        }
-
-        if (user.role !== UserRole.admin) {
-          return NextResponse.json(
-            { error: "Admin access required" },
-            { status: 403 },
-          );
-        }
-
-        const publicUser: User = {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        };
-        return NextResponse.json({
-          user: publicUser,
-          message: "Admin logged in successfully",
-        });
-      }
-
-      return NextResponse.json(
-        { error: "Invalid credentials or insufficient permissions" },
-        { status: 401 },
-      );
-    }
-
-    // Production authentication via Supabase
-    const supabase = await createOptionalServerSupabaseClient();
-    if (!supabase) {
-      return NextResponse.json(
-        { error: "Authentication service not configured" },
-        { status: 503 },
-      );
-    }
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: normalizedEmail,
-      password: input.password,
+    const user = await prisma.user.findUnique({
+      where: { email: normalizedEmail },
     });
-
-    if (error || !data?.session) {
-      return NextResponse.json(
-        { error: "Invalid credentials" },
-        { status: 401 },
-      );
-    }
-
-    const supabaseUser = data.user;
-    if (!supabaseUser?.id) {
-      return NextResponse.json(
-        { error: "No user returned from auth provider" },
-        { status: 500 },
-      );
-    }
-
-    const emailVerified = Boolean(supabaseUser.email_confirmed_at);
-
-    let user = await prisma.user.findUnique({
-      where: { supabase_id: supabaseUser.id },
-    });
-
-    if (!user) {
-      user = await prisma.user.findUnique({
-        where: { email: normalizedEmail },
-      });
-    }
 
     if (!user || user.role !== UserRole.admin) {
       return NextResponse.json(
@@ -142,15 +37,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    user = await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        supabase_id: supabaseUser.id,
-        email: normalizedEmail,
-        email_verified: emailVerified,
-        updated_at: new Date(),
-      },
-    });
+    if (!user.password_hash) {
+      return NextResponse.json(
+        { error: "Invalid credentials or insufficient permissions" },
+        { status: 401 },
+      );
+    }
+
+    const isValid = await verifyPassword(input.password, user.password_hash);
+    if (!isValid) {
+      return NextResponse.json(
+        { error: "Invalid credentials or insufficient permissions" },
+        { status: 401 },
+      );
+    }
 
     const publicUser: User = {
       id: user.id,
@@ -158,10 +58,19 @@ export async function POST(req: NextRequest) {
       name: user.name,
       role: user.role,
     };
-    return NextResponse.json({
+
+    const response = NextResponse.json({
       user: publicUser,
       message: "Admin logged in successfully",
     });
+
+    await setSessionCookie(response, {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+    });
+
+    return response;
   } catch (err: any) {
     return NextResponse.json(
       { error: err?.message ?? "Internal server error" },

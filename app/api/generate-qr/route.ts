@@ -1,7 +1,7 @@
 //app/api/generate-qr.ts
 
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import prisma from "@/lib/prisma";
 import { z } from "zod";
 import QRCode from "qrcode";
@@ -79,33 +79,15 @@ async function resolveAuthenticatedUser(req: NextRequest) {
     return { user: apiKey.user, response: null };
   }
 
-  const supabase = await createServerSupabaseClient();
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-  if (authError || !authData.user) {
+  const authUser = await getAuthenticatedUser();
+  if (!authUser) {
     return {
       user: null,
       response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
     };
   }
 
-  let dbUser = await prisma.user.findUnique({
-    where: { supabase_id: authData.user.id },
-  });
-
-  if (!dbUser && authData.user.email) {
-    dbUser = await prisma.user.findUnique({
-      where: { email: authData.user.email },
-    });
-  }
-
-  if (!dbUser) {
-    return {
-      user: null,
-      response: NextResponse.json({ error: "User not found" }, { status: 404 }),
-    };
-  }
-
-  return { user: dbUser, response: null };
+  return { user: authUser, response: null };
 }
 
 export async function POST(req: NextRequest) {
@@ -202,7 +184,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate verification domain if provided
-    if (verificationDomain && verificationDomain !== dbUser.verification_domain) {
+    if (
+      verificationDomain &&
+      verificationDomain !== dbUser.verification_domain
+    ) {
       return NextResponse.json(
         {
           error: `Verification domain '${verificationDomain}' does not match your registered domain`,
@@ -212,7 +197,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const domainToUse = verificationDomain || dbUser.verification_domain || (process.env.NEXT_PUBLIC_APP_URL ?? "https://blockmec.com");
+    const domainToUse =
+      verificationDomain ||
+      dbUser.verification_domain ||
+      (process.env.NEXT_PUBLIC_APP_URL ?? "https://blockmec.com");
 
     // Deduct credits
     if (dbUser.api_credits < quantity) {
@@ -323,12 +311,12 @@ export async function POST(req: NextRequest) {
           action: "generate_qr_batch",
           resource_type: "Batch",
           resource_id: batch.id,
-          metadata: { 
-            productName, 
-            productType: normalizedProductType, 
+          metadata: {
+            productName,
+            productType: normalizedProductType,
             originalProductType: productType,
-            quantity, 
-            verification_domain: domainToUse 
+            quantity,
+            verification_domain: domainToUse,
           },
         },
       });
@@ -422,8 +410,10 @@ export async function POST(req: NextRequest) {
     });
   } catch (err: any) {
     console.error("QR generation error:", err);
-    
-    if (err.message?.includes("Insufficient credits - race condition detected")) {
+
+    if (
+      err.message?.includes("Insufficient credits - race condition detected")
+    ) {
       return NextResponse.json(
         {
           error: "Insufficient credits - please refresh and try again",

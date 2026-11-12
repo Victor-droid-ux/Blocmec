@@ -1,25 +1,7 @@
 import { PrismaClient, UserRole } from "../generated/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { createClient } from "@supabase/supabase-js";
-import ws from "ws";
+import bcrypt from "bcryptjs";
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
-const prisma = new PrismaClient({ adapter });
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-    // Node 20 doesn't provide native WebSocket; use ws transport for admin calls.
-    realtime: {
-      transport: ws,
-    },
-  },
-);
+const prisma = new PrismaClient();
 
 export const seedDevelopment = async () => await runBaseSeeders();
 export const seedStaging = async () => await runBaseSeeders();
@@ -30,39 +12,20 @@ const runBaseSeeders = async () => {
   await seedTestUserRoles();
 };
 
-// Helper: get existing Supabase user or create new one
-const getOrCreateSupabaseUser = async (email: string, password: string) => {
-  // Try to find existing user first
-  const { data: list } = await supabase.auth.admin.listUsers();
-  const existing = list?.users?.find((u) => u.email === email);
-  if (existing) return existing.id;
-
-  // Create if not found
-  const { data, error } = await supabase.auth.admin.createUser({
-    email,
-    password,
-    email_confirm: true,
-  });
-  if (error) throw error;
-  return data.user?.id;
-};
-
 const seedAdmin = async () => {
   console.info("Seeding root admin...");
   try {
-    const supabaseId = await getOrCreateSupabaseUser(
-      "info@blockmec.org",
-      "Akachukwu1@1",
-    );
+    const password_hash = await bcrypt.hash("Akachukwu1@1", 12);
 
     await prisma.user.upsert({
       where: { email: "info@blockmec.org" },
-      update: { supabase_id: supabaseId },
+      update: { username: "info" },
       create: {
         name: "Akachukwu",
         email: "info@blockmec.org",
+        username: "info",
         role: "admin",
-        supabase_id: supabaseId,
+        password_hash,
         email_verified: true,
       },
     });
@@ -94,19 +57,17 @@ const seedTestUserRoles = async () => {
 
   for (const user of testUsers) {
     try {
-      const supabaseId = await getOrCreateSupabaseUser(
-        user.email,
-        user.password,
-      );
+      const password_hash = await bcrypt.hash(user.password, 12);
 
       await prisma.user.upsert({
         where: { email: user.email },
-        update: { supabase_id: supabaseId },
+        update: { username: user.email.split("@")[0] },
         create: {
           name: user.name,
           email: user.email,
+          username: user.email.split("@")[0],
           role: user.role,
-          supabase_id: supabaseId,
+          password_hash,
           email_verified: true,
         },
       });

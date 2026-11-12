@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(
@@ -7,17 +7,9 @@ export async function GET(
   { params }: { params: { batchId: string } },
 ) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { supabase_id: data.user.id },
-    });
+    const user = await getAuthenticatedUser();
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Verify batch belongs to this user

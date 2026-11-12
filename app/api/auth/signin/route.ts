@@ -2,42 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { rateLimit } from "@/lib/rateLimiter";
-import {
-  createOptionalServerSupabaseClient,
-  hasSupabaseEnv,
-} from "@/lib/supabase/server";
-import { UserRole } from "@/prisma/generated/enums";
+import { verifyPassword } from "@/lib/auth/password";
+import { setSessionCookie } from "@/lib/auth/cookies";
 import { signInSchema, type SignInInput } from "@/lib/validation";
 import { User } from "@/types/store/user";
-
-function generateDevUUID() {
-  return `00000000-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, "0")}`;
-}
-
-// Dev credentials loaded from environment variables only — no plaintext passwords in code
-const DEV_CREDENTIALS: Record<
-  string,
-  { password: string; role: UserRole }
-> | null =
-  process.env.NODE_ENV === "development" &&
-  process.env.DEV_USER_PASSWORD &&
-  process.env.DEV_ADMIN_PASSWORD &&
-  process.env.DEV_DEVELOPER_PASSWORD
-    ? {
-        "user@blockmec.org": {
-          password: process.env.DEV_USER_PASSWORD,
-          role: UserRole.user,
-        },
-        "info@blockmec.org": {
-          password: process.env.DEV_ADMIN_PASSWORD,
-          role: UserRole.admin,
-        },
-        "developer@blockmec.org": {
-          password: process.env.DEV_DEVELOPER_PASSWORD,
-          role: UserRole.developer,
-        },
-      }
-    : null;
 
 export async function POST(req: NextRequest) {
   try {
@@ -54,53 +22,40 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: flat }, { status: 400 });
     }
     const input = parsed.data as SignInInput;
-    
+
     // Determine if input is email or username
     const isEmail = input.email.includes("@");
     const normalizedInput = input.email.trim().toLowerCase();
 
-    // Development mode — only active when Supabase is not configured AND dev passwords are set
-    if (
-      !hasSupabaseEnv() &&
-      process.env.NODE_ENV === "development" &&
-      DEV_CREDENTIALS
-    ) {
-      const devCreds = DEV_CREDENTIALS[normalizedInput];
-      if (!devCreds) {
-        return NextResponse.json(
-          {
-            error:
-              "No account was found for this email address. Please create an account and try again.",
-            code: "user_not_found",
-          },
-          { status: 404 },
-        );
-      }
+    const user = await prisma.user.findUnique({
+      where: isEmail
+        ? { email: normalizedInput }
+        : { username: normalizedInput },
+    });
 
-      if (devCreds.password === input.password) {
-        let user = await prisma.user.findUnique({
-          where: { email: normalizedInput },
-        });
-        if (!user) {
-          user = await prisma.user.create({
-            data: {
-              email: normalizedInput,
-              name: normalizedInput.split("@")[0],
-              role: devCreds.role,
-              supabase_id: generateDevUUID(),
-              email_verified: true,
-            },
-          });
-        }
-        const publicUser: User = {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        };
-        return NextResponse.json({ user: publicUser });
-      }
+    if (!user) {
+      return NextResponse.json(
+        {
+          error:
+            "No account was found. Please check your email/username and try again.",
+          code: "user_not_found",
+        },
+        { status: 404 },
+      );
+    }
 
+    if (!user.password_hash) {
+      return NextResponse.json(
+        {
+          error: "This account has no password set. Please contact support.",
+          code: "no_password",
+        },
+        { status: 401 },
+      );
+    }
+
+    const isValid = await verifyPassword(input.password, user.password_hash);
+    if (!isValid) {
       return NextResponse.json(
         {
           error: "The password you entered is incorrect. Please try again.",
@@ -109,94 +64,6 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
-
-    // Production via Supabase
-    const supabase = await createOptionalServerSupabaseClient();
-    if (!supabase) {
-      return NextResponse.json(
-        { error: "Authentication service not configured" },
-        { status: 503 },
-      );
-    }
-
-    // If input is username, look it up to get email for Supabase auth
-    let emailForAuth = normalizedInput;
-    if (!isEmail) {
-      const userByUsername = await prisma.user.findUnique({
-        where: { username: normalizedInput },
-        select: { email: true },
-      });
-      
-      if (!userByUsername) {
-        return NextResponse.json(
-          {
-            error:
-              "No account was found for this username. Please check and try again.",
-            code: "user_not_found",
-          },
-          { status: 404 },
-        );
-      }
-      
-      emailForAuth = userByUsername.email;
-    }
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: emailForAuth,
-      password: input.password,
-    });
-
-    if (error || !data?.session) {
-      const existingUser = await prisma.user.findUnique({
-        where: isEmail ? { email: normalizedInput } : { username: normalizedInput },
-        select: { id: true },
-      });
-
-      if (!existingUser) {
-        return NextResponse.json(
-          {
-            error:
-              "No account was found. Please check your email/username and try again.",
-            code: "user_not_found",
-          },
-          { status: 404 },
-        );
-      }
-
-      return NextResponse.json(
-        {
-          error: "The password you entered is incorrect. Please try again.",
-          code: "incorrect_password",
-        },
-        { status: 401 },
-      );
-    }
-
-    const supabaseUser = data.user;
-    if (!supabaseUser?.id) {
-      return NextResponse.json(
-        { error: "No user returned from auth provider" },
-        { status: 500 },
-      );
-    }
-
-    const emailVerified = Boolean(supabaseUser.email_confirmed_at);
-
-    const user = await prisma.user.upsert({
-      where: { email: emailForAuth },
-      update: {
-        supabase_id: supabaseUser.id,
-        email: emailForAuth,
-        email_verified: emailVerified,
-        updated_at: new Date(),
-      },
-      create: {
-        email: emailForAuth,
-        supabase_id: supabaseUser.id,
-        role: UserRole.user,
-        email_verified: emailVerified,
-      },
-    });
 
     const publicUser: User = {
       id: user.id,
@@ -204,12 +71,16 @@ export async function POST(req: NextRequest) {
       name: user.name,
       role: user.role,
     };
-    return NextResponse.json({ user: publicUser });
-  } catch (err: any) {
-    console.error("[Auth/Signin] Unexpected error", {
-      message: err?.message,
-      stack: err?.stack,
+
+    const response = NextResponse.json({ user: publicUser });
+    await setSessionCookie(response, {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
     });
+
+    return response;
+  } catch (err: any) {
     return NextResponse.json(
       { error: err?.message ?? "Internal server error" },
       { status: 500 },

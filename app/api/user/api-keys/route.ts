@@ -1,7 +1,7 @@
 //app/api/api-keys/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import prisma from "@/lib/prisma";
 import { z } from "zod";
 import crypto from "crypto";
@@ -87,14 +87,10 @@ function isFreePlanApiKeyBypassAllowedForUser(
 }
 
 async function getUser() {
-  const supabase = await createServerSupabaseClient();
-
   try {
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) return null;
-    return prisma.user.findUnique({ where: { supabase_id: data.user.id } });
+    return await getAuthenticatedUser();
   } catch (error) {
-    console.error("Supabase auth lookup failed in /api/user/api-keys:", error);
+    console.error("Auth lookup failed in /api/user/api-keys:", error);
     throw new AuthServiceUnavailableError();
   }
 }

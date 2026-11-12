@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/login-form";
-import { createOptionalServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { ROUTES } from "@/config/routes";
 
 export const metadata: Metadata = {
@@ -13,16 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function SignupPage() {
-  const supabase = await createOptionalServerSupabaseClient();
+  const user = await getAuthenticatedUser();
 
-  if (supabase) {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    if (session) {
-      redirect(ROUTES.DASHBOARD.ROOT);
-    }
+  if (user) {
+    redirect(ROUTES.DASHBOARD.ROOT);
   }
 
   return (

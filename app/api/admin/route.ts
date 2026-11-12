@@ -1,22 +1,17 @@
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import prisma from "@/lib/prisma";
 import { UserRole } from "@/prisma/generated/enums";
 
 export async function GET() {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data, error } = await supabase.auth.getUser();
+    const user = await getAuthenticatedUser();
 
-    if (error || !data.user) {
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { supabase_id: data.user.id },
-    });
-
-    if (!user || user.role !== UserRole.admin) {
+    if (user.role !== UserRole.admin) {
       return NextResponse.json(
         { error: "Admin access required" },
         { status: 403 },

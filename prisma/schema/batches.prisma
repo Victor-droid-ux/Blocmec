@@ -7,11 +7,11 @@ enum BatchStatus {
 }
 
 model Batch {
-  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id         String   @db.Uuid
-  name            String   @db.VarChar(255)
-  product_type    String   @db.VarChar(100)
-  batch_number    String?  @db.VarChar(255)
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id         String   @db.ObjectId
+  name            String
+  product_type    String
+  batch_number    String?
   total_count     Int
   generated_count Int      @default(0)
   status          BatchStatus @default(pending)

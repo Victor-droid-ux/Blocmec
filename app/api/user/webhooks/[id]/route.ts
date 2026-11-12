@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import {
   hasAnyPermission,
   withScopedPermissionDefaults,
@@ -76,24 +76,6 @@ const updateWebhookSchema = z.object({
   timeoutMs: z.number().int().min(1000).max(30000).optional(),
   maxRetries: z.number().int().min(1).max(10).optional(),
 });
-
-async function getAuthenticatedUser() {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) {
-    return null;
-  }
-
-  let user = await prisma.user.findUnique({
-    where: { supabase_id: data.user.id },
-  });
-
-  if (!user && data.user.email) {
-    user = await prisma.user.findUnique({ where: { email: data.user.email } });
-  }
-
-  return user;
-}
 
 async function getWebhookForUser(id: string, userId: string) {
   return prisma.webhookEndpoint.findFirst({

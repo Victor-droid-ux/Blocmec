@@ -2,20 +2,19 @@
 // Monitor webhook delivery status and pending events
 
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data: authData, error: authError } = await supabase.auth.getUser();
+    const authUser = await getAuthenticatedUser();
 
-    if (authError || !authData.user) {
+    if (!authUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const dbUser = await prisma.user.findUnique({
-      where: { supabase_id: authData.user.id },
+      where: { id: authUser.id },
       select: { id: true },
     });
 
@@ -72,8 +71,9 @@ export async function GET(req: NextRequest) {
       processing: allJobs.filter((j) => j.status === "processing").length,
       delivered: allJobs.filter((j) => j.status === "delivered").length,
       failed: allJobs.filter((j) => j.status === "failed").length,
-      dead_lettered: allJobs.filter((j) => j.status === "failed" && j.attempts >= 6)
-        .length,
+      dead_lettered: allJobs.filter(
+        (j) => j.status === "failed" && j.attempts >= 6,
+      ).length,
     };
 
     // Get recent failed events for debugging
@@ -125,7 +125,7 @@ export async function GET(req: NextRequest) {
         jobsReadyForDelivery: allJobs.filter(
           (j) =>
             (j.status === "queued" || j.status === "failed") &&
-            j.next_attempt_at <= new Date()
+            j.next_attempt_at <= new Date(),
         ).length,
       },
     });
@@ -133,7 +133,7 @@ export async function GET(req: NextRequest) {
     console.error("[Webhook Status] Error:", error);
     return NextResponse.json(
       { error: "Failed to retrieve webhook status" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

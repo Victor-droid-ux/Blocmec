@@ -2,7 +2,6 @@ import "dotenv/config";
 import { parseArgs } from "node:util";
 import { seedDevelopment, seedStaging, seedProduction } from "./seeders";
 import { PrismaClient } from "../generated/client";
-import { PrismaPg } from "@prisma/adapter-pg";
 
 enum Environment {
   DEVELOPMENT = "development",
@@ -10,8 +9,7 @@ enum Environment {
   PRODUCTION = "production",
 }
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 const options = {
   environment: { type: "string" as const },

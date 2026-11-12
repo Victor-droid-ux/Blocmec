@@ -8,7 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -218,8 +218,8 @@ export type ApiKeyWhereInput = {
   AND?: Prisma.ApiKeyWhereInput | Prisma.ApiKeyWhereInput[]
   OR?: Prisma.ApiKeyWhereInput[]
   NOT?: Prisma.ApiKeyWhereInput | Prisma.ApiKeyWhereInput[]
-  id?: Prisma.UuidFilter<"ApiKey"> | string
-  user_id?: Prisma.UuidFilter<"ApiKey"> | string
+  id?: Prisma.StringFilter<"ApiKey"> | string
+  user_id?: Prisma.StringFilter<"ApiKey"> | string
   key_hash?: Prisma.StringFilter<"ApiKey"> | string
   key_prefix?: Prisma.StringFilter<"ApiKey"> | string
   name?: Prisma.StringNullableFilter<"ApiKey"> | string | null
@@ -239,11 +239,11 @@ export type ApiKeyOrderByWithRelationInput = {
   user_id?: Prisma.SortOrder
   key_hash?: Prisma.SortOrder
   key_prefix?: Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrder
   permissions?: Prisma.SortOrder
   allowed_domains?: Prisma.SortOrder
-  last_used_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  expires_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  last_used_at?: Prisma.SortOrder
+  expires_at?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -257,7 +257,7 @@ export type ApiKeyWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ApiKeyWhereInput | Prisma.ApiKeyWhereInput[]
   OR?: Prisma.ApiKeyWhereInput[]
   NOT?: Prisma.ApiKeyWhereInput | Prisma.ApiKeyWhereInput[]
-  user_id?: Prisma.UuidFilter<"ApiKey"> | string
+  user_id?: Prisma.StringFilter<"ApiKey"> | string
   key_prefix?: Prisma.StringFilter<"ApiKey"> | string
   name?: Prisma.StringNullableFilter<"ApiKey"> | string | null
   permissions?: Prisma.JsonFilter<"ApiKey">
@@ -276,11 +276,11 @@ export type ApiKeyOrderByWithAggregationInput = {
   user_id?: Prisma.SortOrder
   key_hash?: Prisma.SortOrder
   key_prefix?: Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrder
   permissions?: Prisma.SortOrder
   allowed_domains?: Prisma.SortOrder
-  last_used_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  expires_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  last_used_at?: Prisma.SortOrder
+  expires_at?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -293,8 +293,8 @@ export type ApiKeyScalarWhereWithAggregatesInput = {
   AND?: Prisma.ApiKeyScalarWhereWithAggregatesInput | Prisma.ApiKeyScalarWhereWithAggregatesInput[]
   OR?: Prisma.ApiKeyScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ApiKeyScalarWhereWithAggregatesInput | Prisma.ApiKeyScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"ApiKey"> | string
-  user_id?: Prisma.UuidWithAggregatesFilter<"ApiKey"> | string
+  id?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
+  user_id?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
   key_hash?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
   key_prefix?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"ApiKey"> | string | null
@@ -312,7 +312,7 @@ export type ApiKeyCreateInput = {
   key_hash: string
   key_prefix: string
   name?: string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyCreateallowed_domainsInput | string[]
   last_used_at?: Date | string | null
   expires_at?: Date | string | null
@@ -329,7 +329,7 @@ export type ApiKeyUncheckedCreateInput = {
   key_hash: string
   key_prefix: string
   name?: string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyCreateallowed_domainsInput | string[]
   last_used_at?: Date | string | null
   expires_at?: Date | string | null
@@ -340,11 +340,10 @@ export type ApiKeyUncheckedCreateInput = {
 }
 
 export type ApiKeyUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -356,12 +355,11 @@ export type ApiKeyUpdateInput = {
 }
 
 export type ApiKeyUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -377,7 +375,7 @@ export type ApiKeyCreateManyInput = {
   key_hash: string
   key_prefix: string
   name?: string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyCreateallowed_domainsInput | string[]
   last_used_at?: Date | string | null
   expires_at?: Date | string | null
@@ -387,11 +385,10 @@ export type ApiKeyCreateManyInput = {
 }
 
 export type ApiKeyUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -401,12 +398,11 @@ export type ApiKeyUpdateManyMutationInput = {
 }
 
 export type ApiKeyUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -489,6 +485,7 @@ export type StringFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+  unset?: boolean
 }
 
 export type ApiKeyUpdateallowed_domainsInput = {
@@ -498,6 +495,7 @@ export type ApiKeyUpdateallowed_domainsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+  unset?: boolean
 }
 
 export type EnumApiKeyStatusFieldUpdateOperationsInput = {
@@ -560,7 +558,7 @@ export type ApiKeyUpdateOneWithoutWebhooksNestedInput = {
   create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutWebhooksInput, Prisma.ApiKeyUncheckedCreateWithoutWebhooksInput>
   connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutWebhooksInput
   upsert?: Prisma.ApiKeyUpsertWithoutWebhooksInput
-  disconnect?: Prisma.ApiKeyWhereInput | boolean
+  disconnect?: boolean
   delete?: Prisma.ApiKeyWhereInput | boolean
   connect?: Prisma.ApiKeyWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ApiKeyUpdateToOneWithWhereWithoutWebhooksInput, Prisma.ApiKeyUpdateWithoutWebhooksInput>, Prisma.ApiKeyUncheckedUpdateWithoutWebhooksInput>
@@ -571,7 +569,7 @@ export type ApiKeyCreateWithoutUserInput = {
   key_hash: string
   key_prefix: string
   name?: string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyCreateallowed_domainsInput | string[]
   last_used_at?: Date | string | null
   expires_at?: Date | string | null
@@ -586,7 +584,7 @@ export type ApiKeyUncheckedCreateWithoutUserInput = {
   key_hash: string
   key_prefix: string
   name?: string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyCreateallowed_domainsInput | string[]
   last_used_at?: Date | string | null
   expires_at?: Date | string | null
@@ -603,7 +601,6 @@ export type ApiKeyCreateOrConnectWithoutUserInput = {
 
 export type ApiKeyCreateManyUserInputEnvelope = {
   data: Prisma.ApiKeyCreateManyUserInput | Prisma.ApiKeyCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type ApiKeyUpsertWithWhereUniqueWithoutUserInput = {
@@ -626,8 +623,8 @@ export type ApiKeyScalarWhereInput = {
   AND?: Prisma.ApiKeyScalarWhereInput | Prisma.ApiKeyScalarWhereInput[]
   OR?: Prisma.ApiKeyScalarWhereInput[]
   NOT?: Prisma.ApiKeyScalarWhereInput | Prisma.ApiKeyScalarWhereInput[]
-  id?: Prisma.UuidFilter<"ApiKey"> | string
-  user_id?: Prisma.UuidFilter<"ApiKey"> | string
+  id?: Prisma.StringFilter<"ApiKey"> | string
+  user_id?: Prisma.StringFilter<"ApiKey"> | string
   key_hash?: Prisma.StringFilter<"ApiKey"> | string
   key_prefix?: Prisma.StringFilter<"ApiKey"> | string
   name?: Prisma.StringNullableFilter<"ApiKey"> | string | null
@@ -645,7 +642,7 @@ export type ApiKeyCreateWithoutWebhooksInput = {
   key_hash: string
   key_prefix: string
   name?: string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyCreateallowed_domainsInput | string[]
   last_used_at?: Date | string | null
   expires_at?: Date | string | null
@@ -661,7 +658,7 @@ export type ApiKeyUncheckedCreateWithoutWebhooksInput = {
   key_hash: string
   key_prefix: string
   name?: string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyCreateallowed_domainsInput | string[]
   last_used_at?: Date | string | null
   expires_at?: Date | string | null
@@ -687,11 +684,10 @@ export type ApiKeyUpdateToOneWithWhereWithoutWebhooksInput = {
 }
 
 export type ApiKeyUpdateWithoutWebhooksInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -702,12 +698,11 @@ export type ApiKeyUpdateWithoutWebhooksInput = {
 }
 
 export type ApiKeyUncheckedUpdateWithoutWebhooksInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -721,7 +716,7 @@ export type ApiKeyCreateManyUserInput = {
   key_hash: string
   key_prefix: string
   name?: string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyCreateallowed_domainsInput | string[]
   last_used_at?: Date | string | null
   expires_at?: Date | string | null
@@ -731,11 +726,10 @@ export type ApiKeyCreateManyUserInput = {
 }
 
 export type ApiKeyUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -746,11 +740,10 @@ export type ApiKeyUpdateWithoutUserInput = {
 }
 
 export type ApiKeyUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -761,11 +754,10 @@ export type ApiKeyUncheckedUpdateWithoutUserInput = {
 }
 
 export type ApiKeyUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   key_hash?: Prisma.StringFieldUpdateOperationsInput | string
   key_prefix?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  permissions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  permissions?: runtime.InputJsonValue | runtime.InputJsonValue
   allowed_domains?: Prisma.ApiKeyUpdateallowed_domainsInput | string[]
   last_used_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -823,37 +815,7 @@ export type ApiKeySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   _count?: boolean | Prisma.ApiKeyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["apiKey"]>
 
-export type ApiKeySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  key_hash?: boolean
-  key_prefix?: boolean
-  name?: boolean
-  permissions?: boolean
-  allowed_domains?: boolean
-  last_used_at?: boolean
-  expires_at?: boolean
-  status?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["apiKey"]>
 
-export type ApiKeySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  user_id?: boolean
-  key_hash?: boolean
-  key_prefix?: boolean
-  name?: boolean
-  permissions?: boolean
-  allowed_domains?: boolean
-  last_used_at?: boolean
-  expires_at?: boolean
-  status?: boolean
-  created_at?: boolean
-  updated_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["apiKey"]>
 
 export type ApiKeySelectScalar = {
   id?: boolean
@@ -875,12 +837,6 @@ export type ApiKeyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   webhooks?: boolean | Prisma.ApiKey$webhooksArgs<ExtArgs>
   _count?: boolean | Prisma.ApiKeyCountOutputTypeDefaultArgs<ExtArgs>
-}
-export type ApiKeyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
-export type ApiKeyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $ApiKeyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1020,30 +976,6 @@ export interface ApiKeyDelegate<ExtArgs extends runtime.Types.Extensions.Interna
   createMany<T extends ApiKeyCreateManyArgs>(args?: Prisma.SelectSubset<T, ApiKeyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create many ApiKeys and returns the data saved in the database.
-   * @param {ApiKeyCreateManyAndReturnArgs} args - Arguments to create many ApiKeys.
-   * @example
-   * // Create many ApiKeys
-   * const apiKey = await prisma.apiKey.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many ApiKeys and only return the `id`
-   * const apiKeyWithIdOnly = await prisma.apiKey.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends ApiKeyCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, ApiKeyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Delete a ApiKey.
    * @param {ApiKeyDeleteArgs} args - Arguments to delete one ApiKey.
    * @example
@@ -1108,36 +1040,6 @@ export interface ApiKeyDelegate<ExtArgs extends runtime.Types.Extensions.Interna
   updateMany<T extends ApiKeyUpdateManyArgs>(args: Prisma.SelectSubset<T, ApiKeyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more ApiKeys and returns the data updated in the database.
-   * @param {ApiKeyUpdateManyAndReturnArgs} args - Arguments to update many ApiKeys.
-   * @example
-   * // Update many ApiKeys
-   * const apiKey = await prisma.apiKey.updateManyAndReturn({
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Update zero or more ApiKeys and only return the `id`
-   * const apiKeyWithIdOnly = await prisma.apiKey.updateManyAndReturn({
-   *   select: { id: true },
-   *   where: {
-   *     // ... provide filter here
-   *   },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  updateManyAndReturn<T extends ApiKeyUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, ApiKeyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
    * Create or update one ApiKey.
    * @param {ApiKeyUpsertArgs} args - Arguments to update or create a ApiKey.
    * @example
@@ -1155,6 +1057,29 @@ export interface ApiKeyDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    * })
    */
   upsert<T extends ApiKeyUpsertArgs>(args: Prisma.SelectSubset<T, ApiKeyUpsertArgs<ExtArgs>>): Prisma.Prisma__ApiKeyClient<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+  /**
+   * Find zero or more ApiKeys that matches the filter.
+   * @param {ApiKeyFindRawArgs} args - Select which filters you would like to apply.
+   * @example
+   * const apiKey = await prisma.apiKey.findRaw({
+   *   filter: { age: { $gt: 25 } }
+   * })
+   */
+  findRaw(args?: Prisma.ApiKeyFindRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
+
+  /**
+   * Perform aggregation operations on a ApiKey.
+   * @param {ApiKeyAggregateRawArgs} args - Select which aggregations you would like to apply.
+   * @example
+   * const apiKey = await prisma.apiKey.aggregateRaw({
+   *   pipeline: [
+   *     { $match: { status: "registered" } },
+   *     { $group: { _id: "$country", total: { $sum: 1 } } }
+   *   ]
+   * })
+   */
+  aggregateRaw(args?: Prisma.ApiKeyAggregateRawArgs): Prisma.PrismaPromise<Prisma.JsonObject>
 
 
   /**
@@ -1568,30 +1493,6 @@ export type ApiKeyCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data used to create many ApiKeys.
    */
   data: Prisma.ApiKeyCreateManyInput | Prisma.ApiKeyCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * ApiKey createManyAndReturn
- */
-export type ApiKeyCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ApiKey
-   */
-  select?: Prisma.ApiKeySelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the ApiKey
-   */
-  omit?: Prisma.ApiKeyOmit<ExtArgs> | null
-  /**
-   * The data used to create many ApiKeys.
-   */
-  data: Prisma.ApiKeyCreateManyInput | Prisma.ApiKeyCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ApiKeyIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1636,36 +1537,6 @@ export type ApiKeyUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many ApiKeys to update.
    */
   limit?: number
-}
-
-/**
- * ApiKey updateManyAndReturn
- */
-export type ApiKeyUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ApiKey
-   */
-  select?: Prisma.ApiKeySelectUpdateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the ApiKey
-   */
-  omit?: Prisma.ApiKeyOmit<ExtArgs> | null
-  /**
-   * The data used to update ApiKeys.
-   */
-  data: Prisma.XOR<Prisma.ApiKeyUpdateManyMutationInput, Prisma.ApiKeyUncheckedUpdateManyInput>
-  /**
-   * Filter which ApiKeys to update
-   */
-  where?: Prisma.ApiKeyWhereInput
-  /**
-   * Limit how many ApiKeys to update.
-   */
-  limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ApiKeyIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1732,6 +1603,34 @@ export type ApiKeyDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many ApiKeys to delete.
    */
   limit?: number
+}
+
+/**
+ * ApiKey findRaw
+ */
+export type ApiKeyFindRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+   */
+  filter?: runtime.InputJsonValue
+  /**
+   * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
+}
+
+/**
+ * ApiKey aggregateRaw
+ */
+export type ApiKeyAggregateRawArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+   */
+  pipeline?: runtime.InputJsonValue[]
+  /**
+   * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+   */
+  options?: runtime.InputJsonValue
 }
 
 /**

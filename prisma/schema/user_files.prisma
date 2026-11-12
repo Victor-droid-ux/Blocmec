@@ -1,11 +1,11 @@
 model UserFile {
-  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id        String   @db.Uuid
-  original_name  String   @db.VarChar(512)
-  stored_name    String   @db.VarChar(512)
-  mime_type      String   @db.VarChar(255)
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id        String   @db.ObjectId
+  original_name  String
+  stored_name    String
+  mime_type      String
   size_bytes     Int
-  storage_path   String   @db.VarChar(1024)
+  storage_path   String
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
 

@@ -1,0 +1,48 @@
+// lib/auth/jwt.ts
+import { SignJWT, jwtVerify } from "jose";
+
+export const SESSION_COOKIE_NAME = "session_token";
+export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 days
+
+export type SessionPayload = {
+  sub: string;
+  email: string;
+  role: string;
+};
+
+function getSecretKey() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error(
+      "JWT_SECRET must be set to a value at least 32 characters long.",
+    );
+  }
+  return new TextEncoder().encode(secret);
+}
+
+export async function signSessionToken(payload: SessionPayload) {
+  return new SignJWT({ email: payload.email, role: payload.role })
+    .setProtectedHeader({ alg: "HS256" })
+    .setSubject(payload.sub)
+    .setIssuedAt()
+    .setExpirationTime(`${SESSION_MAX_AGE_SECONDS}s`)
+    .sign(getSecretKey());
+}
+
+export async function verifySessionToken(
+  token: string,
+): Promise<SessionPayload | null> {
+  try {
+    const { payload } = await jwtVerify(token, getSecretKey());
+    if (typeof payload.sub !== "string" || typeof payload.email !== "string") {
+      return null;
+    }
+    return {
+      sub: payload.sub,
+      email: payload.email,
+      role: typeof payload.role === "string" ? payload.role : "user",
+    };
+  } catch {
+    return null;
+  }
+}

@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
+import { hashPassword } from "@/lib/auth/password";
 import { UserRole, UserStatus } from "@/prisma/generated/enums";
 import { z } from "zod";
 
 // Auth helper — verify caller is admin
 async function requireAdmin() {
-  const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) return null;
-
-  const user = await prisma.user.findUnique({
-    where: { supabase_id: data.user.id },
-  });
+  const user = await getAuthenticatedUser();
   if (!user || user.role !== UserRole.admin) return null;
   return user;
 }
@@ -97,24 +92,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Create Supabase auth user first - this is REQUIRED for login
-  const supabase = await createServerSupabaseClient();
-  
-  // Generate a temporary password that the user should change on first login
+  // Create a temporary password that the user should change on first login
   const tempPassword = Math.random().toString(36).slice(-16);
-  
-  const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-    email,
-    password: tempPassword,
-    email_confirm: false, // User must confirm email
-  });
-
-  if (authError || !authData.user) {
-    return NextResponse.json(
-      { error: `Failed to create Supabase auth account: ${authError?.message || "Unknown error"}` },
-      { status: 500 },
-    );
-  }
+  const password_hash = await hashPassword(tempPassword);
 
   const user = await prisma.user.create({
     data: {
@@ -125,8 +105,8 @@ export async function POST(req: NextRequest) {
       status,
       api_credits: apiCredits,
       subscription_plan: subscriptionPlan,
-      email_verified: false,
-      supabase_id: authData.user.id, // Link to Supabase auth user
+      email_verified: true,
+      password_hash,
       updated_at: new Date(),
     },
   });
@@ -138,14 +118,14 @@ export async function POST(req: NextRequest) {
       action: "create_user",
       resource_type: "User",
       resource_id: user.id,
-      metadata: { email, role, supabase_id: authData.user.id },
+      metadata: { email, role },
     },
   });
 
   return NextResponse.json(
     {
       ...formatUser(user),
-      message: `User created. Password set to: ${tempPassword}. User must confirm email and change password on first login.`,
+      message: `User created. Password set to: ${tempPassword}. User should change it on first login.`,
     },
     { status: 201 },
   );

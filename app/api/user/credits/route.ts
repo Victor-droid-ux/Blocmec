@@ -1,33 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import prisma from "@/lib/prisma";
 import { z } from "zod";
 
 export async function POST(req: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { supabase_id: data.user.id },
-    });
+    const user = await getAuthenticatedUser();
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json().catch(() => ({}));
     const parsed = z
-      .object({ 
+      .object({
         credits: z.number().int().min(1),
         transaction_reference: z.string().min(1),
       })
       .safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: "Invalid request - credits and transaction_reference required" },
+        {
+          error: "Invalid request - credits and transaction_reference required",
+        },
         { status: 400 },
       );
     }
@@ -81,7 +75,7 @@ export async function POST(req: NextRequest) {
         action: "purchase_credits",
         resource_type: "User",
         resource_id: user.id,
-        metadata: { 
+        metadata: {
           credits: parsed.data.credits,
           transaction_id: transaction.id,
         },

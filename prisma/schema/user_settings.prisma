@@ -1,13 +1,13 @@
 model UserSettings {
-  id                      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id                 String   @unique @db.Uuid
-  company_name            String?  @db.VarChar(255)
-  company_email           String?  @db.VarChar(255)
-  company_website         String?  @db.VarChar(1024)
+  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id                 String   @unique @db.ObjectId
+  company_name            String?
+  company_email           String?
+  company_website         String?
   company_address         String?
-  timezone                String   @default("America/New_York") @db.VarChar(100)
-  language                String   @default("en-US") @db.VarChar(20)
-  date_format             String   @default("MM/DD/YYYY") @db.VarChar(20)
+  timezone                String   @default("America/New_York")
+  language                String   @default("en-US")
+  date_format             String   @default("MM/DD/YYYY")
   email_notifications     Boolean  @default(true)
   sms_notifications       Boolean  @default(false)
   push_notifications      Boolean  @default(true)
@@ -18,6 +18,4 @@ model UserSettings {
   updated_at              DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@index([user_id], name: "idx_user_settings_user_id")
 }

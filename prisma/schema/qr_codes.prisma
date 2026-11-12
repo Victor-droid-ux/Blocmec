@@ -6,16 +6,16 @@ enum QrStatus {
 }
 
 model QrCode {
-  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id              String   @db.Uuid
-  token_id             String   @unique @db.VarChar(255)
-  batch_id             String?  @db.Uuid
-  product_type         String   @db.VarChar(100)
-  product_name         String?  @db.VarChar(255)
-  qr_data              String   @db.Text
-  qr_image_url         String?  @db.Text
-  blockchain_tx_hash   String?  @db.VarChar(255)
-  blockchain_token_id  String?  @db.VarChar(255)
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id              String   @db.ObjectId
+  token_id             String   @unique
+  batch_id             String?  @db.ObjectId
+  product_type         String
+  product_name         String?
+  qr_data              String
+  qr_image_url         String?
+  blockchain_tx_hash   String?
+  blockchain_token_id  String?
   metadata             Json?
   status               QrStatus @default(active)
   scan_limit           Int      @default(0)
@@ -29,6 +29,5 @@ model QrCode {
   verifications Verification[]
 
   @@index([user_id], name: "idx_qr_codes_user_id")
-  @@index([token_id], name: "idx_qr_codes_token_id")
   @@index([batch_id], name: "idx_qr_codes_batch_id")
 }
