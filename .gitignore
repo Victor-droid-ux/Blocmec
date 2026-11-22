@@ -26,3 +26,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /lib/generated/prisma
+
+# generated Prisma client (platform-specific native engine binaries)
+/prisma/generated/
