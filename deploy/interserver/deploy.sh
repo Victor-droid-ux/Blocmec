@@ -89,8 +89,9 @@ runuser -u "$APP_USER" -- npm ci
 echo "[6/11] Building application"
 runuser -u "$APP_USER" -- npm run build
 
-echo "[7/11] Running Prisma migrations"
-runuser -u "$APP_USER" -- npx prisma migrate deploy
+echo "[7/11] Syncing MongoDB schema and seeding"
+runuser -u "$APP_USER" -- npx prisma db push
+runuser -u "$APP_USER" -- npx prisma db seed
 
 echo "[8/11] Starting or restarting PM2"
 if runuser -u "$APP_USER" -- pm2 describe "$APP_NAME" >/dev/null 2>&1; then

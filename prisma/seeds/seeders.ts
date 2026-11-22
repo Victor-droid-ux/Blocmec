@@ -10,6 +10,7 @@ export const seedProduction = async () => await runBaseSeeders();
 const runBaseSeeders = async () => {
   await seedAdmin();
   await seedTestUserRoles();
+  await seedUnlimitedTestAccount();
 };
 
 const seedAdmin = async () => {
@@ -76,5 +77,50 @@ const seedTestUserRoles = async () => {
     } catch (error) {
       console.error(`❌ Error seeding ${user.role}:`, error);
     }
+  }
+};
+
+// Dedicated QA account with top-tier plan + effectively unlimited credits so
+// testing never hits credit/subscription gates, in both dev and prod.
+const seedUnlimitedTestAccount = async () => {
+  console.info("Seeding unlimited QA test account...");
+
+  const password = process.env.QA_UNLIMITED_TEST_PASSWORD;
+  if (!password) {
+    console.warn(
+      "⚠️  QA_UNLIMITED_TEST_PASSWORD not set — skipping unlimited test account seed.",
+    );
+    return;
+  }
+
+  const email = "qa@blockmec.com";
+
+  try {
+    const password_hash = await bcrypt.hash(password, 12);
+
+    await prisma.user.upsert({
+      where: { email },
+      update: {
+        username: "qa",
+        subscription_plan: "enterprise",
+        api_credits: 999_999_999,
+        status: "active",
+        email_verified: true,
+      },
+      create: {
+        name: "QA Unlimited",
+        email,
+        username: "qa",
+        role: UserRole.user,
+        subscription_plan: "enterprise",
+        api_credits: 999_999_999,
+        password_hash,
+        email_verified: true,
+      },
+    });
+
+    console.info(`✅ Seeded unlimited QA account: ${email}`);
+  } catch (error) {
+    console.error("❌ Error seeding unlimited QA account:", error);
   }
 };
