@@ -62,7 +62,7 @@ export function AdminLoginForm() {
       // error state is already set in the hook; you can optionally show toast
       toast({
         title: "Login failed",
-        description: err?.error || "Unable to sign in.",
+        description: err?.message || "Unable to sign in.",
         variant: "destructive",
       });
     }
@@ -79,7 +79,10 @@ export function AdminLoginForm() {
 
     // Only redirect after successful login (when form was submitted)
     // Skip redirect if we're already on admin-login page to allow login form to show
-    if (typeof window !== "undefined" && window.location.pathname === "/admin-login") {
+    if (
+      typeof window !== "undefined" &&
+      window.location.pathname === "/admin-login"
+    ) {
       return;
     }
 
@@ -89,82 +92,85 @@ export function AdminLoginForm() {
   }, [user, router]);
 
   return (
-    <Card className='w-full max-w-md mx-auto'>
-      <CardHeader className='text-center'>
-        <div className='flex justify-center mb-4'>
-          <div className='w-16 h-16 rounded-full bg-red-600 flex items-center justify-center'>
-            <Shield className='h-8 w-8 text-white' />
+    <Card className="w-full max-w-md mx-auto">
+      <CardHeader className="text-center">
+        <div className="flex justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center">
+            <Shield className="h-8 w-8 text-white" />
           </div>
         </div>
-        <CardTitle className='text-2xl'>Admin Access</CardTitle>
+        <CardTitle className="text-2xl">Admin Access</CardTitle>
         <CardDescription>
-          Enter your administrator credentials to access the Blockmec Admin Panel
+          Enter your administrator credentials to access the Blockmec Admin
+          Panel
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <CardContent className='space-y-4'>
-          <div className='space-y-2'>
-            <Label htmlFor='admin-email'>Admin Email</Label>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="admin-email">Admin Email</Label>
             <Input
-              id='admin-email'
-              type='email'
-              placeholder='info@blockmec.org'
+              id="admin-email"
+              type="email"
+              placeholder="info@blockmec.org"
               {...register("email")}
               required
-              autoComplete='email'
+              autoComplete="email"
               disabled={loading}
             />
           </div>
-          <div className='space-y-2'>
-            <Label htmlFor='admin-password'>Admin Password</Label>
-            <div className='relative'>
+          <div className="space-y-2">
+            <Label htmlFor="admin-password">Admin Password</Label>
+            <div className="relative">
               <Input
-                id='admin-password'
+                id="admin-password"
                 type={showPassword ? "text" : "password"}
-                placeholder='Enter admin password'
+                placeholder="Enter admin password"
                 {...register("password")}
                 required
-                autoComplete='current-password'
+                autoComplete="current-password"
                 disabled={loading}
               />
               <Button
-                type='button'
-                variant='ghost'
-                size='icon'
-                className='absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent'
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={togglePasswordVisibility}
                 tabIndex={-1}
                 disabled={loading}
               >
                 {showPassword ? (
-                  <EyeOff className='h-4 w-4' />
+                  <EyeOff className="h-4 w-4" />
                 ) : (
-                  <Eye className='h-4 w-4' />
+                  <Eye className="h-4 w-4" />
                 )}
-                <span className='sr-only'>
+                <span className="sr-only">
                   {showPassword ? "Hide password" : "Show password"}
                 </span>
               </Button>
             </div>
           </div>
-          <div className='text-sm text-muted-foreground'>
-            <p>⚠️ This is a restricted area for authorized administrators only.</p>
+          <div className="text-sm text-muted-foreground">
+            <p>
+              ⚠️ This is a restricted area for authorized administrators only.
+            </p>
           </div>
         </CardContent>
         <CardFooter>
           <Button
-            type='submit'
-            className='w-full bg-red-600 hover:bg-red-700'
+            type="submit"
+            className="w-full bg-red-600 hover:bg-red-700"
             disabled={loading}
           >
             {loading ? (
               <>
-                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Authenticating...
               </>
             ) : (
               <>
-                <Shield className='mr-2 h-4 w-4' />
+                <Shield className="mr-2 h-4 w-4" />
                 Access Admin Panel
               </>
             )}

@@ -91,7 +91,7 @@ export function LoginForm({
     } catch (err: any) {
       toast({
         title: "Login failed",
-        description: err?.error || "Unable to sign in.",
+        description: err?.message || "Unable to sign in.",
         variant: "destructive",
       });
     }

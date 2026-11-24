@@ -1,10 +1,13 @@
 import { z } from "zod";
 
 export const signInSchema = z.object({
-  email: z.union([
-    z.email({ message: "Invalid email" }),
-    z.string().min(3, { message: "Username must be at least 3 characters" })
-  ], { message: "Must be a valid email or username" }),
+  email: z.union(
+    [
+      z.email({ message: "Invalid email" }),
+      z.string().min(3, { message: "Username must be at least 3 characters" }),
+    ],
+    { message: "Must be a valid email or username" },
+  ),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters" }),
@@ -77,7 +80,7 @@ export const updateProfileSchema = z.object({
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
 
 export const publicProfileSchema = z.object({
-  id: z.uuid(),
+  id: z.string().min(1),
   email: z.email(),
   name: z.string().nullable(),
   role: z.string(),
